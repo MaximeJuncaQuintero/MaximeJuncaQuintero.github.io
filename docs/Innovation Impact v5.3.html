@@ -1,0 +1,714 @@
+import pandas as pd
+import yfinance as yf
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+from scipy.stats import spearmanr
+from sklearn.linear_model import LinearRegression
+from sklearn.cluster import KMeans
+from sklearn.metrics import mean_absolute_error
+import statsmodels.api as sm
+
+# Company_alias_mapping, extended_tickers, and company_sector data
+company_alias_mapping = {
+    "Apple Inc.": [
+        'Apple Inc.', 'Apple', 'Macintosh', 'iPhone', 'iPad', 'Mac', 'iPod', 'Apple Watch', 'Apple TV', 
+        'macOS', 'iOS', 'iPadOS', 'watchOS', 'tvOS', 'iTunes', 'App Store', 'Apple Music', 'iCloud', 
+        'Siri', 'FaceTime', 'iMessage', 'Apple Pay', 'Apple Card', 'Apple Books', 'Apple Arcade', 
+        'Apple Fitness+', 'Beats by Dre', 'Final Cut Pro', 'Logic Pro', 'GarageBand', 'iWork', 
+        'QuickTime', 'Apple Store', 'AppleCare', 'Apple One', 'Shazam', 'TestFlight', 'FileMaker Inc.', 
+        'Claris', 'Anobit', 'Texture', 'Beats Electronics', 'Next Computer Inc.', 'P.A. Semi', 
+        'PrimeSense', 'Turi', 'Lala', 'Emagic', 'Quattro Wireless', 'AuthenTec', 'Beddit', 
+        'Intel smartphone modem business'
+    ],
+    "Microsoft Corporation": [
+        'Microsoft Corporation', 'Microsoft Technology Licensing, LLC', 'Windows', 'Office', 'Xbox', 
+        'Outlook', 'Edge', 'Internet Explorer', 'Surface', 'Bing', 'LinkedIn', 'Skype', 'Teams', 
+        'Azure', 'OneDrive', 'Dynamics 365', 'Power Platform', 'GitHub', 'Visual Studio', 'SQL Server', 
+        'Exchange', 'SharePoint', 'Cortana', 'HoloLens', 'Mojang', 'Rare', 'Obsidian Entertainment', 
+        'inXile Entertainment', 'Bethesda Softworks', 'ZeniMax Media', 'Compulsion Games', 
+        'Playground Games', 'Undead Labs', 'Ninja Theory', 'Double Fine Productions', 'The Initiative', 
+        'World’s Edge', '343 Industries', 'Turn 10 Studios', 'Coalition', 'Minecraft', 'Flight Simulator', 
+        'Age of Empires', 'Havok', 'MSN', 'Windows Defender', 'Microsoft Research', 'Microsoft Store', 
+        'Xbox Game Pass', 'Xbox Live', 'Adaptive Biotechnologies', 'Nuance Communications', 'Xamarin', 
+        'Yammer', 'SwiftKey', 'Accompli', 'Outlook mobile'
+    ],
+    "Amazon.com, Inc.": [
+        'Amazon.com, Inc.', 'Amazon Technologies, Inc.', 'Amazon', 'Amazon Prime', 'Amazon Web Services', 
+        'Audible', 'Whole Foods Market', 'Zappos', 'IMDb', 'Twitch', 'Ring', 'PillPack', 'Woot', 
+        'Goodreads', 'Kindle', 'Fire TV', 'Echo', 'Alexa', 'Amazon Music', 'Amazon Studios', 'Amazon Fresh', 
+        'Amazon Pantry', 'Amazon Go', 'AmazonBasics', 'Amazon Pharmacy', 'AWS', 'Prime Video', 
+        'Amazon Drive', 'Amazon Pay', 'AmazonSmile', 'Amazon Luna', 'Amazon Air', 'Amazon Robotics', 
+        'Souq.com', 'Amazon.ae', 'Shopbop', 'CreateSpace', 'Kindle Direct Publishing', 'Kiva Systems', 
+        'Amazon Robotics', 'Fabric.com', 'Diapers.com', 'Elemental Technologies', 'Annapurna Labs', 'Eero', 
+        'Book Depository', 'ComiXology', 'Amazon Game Studios', 'MGM Studios'
+    ],
+    "Alphabet Inc.": [
+        'Alphabet Inc.', 'Google LLC', 'Google', 'X Development LLC', 'YouTube', 'Android', 'Google Cloud', 
+        'Google Maps', 'Google Play', 'Google Ads', 'AdSense', 'Chrome', 'Gmail', 'Google Drive', 
+        'Google Workspace', 'Pixel', 'Google Home', 'Google Fiber', 'Waymo', 'Verily', 'Calico', 'DeepMind', 
+        'Google X', 'Wing', 'Sidewalk Labs', 'GV', 'CapitalG', 'Jigsaw', 'Fitbit', 'Nest Labs', 'Google Health', 
+        'Stadia', 'Chronicle', 'Google Assistant', 'Google Photos', 'Google Duo', 'Google Meet', 'Google News', 
+        'Google Translate', 'Google Earth', 'Google Scholar', 'Google Analytics', 'Google Search Console', 'Firebase', 
+        'Waze', 'Blogger', 'DoubleClick', 'Looker', 'Makani', 'Malta', 'Loon', 'Project Zero', 'Area 120', 'Google Ventures', 
+        'Dandelion', 'Google Flights', 'Google Shopping', 'Google Wallet', 'Google Classroom', 'Google Docs', 'Google Sheets', 
+        'Google Slides', 'Google Forms', 'Google Keep', 'Google Sites', 'Google Hangouts', 'Google Voice', 'Google Fi', 'Google Station', 
+        'Google Toolbar', 'Google Groups', 'Google Alerts', 'Google Bookmarks', 'Google Calendar', 'Google Code', 'Google Developers', 
+        'Google Trends', 'Google Custom Search', 'Google Domains', 'Google Fonts', 'Google G Suite', 'Google Hardware', 'Google Messages', 
+        'Google Pay', 'Google Play Books', 'Google Play Games', 'Google Play Movies & TV', 'Google Play Music', 'Google Podcasts', 
+        'Google Stadia', 'Google Tasks', 'Google Tez', 'Google Trips', 'Google TV', 'Google Wifi', 'Google Workspace', 'Project Fi', 
+        'Project Sunroof', 'Titan Aerospace', 'Zagat'
+    ],
+    "Facebook, Inc.": [
+        'Facebook, Inc.', 'Meta Platforms, Inc.', 'Meta', 'Facebook', 'Instagram', 'WhatsApp', 'Messenger', 
+        'Oculus VR', 'Portal', 'Facebook Watch', 'Facebook Marketplace', 'Instagram Reels', 
+        'Facebook Stories', 'Instagram Stories', 'Oculus Quest', 'Oculus Rift', 'Facebook Gaming', 'Novi', 
+        'Giphy', 'Threads', 'Spark AR', 'CrowdTangle', 'Onavo', 'Beluga', 'Mapillary', 'Beat Games', 
+        'Ready At Dawn', 'Sanzaru Games', 'CTRL-labs'
+    ],
+    "Tesla, Inc.": [
+        'Tesla, Inc.', 'Tesla Motors, Inc.', 'Tesla Motors', 'Tesla', 'SolarCity', 'Tesla Energy', 
+        'Tesla Solar', 'Tesla Grohmann Automation', 'Tesla Automation GmbH', 'Maxwell Technologies', 
+        'DeepScale', 'Hibar Systems\'battery', 'SilLion'
+    ],
+    "NVIDIA Corporation": [
+        'NVIDIA Corporation', 'GeForce', 'Quadro', 'Tesla', 'Tegra', 'SHIELD', 'Jetson', 'DGX', 'CUDA', 
+        'NVIDIA RTX', 'NVIDIA Deep Learning AI', 'NVIDIA GameWorks', 'NVIDIA Omniverse', 'NVIDIA DRIVE', 
+        'NVIDIA GRID', 'NVIDIA NVLink', 'NVIDIA PhysX', 'NVIDIA G-SYNC', 'Mellanox Technologies', 
+        'Cumulus Networks', 'ICERA', 'PortalPlayer', 'Uli Electronics', 'Ageia Technologies', 
+        '3dfx Interactive'
+    ],
+    "Pfizer Inc.": [
+        'Pfizer Inc.', 'Viagra', 'Lyrica', 'Zoloft', 'Lipitor', 'Norvasc', 'Diflucan', 'Zithromax', 
+        'Celebrex', 'Prevnar', 'Xeljanz', 'Ibrance', 'Chantix', 'Sutent', 'Vfend', 'Inlyta', 'BeneFIX', 
+        'Genotropin', 'Xanax', 'Depo-Provera', 'Warner-Lambert', 'Pharmacia', 'Upjohn', 'Wyeth', 'Hospira', 
+        'Array BioPharma', 'Medivation', 'Anacor Pharmaceuticals', 'King Pharmaceuticals', 'BioNTech', 
+        'G.D. Searle & Co.', 'Parke-Davis', 'Feldene', 'Terramycin'
+    ],
+    "Visa Inc.": [
+        'Visa Inc.', 'Visa International Service Association', 'Visa Network', 'Visa Card', 'Visa'
+    ],
+    "Johnson & Johnson": [
+        'Johnson & Johnson', 'Janssen Pharmaceuticals', 'DePuy Synthes', 'Ethicon', 'Neutrogena', 
+        'Aveeno', 'Johnson\'s Baby', 'Band-Aid', 'Tylenol', 'LISTERINE', 'ACUVUE', 
+        'Johnson & Johnson Vision Care, Inc.', 'Roc', 'Le Petit Marseillais', 'OGX', 'Clean & Clear', 
+        'Biosense Webster, Inc.', 'CORDIS', 'Mentor Worldwide LLC'
+    ],
+    "Netflix, Inc.": [
+        'Netflix, Inc.', 'Netflix', 'Netflix Studios', 'Netflix Animation', 'Millarworld', 'StoryBots'
+    ],
+    "Intel Corporation": [
+        'Intel Corporation', 'Intel Core', 'Xeon', 'Pentium', 'Celeron', 'Atom', 'Itanium', 'Quark', 
+        'Optane', 'Iris', 'Thunderbolt', 'Intel vPro', 'Intel Evo', 'Intel NUC', 'RealSense', 'Mobileye', 
+        'Altera', 'Movidius', 'Nervana Systems', 'Habana Labs', 'Barefoot Networks', 'Omni-Path', 
+        'Silicon Photonics', 'Infineon Technologies Wireless Solutions', 'Intel Mobile Communications', 
+        'Intel Security', 'Intel Capital', 'eASIC', 'SigOpt', 'Mobility', 'Killabeez', 'Skull Canyon'
+    ],
+    "Coca-Cola Company": [
+        'Coca-Cola Company', 'The Coca-Cola Company', 'Coca-Cola', 'Diet Coke', 'Coca-Cola Zero Sugar', 'Fanta', 'Sprite', 'Dasani', 
+        'Smartwater', 'Vitaminwater', 'Powerade', 'Minute Maid', 'Simply Orange', 'Del Valle', 
+        'Georgia Coffee', 'Gold Peak', 'Honest Tea', 'Fuze Beverage', 'Appletiser', 'Costa Coffee', 
+        'Fairlife', 'Innocent Drinks', 'Barq’s', 'Fresca', 'Mello Yello', 'Surge', 'Schweppes', 'AdeS', 
+        'Ayataka', 'Cappy', 'Capri Sun', 'Chaudfontaine', 'Ciel', 'Dogadan', 'Fire', 'Fruktime', 'Glacéau', 
+        'I LOHAS', 'Ice Dew', 'Istak', 'Joya', 'Kia-Ora', 'Kinley', 'Kochakaden', 'Love Body', 'Master Chill', 
+        'Mazoe', 'Mezzo Mix', 'Minute Maid Pulpy', 'NOS Energy Drink', 'Peace Tea', 'Relentless', 'Rose’s', 
+        'Royal Bliss', 'Santa Clara', 'Sokenbicha', 'Stoney', 'Thums Up', 'Topo Chico', 'Valser', 'Zico', 
+        'BonAqua', 'Bonaqa', 'Deep RiverRock', 'Mount Franklin', 'Qoo', '5by20', 'Ades Soy-Based Beverages', 
+        'AHA', 'Andina', 'Aquabona', 'Aquarius', 'Arwa', 'Bacardi Mixers', 'Banks Beer', 'Beverly', 
+        'Bibo', 'Big Crush', 'Big Tai', 'Bistrone', 'Blackfire', 'BPM Energy', 'Bright And Early', 'Burn', 
+        'Cafe Zu', 'Calfina', 'Canning\'s', 'Cappy', 'Cherry Coke', 'Chinotto', 'Christina'
+    ],
+    "PepsiCo, Inc.": [
+        'PepsiCo, Inc.', 'Pepsi', 'Mountain Dew', 'Lay’s', 'Gatorade', 'Tropicana', 'Doritos', 'Quaker Oats', 
+        'Cheetos', 'Ruffles', 'Aquafina', '7UP', 'Mirinda', 'Fritos', 'Stacy’s', 'Tostitos', 'Brisk', 
+        'Lipton', 'Sierra Mist', 'SoBe', 'Naked Juice', 'Kevita', 'SunChips', 'Walkers', 'Smith’s', 'Sabritas', 
+        'Gamesa', 'Mug Root Beer', 'Slice', 'Sierra Mist', 'Kurkure', 'Pepsi Max', 'Rockstar Energy', 
+        'PepsiCo Snacks', 'Off The Eaten Path', 'Bare Snacks', 'IZZE', 'Propel', 'Quaker', 'Cracker Jack', 
+        'Matador', 'Elma Chips', 'Red Rock Cola', 'Dole', 'AMP Energy', 'Mother Energy', 'Manzanita Sol', 
+        'Mist Twst', 'Sting Energy Drink', 'H2oh!', 'Tropicana Essentials', 'Tropicana Twister', 
+        'Tropicana Pure Premium', 'Cap’n Crunch', 'Life Cereal', 'Aunt Jemima, ‘Pearl Milling Company', 
+        'Rice-A-Roni', 'Near East', 'Frito-Lay', 'Smartfood', 'Chester\'s', 'Funyuns', 'Crunchy Wheat', 
+        'Rold Gold', 'Munchies', 'Frito Bandito', 'O.N.E. Coconut Water', 'Alvalle', 'Sandora', 'Rosquinhas Mabel', 
+        'Simba Chips', 'Smith’s Chips', 'Bluebird Chips', 'Hostess Frito-Lay Company', 'Sabra Dipping Company', 
+        'Copa de Oro', 'Miss Vickie’s', 'Baken-ets', 'Spitz', 'Tom’s Snacks', 'Muscle Milk’, ‘CytoSport', 'Hilo Life', 
+        'Imag!ne Snacks', 'PopCorners', 'Bare Foods', 'Sensible Portions', 'Hello Goodness', 'Maker Oats', 
+        'The Good Crisp Company', 'Rustler’s Rooste', 'Flat Earth', 'Twistos'
+    ],
+    "Walt Disney Company": [
+        'Walt Disney Company', 'Disney', 'Pixar', 'Marvel', 'Lucasfilm', '20th Century Studios', 
+        'Searchlight Pictures', 'Disney Animation Studios', 'Disney+', 'ESPN', 'ABC', 'National Geographic', 
+        'Hulu', 'Disney Channel', 'Freeform', 'Disney Junior', 'Disney XD', 'A&E', 'The History Channel', 
+        'Lifetime', 'Disney Parks, Experiences and Products', 'Walt Disney World Resort', 'Disneyland Resort', 
+        'Tokyo Disney Resort', 'Disneyland Paris', 'Hong Kong Disneyland Resort', 'Shanghai Disney Resort', 
+        'Disney Cruise Line', 'Adventures by Disney', 'Disney Store', 'Disney Publishing Worldwide', 
+        'Disney Consumer Products', 'Disney Interactive', 'Maker Studios', 'BAMTech', 'Disney Television Animation', 
+        'DisneyToon Studios', 'Touchstone Pictures', 'Miramax Films', 'Fox Family', 'Fox Animation Studios', 
+        'Disney Nature', 'Buena Vista', 'Buena Vista Distribution', 'Buena Vista International', 'Disney Media Networks', 
+        'Disney Direct-to-Consumer & International', 'Disney Music Group', 'Hollywood Records', 'Disney Theatrical Group', 
+        'Disney Theatrical Productions', 'Disney on Ice', 'Disney Live!', 'Playdom', 'Rocket Pack', 'Club Penguin', 'Utapau', 
+        'Disney Mobile', 'Disney English', 'Disney Baby', 'The Muppets Studio', 'Disney Research', 'Disney Digital Network', 
+        'Disney Streaming Services', 'ESPN+','Disney Television Studios', '20th Television', 'ABC Signature', 'FX Networks', 
+        'FX Productions', 'FXX', 'FXM', 'Fox Networks Group', 'Fox Sports', 'Star', 'Hotstar', 'Disney Star', 'Star India', 
+        'Star+ Latin America', 'UTV Software Communications', 'UTV Motion Pictures', 'Bindass', 'Disney+ Hotstar'
+    ],
+    "Abbott Laboratories": [
+        'Abbott Laboratories', 'Abbott Nutrition', 'Similac', 'Ensure', 'PediaSure', 'Glucerna', 'ZonePerfect', 
+        'FreeStyle Libre', 'i-STAT', 'Alinity', 'ARCHITECT', 'MitroClip', 'Absorb', 
+        'Infinity Deep Brain Stimulation System', 'Pedialyte', 'EleCare', 'EAS', 'Abbott Molecular', 
+        'Abbott Point of Care', 'St. Jude Medical', 'Alere', 'Biosense Webster', 'Thoratec', 'Topera', 
+        'Idev Technologies', 'Optimedica', 'Tendyne Holdings', 'Panbio', 'CardioMEMS', 'Liberator Medical Supply'
+    ],
+    "IBM": [
+        'IBM', 'International Business Machines Corporation', 'IBM Watson', 'IBM Cloud', 'Red Hat', 
+        'The Weather Company', 'Cognos', 'SoftLayer', 'PwC Consulting', 'Kenexa', 'Lotus Software', 
+        'Tivoli Software', 'SPSS', 'Rational Software', 'Aspera', 'FileNet', 'Sterling Commerce', 'WebSphere', 
+        'Informix', 'Netezza', 'Truven Health Analytics', 'Merge Healthcare', 'Silverpop', 'MaaS360', 
+        'Clearleap', 'Cleversafe', 'Bluemix', 'QRadar', 'Guardium', 'Tealeaf', 'Varicent', 'DemandTec', 
+        'Emptoris', 'DataMirror', 'Micromuse', 'Telelogic', 'Green Hat', 'UrbanCode', 'Trusteer', 'Cloudant', 
+        'Explorys', 'Phytel', 'i2', 'StoredIQ', 'Cast Iron Systems', 'SoftLayer Technologies', 
+        'Promontory Financial Group', 'The Weather Channel'
+    ],
+    "Thermo Fisher Scientific Inc.": [
+        'Thermo Fisher Scientific Inc.', 'Thermo Scientific', 'Fisher Scientific', 'Applied Biosystems', 
+        'Invitrogen', 'Gibco', 'Dionex', 'Life Technologies', 'Patheon', 'Fermentas', 'Affymetrix', 
+        'Cell Signaling Technology', 'Phadia', 'Pierce Biotechnology', 'Cole-Parmer', 'OriGene Technologies', 
+        'Brammer Bio', 'Qiagen N.V.', 'Alfa Aesar', 'Unity Lab Services', 'Finesse Solutions', 'MTI-GlobalStem', 
+        'Trek Diagnostic Systems', 'FEI Company', 'Asheville', 'Microgenics', 'PPD', 'BD Advanced Bioprocessing'
+    ],
+    "Ford Motor Company": [
+        'Ford Motor Company', 'Ford', 'Lincoln', 'Troller', 'FPV', 'Motorcraft', 'Visteon', 'Ford GT', 
+        'Mustang', 'F-Series', 'Explorer', 'Fiesta', 'Focus', 'Escape', 'Ranger', 'Bronco', 'EcoSport', 
+        'Edge', 'Expedition', 'Transit', 'Maverick'
+    ],
+    "Qualcomm Incorporated": [
+        'Qualcomm Incorporated', 'Snapdragon', 'Qualcomm Atheros', 'CDMA Technologies', 
+        'Qualcomm Technologies, Inc.', 'QTI', 'Qualcomm Ventures', 'Qualcomm Life', 
+        'Qualcomm Innovation Center, Inc', 'AllPlay', 'Vuforia', 'Nuvia', 'Wilocity', 'Flarion Technologies', 
+        'CSR plc', 'Iridigm Display Corporation', 'Qualcomm Halo'
+    ],
+    "Honeywell International Inc.": [
+        'Honeywell International Inc.', 'Honeywell Aerospace Technologies', 'Honeywell Automation India', 
+        'Intermec', 'RAE Systems', 'Honeywell UOP', 'Tridium'
+    ],
+    "Salesforce.com, Inc.": [
+        'Salesforce.com, Inc.', 'Salesforce', 'Sales Cloud', 'Service Cloud', 'Marketing Cloud', 
+        'Community Cloud', 'Salesforce Platform', 'SalesforceIQ', 'Pardot', 'Tableau', 'MuleSoft', 'Slack', 
+        'Heroku', 'ExactTarget', 'Demandware', 'Quip', 'Acumen Solutions', 'Data.com', 'Krux', 'ClickSoftware', 
+        'Velocity', 'The ExactTarget Marketing Cloud', 'Salesforce Chatter', 'Salesforce Einstein', 
+        'Salesforce Work.com', 'Salesforce AppExchange', 'Salesforce Trailhead', 'Salesforce Wave Analytics', 
+        'Radian6', 'Buddy Media', 'Social Studio', 'Salesforce IoT Cloud', 'Salesforce Commerce Cloud', 
+        'Salesforce Health Cloud', 'Salesforce Financial Services Cloud', 'Salesforce Philanthropy Cloud', 
+        'Salesforce Nonprofit Cloud', 'Salesforce Education Cloud', 'Salesforce Government Cloud', 
+        'Salesforce Sustainability Cloud', 'Salesforce Anywhere', 'Salesforce Hyperforce', 'Vlocity', 'Rebel', 
+        'MetaMind', 'Implisit', 'PredictionIO', 'MinHash', 'Toopher', 'Tempo AI', 'RelateIQ', 'Sendia', 'Sitemasher', 
+        'Koral', 'InStranet', 'GroupSwim', 'Jigsaw', 'Assistly', 'Model Metrics', 'Rypple', 'Stypi', 'Manymoon', 
+        'Etacts', 'Navajo Security', 'BlueTail', 'EdgeSpring', 'EntropySoft', 'Prior Knowledge', 'Tact.ai', 
+        'Bonobo AI', 'Griddable.io', 'MapAnything', 'Tableau CRM’, ‘Einstein Analytics', 'Salesforce Genie'
+    ],
+    "Applied Materials, Inc.": [
+        'Applied Materials, Inc.', 'Applied Materials Japan, Inc.', 'Applied Materials (Holdings)', 
+        'Applied Materials Asia-Pacific, LLC', 'Applied Materials Israel, Ltd.', 'Applied Materials SPV1, Inc.', 
+        'AKT, Inc.', 'Etec Systems, Inc.', 'AKT Japan, LLC', 'Applied Materials India Private Limited', 
+        'Metron Technology, Inc.', 'Applied Ventures, LLC', '1325949 Ontario Inc.', 'AFCO GP, LLC', 
+        'Applied Films Taiwan Co., Ltd.', 'AFCO C.V.', 'Applied Films Asia Pacific Limited', 
+        'PT Applied Materials Indonesia', 'Semitool, Inc.', 'TF Solar Manufacturing LLC', 
+        'Applied Materials UK Limited', 'Applied Materials Korea, Ltd.', 'Applied Materials Taiwan, Ltd.', 
+        'Applied Materials China, Ltd.', 'AMAT (Thailand) Limited', 'Applied Materials (Shanghai) Co., Ltd.', 
+        'Applied Materials (China) Holdings, Ltd.', 'Integrated Circuit Testing GmbH', 'Applied Materials SPV2, Inc.', 
+        'AKT America, Inc.', 'Metron Technology (Europa) Ltd.', 'Metron Technology (Israel) Ltd.', 
+        'Metron Technology (Asia) Ltd.', 'Metron Technology Distribution Corporation', 
+        'Applied Materials Canada, Inc.', 'Semitool Halbleitertechnik Vertriebs GmbH', 'Semitool Europe Ltd.', 
+        'Semitool (Asia) Pte Ltd.', 'Semitool Japan, Inc.', 'Semitool Korea, Inc.', 
+        'Semitool Semiconductor Equipment Technology (Shanghai) Co., Ltd.', 'Semitool (Taiwan) Inc.', 
+        'Semitool (Philippines) Inc.', 'Semitool Italia SRL', 'Applied Materials Europe BV', 
+        'Applied Materials Deutschland Holding GmbH', 'Applied Materials Luxembourg S.à r.l.', 
+        'Applied Materials China (Tianjin) Co., Ltd.', 'Applied Materials (China), Inc.', 
+        'Applied Materials (Xi’an), Ltd.', 'Applied Materials (Suzhou) Co., Ltd.', 'eLith LLC', 
+        'Metron Technology (Shanghai) Ltd.', 'Metron Technology (Singapore) Pte. Ltd.', 
+        'Metron Technology (Malaysia) Sdn Bhd', 'Semitool Israel Limited', 'Applied Materials GmbH', 
+        'Applied Materials France SARL', 'Applied Materials Ireland Ltd.', 'Applied Materials Belgium N.V.', 
+        'Applied Materials Spain S.L.', 'Applied Materials Switzerland Sàrl', 'Applied Materials Netherlands B.V.', 
+        'Applied Materials Italia S.r.l.', 'Applied Materials Verwaltung GmbH', 'Applied Materials GmbH & Co., KG', 
+        'Applied Materials South East Asia Pte. Ltd.', 'HCT Shaping Systems Service (Beijing) Co., Ltd.', 
+        'Baccini GmbH', 'Applied Materials (AMSEA) Sdn Bhd', 'Applied Materials Singapore Technology Pte. Ltd.'
+    ],
+    "Advanced Micro Devices, Inc.": [
+        'Advanced Micro Devices, Inc.', 'AMD', 'Radeon', 'Ryzen', 'EPYC', 'Athlon', 'Sempron', 'Turion', 
+        'Phenom', 'Opteron', 'Geode', 'SeaMicro', 'ATI Technologies'
+    ],
+    "Amgen Inc.": [
+        'Amgen Inc.', 'Neupogen', 'Enbrel', 'Aranesp', 'Prolia', 'Xgeva', 'Vectibix', 'Nplate', 'Blincyto', 
+        'Kyprolis', 'Repatha', 'Aimovig', 'Otezla', 'KanJinti', 'Mvasi', 'Amjevita', 'Evenity', 'Parsabiv', 
+        'Imlygic', 'Corlanor', 'ImlYGic'
+    ],
+    "Analog Devices, Inc.": [
+        'Analog Devices, Inc.', 'Analog Devices', 'Linear Technology', 'ADI'
+    ],
+    "ConAgra Foods, Inc.": [
+        'ConAgra Foods, Inc.', 'ConAgra Foods', 'Conagra Brands', 'ConAgra Foods Canada, Inc.', 
+        'ConAgra Foods Enterprise Services, Inc.', 'ConAgra Foods Export Company, Inc.', 
+        'ConAgra Foods Food Ingredients Company, Inc.', 'ConAgra Foods Lamb Weston, Inc.', 
+        'ConAgra Foods Packaged Foods, LLC', 'ConAgra Foods RDM, Inc.', 'ConAgra Foods Sales, Inc.', 
+        'ConAgra Grocery Products Company, LLC', 'ConAgra International Fertilizer Company', 
+        'ConAgra International, Inc.', 'ConAgra Limited', 'ConAgra Trade Group, Inc.', 'Agrotech Foods', 
+        'Conagra Brands Canada', 'Act II', 'Alexia', 'Andy Capp\'s fries', 'Angela Mia', 'Angie\'s', 
+        'Armour Star', 'Award Cuisine', 'Banquet', 'Bernstein\'s Dressings', 'Bertolli', 'Big Mama Sausage', 
+        'BIGS', 'Birds Eye', 'Blue Bonnet', 'Brooks', 'Celeste', 'Chef Boyardee', 'Chiffon margarine', 'Chun King', 
+        'ConAgra Mills', 'Cream', 'Crunch\'n Munch', 'David Sunflower Seeds', 'Dennison\'s', 'Duke\'s', 'Duncan Hines', 
+        'Eagle Mills with Ultragrain', 'Egg Beaters', 'Fernando\'s', 'Fiddle Faddle', 'Fleischmann\'s', 'Fraser Farm', 
+        'Frontera Foods', 'Gardein', 'Gebhardt', 'Golden Cuisine', 'Gulden\'s', 'Healthy Choice', 'Hebrew National', 
+        'Hungry-Man', 'Hunt\'s', 'Hunt\'s Snack Pack', 'J. Hungerford Smith', 'J.M. Swank', 'Jiffy Pop', 'Kid Cuisine', 
+        'La Choy', 'Lender\'s', 'Lightlife', 'Log Cabin Syrup', 'Luck\'s Incorporated', 'Mama Ginellis', 'Manwich', 
+        'Margherita', 'Marie Callender\'s', 'The MAX', 'Milwaukee\'s Pickles', 'Mrs. Butterworth\'s', 'Mrs. Paul\'s', 
+        'Move Over Butter', 'Nalley', 'Odom\'s Tennessee Pride', 'Open Pit', 'Orville Redenbacher\'s', 'PAM', 
+        'Parkay', 'Patio', 'Pemmican', 'Penrose', 'Pogo', 'Poppycock', 'Puritan', 'Ranch Style', 'Reddi-wip', 
+        'Ro-Tel', 'Rosarita', 'Screaming Yellow Zonkers', 'Slim Jim', 'Smart Balance', 'Squeez \'N Go', 'Swanson', 
+        'Swiss Miss', 'Udi\'s Gluten Free', 'Van Camp\'s', 'Van de Kamp\'s', 'VH', 'Vlasic', 'Vogel Popcorn', 
+        'Wish-Bone', 'Wolf Brand Chili'
+    ],
+    "Caterpillar Inc.": [
+        'Caterpillar Inc.', 'Caterpillar', 'Caterpillar Financial Services', 'Caterpillar Insurance Holdings', 'Caterpillar Logistics Services', 
+        'Caterpillar Marine Power Systems', 'FG Wilson', 'Perkins Engines', 'Progress Rail', 'Solar Turbines', 'C. L. Best Tractor Company', 
+        'Holt Manufacturing Company'
+    ],
+    "Deere & Company": [
+        'Deere & Company', 'John Deere', 'Nortrax', 'Vapormatic', 'Hagie', 'Monosem', 'Blue River Technology', 'Harvest Profit', 'Navcom Technology', 
+        'OnGolf', 'Lesco', 'Unimil', 'Bear Flag Robotics', 'John Deere Financial'
+    ]       
+}
+
+extended_tickers = {
+    'Abbott Laboratories': 'ABT',
+    'Advanced Micro Devices, Inc.': 'AMD',
+    'Alphabet Inc.': 'GOOGL',
+    'Amazon.com, Inc.': 'AMZN',
+    'Amgen Inc.': 'AMGN',
+    'Analog Devices, Inc.': 'ADI',
+    'Apple Inc.': 'AAPL',
+    'Applied Materials, Inc.': 'AMAT',
+    'Caterpillar Inc.': 'CAT',
+    'Coca-Cola Company': 'KO',
+    'ConAgra Foods, Inc.': 'CAG',
+    'Deere & Company': 'DE',
+    'Facebook, Inc.': 'META',
+    'Ford Motor Company': 'F',
+    'Honeywell International Inc.': 'HON',
+    'IBM': 'IBM',
+    'Intel Corporation': 'INTC',
+    'Johnson & Johnson': 'JNJ',
+    'Microsoft Corporation': 'MSFT',
+    'NVIDIA Corporation': 'NVDA',
+    'Netflix, Inc.': 'NFLX',
+    'PepsiCo, Inc.': 'PEP',
+    'Pfizer Inc.': 'PFE',
+    'Qualcomm Incorporated': 'QCOM',
+    'Salesforce.com, Inc.': 'CRM',
+    'Tesla, Inc.': 'TSLA',
+    'Thermo Fisher Scientific Inc.': 'TMO',
+    'Visa Inc.': 'V',
+    'Walt Disney Company': 'DIS'
+}
+
+company_sector = {
+    'Abbott Laboratories': 'Healthcare',
+    'Advanced Micro Devices, Inc.': 'Technology',
+    'Alphabet Inc.': 'Technology',
+    'Amazon.com, Inc.': 'Technology',
+    'Amgen Inc.': 'Healthcare',
+    'Analog Devices, Inc.': 'Technology',
+    'Apple Inc.': 'Technology',
+    'Applied Materials, Inc.': 'Technology',
+    'Caterpillar Inc.': 'Industrials',
+    'Coca-Cola Company': 'Consumer Staples',
+    'ConAgra Foods, Inc.': 'Consumer Staples',
+    'Deere & Company': 'Industrials',
+    'Facebook, Inc.': 'Technology',
+    'Ford Motor Company': 'Auto Manufacturers',
+    'Honeywell International Inc.': 'Industrials',
+    'IBM': 'Technology',
+    'Intel Corporation': 'Technology',
+    'Johnson & Johnson': 'Healthcare',
+    'Microsoft Corporation': 'Technology',
+    'NVIDIA Corporation': 'Technology',
+    'Netflix, Inc.': 'Entertainment',
+    'PepsiCo, Inc.': 'Consumer Staples',
+    'Pfizer Inc.': 'Healthcare',
+    'Qualcomm Incorporated': 'Technology',
+    'Salesforce.com, Inc.': 'Technology',
+    'Tesla, Inc.': 'Auto Manufacturers',
+    'Thermo Fisher Scientific Inc.': 'Healthcare',
+    'Visa Inc.': 'Technology',
+    'Walt Disney Company': 'Entertainment'
+}
+
+# Load R&D spending data
+rd_data_path = '/Users/mjunca/DataAnalytics/Innovation impact project/docu/R&D data.xlsx'
+rd_data = pd.read_excel(rd_data_path)
+
+# Fill missing values with 0
+missing_companies = ['Coca-Cola Company', 'Visa Inc.', 'Walt Disney Company']
+rd_data.loc[rd_data['primary_company_name'].isin(missing_companies), 'R&D Spending'] = rd_data.loc[rd_data['primary_company_name'].isin(missing_companies), 'R&D Spending'].fillna(0)
+
+specific_cases = [('Pfizer Inc.', 2023), ('Thermo Fisher Scientific Inc.', 2023)]
+for company, year in specific_cases:
+    rd_data.loc[(rd_data['primary_company_name'] == company) & (rd_data['year'] == year), 'R&D Spending'] = rd_data.loc[(rd_data['primary_company_name'] == company) & (rd_data['year'] == year), 'R&D Spending'].fillna(0)
+
+
+def load_applicant_data(applicant_filepath, ipc_filepath, company_alias_mapping):
+    """
+    Load and preprocess applicant (patent) data from TSV files, considering company aliases.
+
+    Parameters:
+    - applicant_filepath: str, path to the 'g_applicant_not_disambiguated' TSV file.
+    - ipc_filepath: str, path to the 'g_ipc_at_issue' TSV file.
+    - company_alias_mapping: dict, mapping of company aliases to primary company names.
+
+    Returns:
+    - DataFrame containing aggregated patent counts by primary company name and sector.
+    """
+    applicant_data = pd.read_csv(applicant_filepath, sep='\t', low_memory=False, usecols=['raw_applicant_organization', 'patent_id'])
+    ipc_data = pd.read_csv(ipc_filepath, sep='\t', low_memory=False, usecols=['action_date', 'patent_id'])
+
+    # Merge on 'patent_id'
+    merged_data = pd.merge(applicant_data, ipc_data, on='patent_id')
+
+    # Map 'raw_applicant_organization' to primary company names
+    alias_to_primary = {alias: primary for primary, aliases in company_alias_mapping.items() for alias in aliases}
+    merged_data['primary_company_name'] = merged_data['raw_applicant_organization'].map(alias_to_primary)
+
+    # Drop rows where primary_company_name is NaN, if any alias was not mapped
+    merged_data.dropna(subset=['primary_company_name'], inplace=True)
+
+    # Extract year from action_date
+    merged_data['year'] = pd.to_datetime(merged_data['action_date']).dt.year
+
+    # Group by both company name and year for patent counts by year
+    patent_counts_by_year = merged_data.groupby(['primary_company_name', 'year']).size().reset_index(name='patent_count')
+
+    # Group by company name for total patent counts
+    patent_counts = merged_data.groupby('primary_company_name').size().reset_index(name='patent_count')
+
+    # Map sectors to primary_company_name
+    patent_counts_by_year['Sector'] = patent_counts_by_year['primary_company_name'].map(company_sector)
+
+    return patent_counts, patent_counts_by_year
+
+def get_market_cap_and_price_data(tickers):
+    """
+    Fetch the most recent market cap data and historical stock prices from Yahoo Finance for the given tickers.
+    
+    Parameters:
+    - tickers: list of str, stock tickers.
+    
+    Returns:
+    - DataFrame, containing the most recent market cap and historical price data for the given tickers.
+    """
+    market_caps = []
+    for ticker in tickers:
+        stock = yf.Ticker(ticker)
+        info = stock.info  # Fetch most recent information
+        market_cap = info.get('marketCap', np.nan)  # Get the most recent market cap
+        market_caps.append({'Ticker': ticker, 'MarketCap': market_cap})
+
+    return pd.DataFrame(market_caps)
+
+def merge_data(patent_counts, market_cap_data, extended_tickers, company_sector):
+    """
+    Merge patent counts with market cap data and sector information.
+    """
+    market_cap_data['primary_company_name'] = market_cap_data['Ticker'].map({v: k for k, v in extended_tickers.items()})
+    market_cap_data['Sector'] = market_cap_data['primary_company_name'].map(company_sector)
+    final_data = pd.merge(patent_counts, market_cap_data, on='primary_company_name', how='inner')
+    return final_data
+
+# Path to load data
+applicant_filepath = '/Users/mjunca/DataAnalytics/Innovation impact project/PatentView Tables/g_applicant_not_disambiguated.tsv'
+ipc_filepath = '/Users/mjunca/DataAnalytics/Innovation impact project/PatentView Tables/g_ipc_at_issue.tsv'
+
+# Load patent data
+patent_counts, patent_counts_by_year = load_applicant_data(applicant_filepath, ipc_filepath, company_alias_mapping)
+
+# Define tickers and get market cap data
+tickers = list(extended_tickers.values())
+market_cap_data = get_market_cap_and_price_data(tickers)
+
+# Merge the data
+final_data = merge_data(patent_counts, market_cap_data, extended_tickers, company_sector)
+
+# Assuming 'patent_counts_by_year' and 'market_cap_data' have been prepared
+patent_counts_by_year_with_market_cap = pd.merge(patent_counts_by_year, market_cap_data, on='primary_company_name', how='left')
+
+# Merge the R&D spending data on both 'primary_company_name' and 'Year'
+final_data_with_rd = pd.merge(patent_counts_by_year_with_market_cap, rd_data, on=['primary_company_name', 'year'], how='left')
+# Merge the 'Sector' information into the final_data_with_rd DataFrame
+final_data_with_rd['Sector'] = final_data_with_rd['primary_company_name'].map(company_sector)
+
+# Sectoral Market Cap vs. Patent Counts
+sns.scatterplot(data=final_data, x='patent_count', y='MarketCap', hue='Sector')
+plt.title('Market Capitalization vs. Patent Counts by Sector')
+plt.xlabel('Number of Patents')
+plt.ylabel('Market Capitalization')
+plt.legend(title='Sector', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.show()
+
+# Aggregating top companies by patent count in each sector
+top_innovators = final_data.groupby('Sector').apply(lambda x: x.nlargest(3, 'patent_count')).reset_index(drop=True)
+
+# Plotting
+plt.figure(figsize=(12, 8))
+sns.barplot(data=top_innovators, x='Sector', y='patent_count', hue='primary_company_name')
+plt.title('Top Innovators by Sector')
+plt.xlabel('Sector')
+plt.ylabel('Number of Patents')
+plt.legend(title='Company', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.xticks(rotation=45)
+plt.show()
+
+def train_and_evaluate_model(final_data):
+    """
+    Train RandomForest and GradientBoosting models, including preprocessing, and perform GridSearch for hyperparameters.
+    """
+    X = final_data[['patent_count', 'Sector']]
+    y = final_data['MarketCap']
+    
+    # Encoding categorical data and scaling numerical data
+    preprocessor = ColumnTransformer(transformers=[
+        ('num', StandardScaler(), ['patent_count']),
+        ('cat', OneHotEncoder(), ['Sector'])
+    ])
+    
+    pipeline = Pipeline(steps=[
+        ('preprocessor', preprocessor),
+        ('regressor', RandomForestRegressor())
+    ])
+    
+    param_grid = {
+        'regressor': [RandomForestRegressor(), GradientBoostingRegressor()],
+        'regressor__n_estimators': [100, 200],
+        'regressor__max_depth': [None, 10, 20]
+    }
+    
+    grid_search = GridSearchCV(pipeline, param_grid, cv=5, scoring='neg_mean_squared_error', verbose=1, n_jobs=-1)
+    grid_search.fit(X, y)
+    
+    print(f"Best parameters: {grid_search.best_params_}")
+    best_model = grid_search.best_estimator_
+    
+    # Cross-validation to evaluate model
+    scores = cross_val_score(best_model, X, y, cv=5, scoring='neg_mean_squared_error')
+    print(f"Cross-validated RMSE: {np.mean(np.sqrt(-scores)):.2f}")
+    
+print("Total patents by company:")
+print(patent_counts)
+print("Yearly patent counts:")
+print(patent_counts_by_year)
+
+# Aggregate the total number of patents by year
+total_patents_by_year = patent_counts_by_year.groupby('year')['patent_count'].sum().reset_index()
+
+# Plotting
+plt.figure(figsize=(10, 6))
+sns.lineplot(data=total_patents_by_year, x='year', y='patent_count', marker='o')
+plt.title('Total Patent Growth Over Time')
+plt.xlabel('Year')
+plt.ylabel('Number of Patents')
+plt.grid(True)
+plt.show()
+
+# Pivot data for Sector-Wise Patent Trends
+patents_by_sector_year = patent_counts_by_year.pivot_table(values='patent_count', index='year', columns='Sector', aggfunc='sum').fillna(0)
+
+# Plotting
+patents_by_sector_year.plot(figsize=(14, 8), marker='o')
+plt.title('Sector-Wise Patent Trends Over Time')
+plt.xlabel('Year')
+plt.ylabel('Number of Patents')
+plt.grid(True)
+plt.legend(title='Sector')
+plt.show()
+
+
+# Map sectors to primary_company_name in patent_counts_by_year
+patent_counts_by_year['Sector'] = patent_counts_by_year['primary_company_name'].map(company_sector)
+
+# Aggregate year-by-year patent counts per sector
+yearly_patent_counts_per_sector = patent_counts_by_year.groupby(['year', 'Sector'])['patent_count'].sum().reset_index()
+
+# Aggregate patent counts per sector
+patent_counts_per_sector = final_data.groupby('Sector')['patent_count'].sum().reset_index(name='total_patent_count')
+
+print("Total Patent Counts per Sector:")
+print(patent_counts_per_sector)
+
+print("Yearly Patent Counts per Sector:")
+print(yearly_patent_counts_per_sector)
+
+# Assuming extended_tickers is a dictionary mapping company names to their stock tickers
+tickers = list(extended_tickers.values())
+
+# Function call to fetch market cap data
+market_cap_data = get_market_cap_and_price_data(tickers)
+print("Market cap data:")
+print(market_cap_data)
+
+# Merge and prepare data for modeling
+final_data = merge_data(patent_counts, market_cap_data, extended_tickers, company_sector)
+
+print("Final merged data summary:")
+print(final_data.head())
+
+# Data validation checks
+assert final_data['MarketCap'].min() > 0, "Market cap contains non-positive values"
+assert final_data['patent_count'].min() >= 0, "Patent count contains negative values"
+
+# Dataframe readiness
+print("Dataset ready for model training:")
+print(final_data.describe())  # Provides a summary including min, max, mean, etc.
+
+# Calculate Spearman's rank correlation
+spearman_corr, spearman_p_value = spearmanr(final_data['patent_count'], final_data['MarketCap'])
+print(f"Spearman's Rank Correlation Coefficient: {spearman_corr:.3f}")
+print(f"P-value: {spearman_p_value:.3f}")
+
+# Scatter plot for patent count vs. MarketCap
+sns.scatterplot(data=final_data, x='patent_count', y='MarketCap')
+plt.title('Patent Count vs. Market Capitalization')
+plt.show()
+
+# Needs 'patent_counts' already mapped to 'primary_company_name'
+patent_counts['Sector'] = patent_counts['primary_company_name'].map(company_sector)
+patent_counts_per_sector = patent_counts.groupby('Sector')['patent_count'].sum().reset_index()
+
+# Regression Analysis
+# Split the data into training and testing sets
+X = final_data[['patent_count']]  # Predictor variables
+y = final_data['MarketCap']  # Response variable
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Fit a linear regression model
+regressor = LinearRegression()
+regressor.fit(X_train, y_train)
+
+# Predict and evaluate the model
+y_pred = regressor.predict(X_test)
+print(f"Mean Squared Error: {mean_squared_error(y_test, y_pred):.2f}")
+print(f"Coefficient of Determination (R^2): {r2_score(y_test, y_pred):.2f}")
+
+# Plotting the regression line
+plt.scatter(X_test, y_test, color='black')
+plt.plot(X_test, y_pred, color='blue', linewidth=3)
+plt.title('Regression Line: Patent Count vs. Market Capitalization')
+plt.xlabel('Patent Count')
+plt.ylabel('Market Capitalization')
+plt.show()
+
+def regression_analysis_rd_vs_market_cap(final_data_with_rd):
+    """
+    Perform regression analysis to study the relationship between R&D spending and Market Cap using statsmodels.
+    """
+    X = final_data_with_rd[['R&D Spending']]
+    y = final_data_with_rd['MarketCap']
+    
+    # Adding a constant for the intercept
+    X = sm.add_constant(X)
+    
+    # Fit the regression model
+    model = sm.OLS(y, X).fit()
+    
+    # Print the regression summary
+    print(model.summary())
+
+def regression_analysis_patents_vs_rd(final_data_with_rd):
+    """
+    Perform regression analysis to study the relationship between the number of patents and R&D Spending using statsmodels.
+    """
+    X = final_data_with_rd[['patent_count']]
+    y = final_data_with_rd['R&D Spending']
+    
+    # Adding a constant for the intercept
+    X = sm.add_constant(X)
+    
+    # Fit the regression model
+    model = sm.OLS(y, X).fit()
+    
+    # Print the regression summary
+    print(model.summary())
+
+# Calling the regression analysis functions after preparing the final_data_with_rd DataFrame
+regression_analysis_rd_vs_market_cap(final_data_with_rd)
+regression_analysis_patents_vs_rd(final_data_with_rd)
+
+# Train and evaluate models
+train_and_evaluate_model(final_data)
+
+# Clustering Analysis using K-Means
+X_clustering = final_data[['patent_count', 'MarketCap']].values
+
+# Running K-Means
+kmeans = KMeans(n_clusters=3, n_init=10, random_state=42).fit(X_clustering)
+
+# Assigning cluster labels to the original data
+final_data['cluster'] = kmeans.labels_
+
+# Plotting
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=final_data, x='patent_count', y='MarketCap', hue='cluster', palette='viridis')
+plt.title('Clustering Companies Based on Innovation and Market Cap')
+plt.xlabel('Number of Patents')
+plt.ylabel('Market Capitalization')
+plt.legend(title='Cluster')
+plt.show()
+
+# Sector Analysis: Distribution of R&D Spending and Patent Counts
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Sector', y='R&D Spending', data=final_data_with_rd, estimator=sum, ci=None)
+plt.xticks(rotation=45)
+plt.ylabel('Total R&D Spending')
+plt.title('Total R&D Spending by Sector')
+plt.show()
+
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Sector', y='patent_count', data=final_data_with_rd, estimator=sum, ci=None)
+plt.xticks(rotation=45)
+plt.ylabel('Total Patent Counts')
+plt.title('Total Patent Counts by Sector')
+plt.show()
+
+# Correlation Heatmap between R&D Spending, Market Cap, and Patent Counts
+# Prepare DataFrame 'data_for_heatmap' with necessary columns
+data_for_heatmap = final_data_with_rd[['R&D Spending', 'MarketCap', 'patent_count']].copy()
+
+# Calculate correlation matrix
+corr_matrix = data_for_heatmap.corr()
+
+# Plot heatmap
+plt.figure(figsize=(8, 6))
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
+plt.title('Correlation Heatmap')
+plt.show()
+
+# Scatter Plots for Relationships Analysis
+#R&D Spending vs. Market Cap
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=final_data_with_rd, x='R&D Spending', y='MarketCap', hue='Sector')
+plt.title('R&D Spending vs. Market Cap by Sector')
+plt.xlabel('R&D Spending')
+plt.ylabel('Market Cap')
+plt.legend(title='Sector', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.show()
+
+#Patent Counts vs. R&D Spending
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=final_data_with_rd, x='patent_count', y='R&D Spending', hue='Sector')
+plt.title('Patent Counts vs. R&D Spending by Sector')
+plt.xlabel('Patent Counts')
+plt.ylabel('R&D Spending')
+plt.legend(title='Sector', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.show()
