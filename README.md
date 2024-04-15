@@ -1,45 +1,32 @@
-<!-- ghmd README.md --embed-css-dark -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maxime Junca-Quintero's Portfolio</title>
-    <link rel="stylesheet" href="stylesheet.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="projects/index.html">Projects</a></li>
-                <li><a href="certifications/index.html">Certifications</a></li>
-                <li><a href="media/index.html">Media</a></li>
-                <li><a href="blog/index.html">Blog</a></li>
-            </ul>
-        </nav>
-    </header>
+# Tenoris Analytics Project
 
-    <main>
-        <section>
-            <h1>About Me</h1>
-            <p>Welcome to my GitHub repository, which serves as the digital platform for my e-portfolio. This portfolio showcases a curated selection of projects and experiences that highlight my skills and achievements. With a focus on technology, strategy, innovation, and data analytics, my career has been dedicated to advancing these fields. My projects, such as the Amazon EU ATS KPI Library and the Tenoris Analytics, demonstrate my capability in handling complex data and deriving meaningful insights from it. I hold a passion for not only enhancing operational transparency but also empowering individual decision-making capabilities through accessible data.</p>
-        </section>
+## Context
+Identified a market gap for individual investors lacking access to alternative financial data. This disparity led to a hindrance in their investment decision-making capabilities compared to institutional investors.
 
-        <section>
-            <h1>Contact Information</h1>
-            <ul>
-                <li>Email: <a href="mailto:maximequintero@gmail.com">maximequintero@gmail.com</a></li>
-                <li>Phone: +33769099145</li>
-                <li>LinkedIn: <a href="https://www.linkedin.com/in/maxime-junca-quintero" target="_blank">Maxime Junca-Quintero</a></li>
-                <li>Location: Paris, France</li>
-            </ul>
-        </section>
+## Objective
+Aim to democratize alternative financial data for individual investors across Europe with Tenoris Analytics. The platform's goal was to collect, analyze, and present data in an accessible format to enable better-informed decisions.
 
-    </main>
+## Implementation
+As Founder, led the initiative from concept to launch, including strategizing the technical architecture, team assembly, and ensuring the platform met its mission to empower individual investors.
 
-    <footer>
-        <p>Copyright &copy; 2024 Maxime Junca-Quintero</p>
-    </footer>
-</body>
-</html>
+## Method
+Developed infrastructure for data processing, created a GraphQL-based API, and constructed a robust back-office tool for data management and monitoring, implementing security measures for data integrity and user privacy.
+
+## Result
+The Tenoris Analytics Proof of Concept successfully showcased the potential to impact individual investors' access to alternative financial data, taking steps towards financial information democratization and considering future dataset monetization.
+
+## Tools and Technologies Used
+- Kubernetes-based Data-Features Architecture
+- Back-Office Application for data management
+- GraphQL API
+- CRON jobs for data-feature executions
+- Security and User Management
+
+# Minimum Viable Product (MVP) Tenoris Analytics
+
+<iframe src="../../docs/MVP Tenoris Analytics.pdf" width="100%" height="800px">
+    This browser does not support PDFs. Please download the PDF to view it: [Download PDF](../../docs/MVP Tenoris Analytics.pdf)
+</iframe>            
+
+Copyright © 2024 Maxime Junca-Quintero
+give me pretty markdown of the content of the following html code
