@@ -1,0 +1,181 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+## Data Cleaning and Preparation
+
+# Load the dataset
+dataset_path = '/Users/mjunca/DataAnalytics/CA259/Assignment CA2/car_features.csv'
+car_features_df = pd.read_csv(dataset_path, delimiter=',')
+
+# AUTOMATIC and AUTOMATED_MANUAL merged into AUTOMATIC
+car_features_df['Transmission Type'] = car_features_df['Transmission Type'].replace('AUTOMATED_MANUAL', 'AUTOMATIC')
+
+# Remove DIRECT_DRIVE and UNKNOWN rows in Transmission Type
+car_features_df = car_features_df.loc[~car_features_df['Transmission Type'].isin(['DIRECT_DRIVE', 'UNKNOWN'])]
+
+# Cleaning steps
+# Fill missing values or drop rows/columns with missing values
+car_features_df.dropna(subset=['Transmission Type', 'MSRP', 'highway MPG', 'city mpg', 'Market Category', 'Engine HP', 'Year', 'Make'], inplace=True)
+
+## Market Category Mapping
+# A mapping to consolidate market categories into broader ones
+consolidated_categories = {
+    'Factory Tuner,Luxury,High-Performance': 'Luxury/Performance',
+    'Luxury,Performance': 'Luxury/Performance',
+    'Luxury,High-Performance': 'Luxury/Performance',
+    'Luxury': 'Luxury',
+    'Performance': 'Performance',
+    'Flex Fuel': 'Flex Fuel',
+    'Flex Fuel,Performance': 'Flex Fuel/Performance',
+    'N/A': 'Other',
+    'Hatchback': 'Hatchback',
+    'Hatchback,Luxury,Performance': 'Hatchback/Luxury/Performance',
+    'Hatchback,Luxury': 'Hatchback/Luxury',
+    'Luxury,High-Performance,Hybrid': 'Luxury/Performance/Hybrid',
+    'Diesel,Luxury': 'Diesel/Luxury',
+    'Hatchback,Performance': 'Hatchback/Performance',
+    'Hatchback,Factory Tuner,Performance': 'Hatchback/Performance',
+    'High-Performance': 'Performance',
+    'Factory Tuner,High-Performance': 'Performance',
+    'Exotic,High-Performance': 'Exotic/Performance',
+    'Exotic,Factory Tuner,High-Performance': 'Exotic/Performance',
+    'Factory Tuner,Performance': 'Performance',
+    'Crossover': 'Crossover',
+    'Exotic,Luxury': 'Exotic/Luxury',
+    'Exotic,Luxury,High-Performance': 'Exotic/Luxury/Performance',
+    'Exotic,Luxury,Performance': 'Exotic/Luxury/Performance',
+    'Flex Fuel,Luxury': 'Flex Fuel/Luxury',
+    'Crossover,Luxury': 'Crossover/Luxury',
+    'Hatchback,Factory Tuner,Luxury,Performance': 'Hatchback/Luxury/Performance',
+    'Crossover,Hatchback': 'Crossover/Hatchback',
+    'Hybrid': 'Hybrid',
+    'Luxury,Performance,Hybrid': 'Luxury/Performance/Hybrid',
+    'Crossover,Luxury,Performance,Hybrid': 'Crossover/Luxury/Performance/Hybrid',
+    'Crossover,Luxury,Performance': 'Crossover/Luxury/Performance',
+    'Exotic,Factory Tuner,Luxury,High-Performance': 'Exotic/Luxury/Performance',
+    'Flex Fuel,Luxury,High-Performance': 'Flex Fuel/Luxury/Performance',
+    'Crossover,Flex Fuel': 'Crossover/Flex Fuel',
+    'Diesel': 'Diesel',
+    'Hatchback,Diesel': 'Hatchback/Diesel',
+    'Crossover,Luxury,Diesel': 'Crossover/Luxury/Diesel',
+    'Crossover,Luxury,High-Performance': 'Crossover/Luxury/Performance',
+    'Exotic,Flex Fuel,Factory Tuner,Luxury,High-Performance': 'Exotic/Flex Fuel/Luxury/Performance',
+    'Exotic,Flex Fuel,Luxury,High-Performance': 'Exotic/Flex Fuel/Luxury/Performance',
+    'Exotic,Factory Tuner,Luxury,Performance': 'Exotic/Luxury/Performance',
+    'Hatchback,Hybrid': 'Hatchback/Hybrid',
+    'Crossover,Hybrid': 'Crossover/Hybrid',
+    'Hatchback,Luxury,Hybrid': 'Hatchback/Luxury/Hybrid',
+    'Flex Fuel,Luxury,Performance': 'Flex Fuel/Luxury/Performance',
+    'Crossover,Performance': 'Crossover/Performance',
+    'Luxury,Hybrid': 'Luxury/Hybrid',
+    'Crossover,Flex Fuel,Luxury,Performance': 'Crossover/Flex Fuel/Luxury/Performance',
+    'Crossover,Flex Fuel,Luxury': 'Crossover/Flex Fuel/Luxury',
+    'Crossover,Flex Fuel,Performance': 'Crossover/Flex Fuel/Performance',
+    'Hatchback,Factory Tuner,High-Performance': 'Hatchback/Performance',
+    'Hatchback,Flex Fuel': 'Hatchback/Flex Fuel',
+    'Factory Tuner,Luxury': 'Luxury/Performance',
+    'Crossover,Factory Tuner,Luxury,High-Performance': 'Crossover/Luxury/Performance',
+    'Crossover,Factory Tuner,Luxury,Performance': 'Crossover/Luxury/Performance',
+    'Crossover,Hatchback,Factory Tuner,Performance': 'Crossover/Hatchback/Performance',
+    'Crossover,Hatchback,Performance': 'Crossover/Hatchback/Performance',
+    'Flex Fuel,Hybrid': 'Flex Fuel/Hybrid',
+    'Flex Fuel,Performance,Hybrid': 'Flex Fuel/Performance/Hybrid',
+    'Crossover,Exotic,Luxury,High-Performance': 'Crossover/Exotic/Luxury/Performance',
+    'Crossover,Exotic,Luxury,Performance': 'Crossover/Exotic/Luxury/Performance',
+    'Exotic,Performance': 'Exotic/Performance',
+    'Exotic,Luxury,High-Performance,Hybrid': 'Exotic/Luxury/Performance/Hybrid',
+    'Crossover,Luxury,Hybrid': 'Crossover/Luxury/Hybrid',
+    'Flex Fuel,Factory Tuner,Luxury,High-Performance': 'Flex Fuel/Luxury/Performance',
+    'Performance,Hybrid': 'Performance/Hybrid',
+    'Crossover,Factory Tuner,Performance': 'Crossover/Performance',
+    'Crossover,Diesel': 'Crossover/Diesel',
+    'Flex Fuel,Diesel': 'Flex Fuel/Diesel',
+    'Crossover,Hatchback,Luxury': 'Crossover/Hatchback/Luxury',
+}
+
+# Apply the mapping to the 'Market Category' column
+car_features_df['Consolidated Market Category'] = car_features_df['Market Category'].map(consolidated_categories).fillna('Other')
+
+# Feature Selection
+selected_features = car_features_df[['Transmission Type', 'MSRP', 'highway MPG', 'city mpg', 'Market Category', 'Engine HP', 'Year', 'Make', 'Popularity', 'Consolidated Market Category']]
+
+## Data Analysis & Findings
+
+# Analyze trends in MSRP and MPG by transmission type over the years
+# filter start from the year 2001 for 'Trend of MSRP Over the Years by Transmission Type'
+plot_data = selected_features[selected_features['Year'] >= 2001]
+
+plt.figure(figsize=(10, 5))
+sns.lineplot(data=plot_data, x='Year', y='MSRP', hue='Transmission Type')
+plt.title('Trend of MSRP Over the Years by Transmission Type (Starting from 2001)')
+plt.show()
+
+plt.figure(figsize=(10, 5))
+sns.lineplot(data=selected_features, x='Year', y='highway MPG', hue='Transmission Type')
+plt.title('Trend of Highway MPG Over the Years by Transmission Type')
+plt.show()
+
+# Compare MSRP between transmission types
+plt.figure(figsize=(12, 8))
+# Extreme outliers filtered for a more focused plot. Limiting MSRP to a certain percentile.
+upper_limit = selected_features['MSRP'].quantile(0.95)
+filtered_msrp_data = selected_features[selected_features['MSRP'] <= upper_limit]
+
+sns.boxplot(x='Transmission Type', y='MSRP', data=filtered_msrp_data)
+plt.title('MSRP Distribution by Transmission Type (Capped at 95th Percentile)')
+plt.ylabel('MSRP (in thousands of euros)')
+plt.show()
+
+# Impact on Market Category using Consolidated Categories
+top_consolidated_categories = selected_features['Consolidated Market Category'].value_counts().nlargest(10).index
+filtered_consolidated_data = selected_features[selected_features['Consolidated Market Category'].isin(top_consolidated_categories)]
+
+plt.figure(figsize=(12, 8))
+sns.countplot(y='Consolidated Market Category', hue='Transmission Type', data=filtered_consolidated_data)
+plt.title('Top Consolidated Market Categories Distribution by Transmission Type')
+plt.show()
+
+#'Make' and 'Transmission Type' Relationship Visualization
+plt.figure(figsize=(12, 8))
+# Limiting to top 10 makes if there are too many to display
+top_makes = selected_features['Make'].value_counts().nlargest(10).index
+filtered_make_data = selected_features[selected_features['Make'].isin(top_makes)]
+
+sns.countplot(y='Make', hue='Transmission Type', data=filtered_make_data)
+plt.title('Top Car Makes Distribution by Transmission Type')
+plt.show()
+
+#'Transmission Type' and 'Year' Relation
+# Filtering data to start from 2001
+transmission_type_counts_data = selected_features[selected_features['Year'] >= 2001]
+
+plt.figure(figsize=(10, 5))
+sns.countplot(x='Year', hue='Transmission Type', data=transmission_type_counts_data)
+plt.title('Transmission Type Counts Over the Years (Starting from 2001)')
+plt.xticks(rotation=45)  # Rotate x-axis labels for better readability
+plt.show()
+
+# Engine HP and Transmission Type
+plt.figure(figsize=(12, 8))
+sns.violinplot(x='Transmission Type', y='Engine HP', data=selected_features)
+plt.title('Engine Horsepower Distribution by Transmission Type')
+plt.xlabel('Transmission Type')
+plt.ylabel('Engine Horsepower (HP)')
+plt.show()
+
+plt.figure(figsize=(12, 8))
+
+# Plot histogram for manual transmission
+sns.histplot(selected_features[selected_features['Transmission Type'] == 'MANUAL']['Engine HP'], 
+             color='blue', label='Manual', kde=False, bins=30, alpha=0.6)
+
+# Plot histogram for automatic transmission
+sns.histplot(selected_features[selected_features['Transmission Type'] == 'AUTOMATIC']['Engine HP'], 
+             color='darkorange', label='Automatic', kde=False, bins=30, alpha=0.6)
+
+plt.title('Engine Horsepower Distribution by Transmission Type')
+plt.xlabel('Engine Horsepower (HP)')
+plt.ylabel('Count (Cars)')
+plt.legend()
+plt.show()
