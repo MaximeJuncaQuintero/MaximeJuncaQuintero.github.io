@@ -11,7 +11,7 @@ Here's a quick overview of the repository structure:
 
 ## About Me
 
-I aim to transforming complex datasets into insightful, actionable intelligence. I have skills in statistical analysis and machine learning, with an avid interest in strategy and innovation.
+My aim is to transform complex data sets into relevant, usable information. I have skills in statistical analysis and machine learning, with an interest in strategy and innovation.
 
 ---
 
