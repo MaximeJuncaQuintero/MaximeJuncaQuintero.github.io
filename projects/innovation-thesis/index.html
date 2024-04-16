@@ -27,24 +27,37 @@
             <p>Project Length: University year</p>
 
             <h2>Context</h2>
-            <p>My thesis project explores the intriguing intersection of innovation and market capitalization within companies. This study was prompted by the observation that while innovation is widely regarded as a key driver of company growth, quantifying its impact on market valuation presents a complex challenge. The core question underpinning this research is the extent to which patents, as tangible assets and indicators of innovation, influence the market valuation of companies.</p>
+            <p>My thesis project explores the intriguing intersection of innovation and market capitalization within companies. This study was prompted by the observation that while innovation is widely regarded as a key driver of company growth, quantifying its impact on market valuation presents a complex challenge. The core question underpinning this research is the extent to which patents, as tangible assets and indicators of innovation, influence the market valuation of companies. Despite the intuitive link between innovation and company success, empirical evidence mapping this relationship, particularly in R&D-intensive industries, remains sparse.</p>
+            
             <h2>Objective</h2>
             <p>The aim of my study, titled "Evaluating Market Valuation Drivers for Innovative Companies: An examination of Intellectual Property and Innovative Processes," is to rigorously analyze how patents contribute to the market valuation of innovative companies. By leveraging comprehensive datasets, this research seeks to shed light on the nuanced dynamics between patent activity and market capitalization.</p>
 
             <h2>Implementation</h2>
-            <p>I chose this project to dissect the impact of patents on company market capitalization. My tasks spanned the spectrum from conceptualization to data analysis, involving the meticulous collection of patents data from patentsview, market cap information from Yahoo Finance libraries, and manual registration of R&D expenditures. The study hinged on the adept use of Python for data analysis, allowing for the integration and examination of diverse datasets. The Python environment facilitated complex statistical analyses, including clustering, regression, and sector-wise trend examination.</p>
+            <p>My tasks spanned the spectrum from conceptualization to data analysis, involving the meticulous collection of patents data from patentsview, market cap information from Yahoo Finance libraries, and manual registration of R&D expenditures.</p>
             
             <h2>Method</h2>
-            <p>Compiled a dataset encompassing 29 companies across R&D-intensive sectors, ensuring the inclusion of comprehensive patent portfolios and market cap data spanning from 2013 to 2023. Employed a multi-pronged analysis strategy, incorporating graphical analyses to elucidate the relationship between patent activity and market capitalization. Techniques included clustering companies based on innovation and market cap, regression analysis to assess the linear relationship between patent counts and market valuation, and sector-wise examination of patent trends over time.</p>
+            <p>Data Collection and Preparation: Compiled a dataset encompassing 29 companies across R&D-intensive sectors, ensuring the inclusion of comprehensive patent portfolios and market cap data spanning from 2013 to 2023.</p>
+            <p>Analytical Techniques: Employed a multi-pronged analysis strategy, incorporating graphical analyses to elucidate the relationship between patent activity and market capitalization. Techniques included clustering companies based on innovation and market cap, regression analysis to assess the linear relationship between patent counts and market valuation, and sector-wise examination of patent trends over time.</p>
+            <p>Sector-Specific Insights: Delved into the distinct innovation patterns within the technology, pharmaceutical, and biotechnology sectors, highlighting the variable impact of patents across different market segments.</p>
+            
             <h2>Result</h2>
             <p>The study on the impact of patents on market valuation revealed a generally positive but complex relationship, influenced by sector-specific dynamics and the qualitative aspects of patents, suggesting areas for further research including R&D spending and patent diversity. These findings provide empirical evidence on the nuanced interplay between innovation and market capitalization, opening paths for future exploration to deepen our understanding of how innovation impacts company valuation.</p>
             
             <h2>Tools and Technologies Used</h2>
             <ul>
-                <li>Python for data analysis</li>
-                <li>Patentsview for patents data</li>
-                <li>SEC EDGAR DATABASE R&D Spendings</li>
-                <li>Yahoo Finance for market cap data</li>
+                <li>Patentsview: Patents data</li>
+                <li>SEC EDGAR DATABASE: R&D Spendings</li>
+                <li>Python: For overall data analysis, including data manipulation and computation.</li>
+                <li>Pandas: For reading, cleaning, and transforming data into a suitable format for analysis.</li>
+                <li>YFinance: To fetch financial market data such as stock prices and market capitalization from Yahoo Finance.</li>
+                <li>Scikit-Learn: To implement machine learning models such as RandomForest and GradientBoosting regressors, as well as clustering with KMeans.</li>
+                <li>Statsmodels: For advanced statistical models and hypothesis testing.</li>
+                <li>Matplotlib and Seaborn: For data visualization, creating plots and graphs to illustrate findings.</li>
+                <li>Numpy and Scipy: For numerical and scientific computing.</li>
+                <li>OneHotEncoder and StandardScaler: For preprocessing features before modeling.</li>
+                <li>GridSearchCV: For hyperparameter tuning to find the best parameters for the machine learning models.</li>
+                <li>Cross-validation techniques: To validate the performance of models.</li>
+                <li>Mean Squared Error, R² Score, and Mean Absolute Error: To evaluate model performance.</li>
             </ul>
             <h2>Documentation</h2>
             <iframe src="../../docs/vf_methodology_2.pdf" style="width:100%; height:500px;" frameborder="0">
