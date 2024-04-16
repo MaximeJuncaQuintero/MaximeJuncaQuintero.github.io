@@ -1,20 +1,5 @@
 /* Resetting default browser styles */
-body,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-ul,
-ol,
-li,
-table,
-thead,
-tbody,
-tr,
-th,
-td {
+body, h2, h3, h4, h5, h6, p, ul, ol, li, table, thead, tbody, tr, th, td {
     margin: 0;
     padding: 0;
     border: 0;
@@ -32,11 +17,7 @@ body {
     line-height: 1.6;
 }
 
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
     margin-top: 1.5rem;
     margin-bottom: 1rem;
 }
@@ -67,8 +48,7 @@ h6 {
     font-size: 0.875em;
 }
 
-ul,
-ol {
+ul, ol {
     margin-bottom: 1rem;
 }
 
@@ -91,8 +71,7 @@ table {
     margin-bottom: 1rem;
 }
 
-th,
-td {
+th, td {
     padding: 0.5rem;
     border: 1px solid #30363d;
 }
@@ -122,7 +101,6 @@ code {
     font-family: monospace;
 }
 
-
 /* Custom styling for specific elements */
 .body-content {
     max-width: 800px;
@@ -130,15 +108,66 @@ code {
     padding: 1rem;
 }
 
-ul ul,
-ol ol {
+ul ul, ol ol {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     margin-left: 3rem;
 }
 
+/* Media Queries for responsive adjustments */
 @media (max-width: 767px) {
     .body-content {
         padding: 15px;
     }
+}
+
+/* New Styles for ePortfolio */
+/* Homepage Layout */
+.homepage-main {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-section {
+    width: 45%;
+}
+
+.right-section {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Navigation Styles */
+nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+nav a {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #30363d;
+}
+
+nav a:hover {
+    background-color: #202428;
+}
+
+/* Styles for Projects and Certifications */
+.certification-article, .project-article {
+    border: 1px solid #30363d;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.certification-article embed, .project-article embed {
+    width: 100%;
+    height: 400px;
+}
+
+.certification-highlight {
+    border-color: #58a6ff; /* Highlight with a brighter color */
 }
