@@ -124,58 +124,20 @@ ul ul, ol ol {
 /* New Styles for ePortfolio */
 /* Homepage Layout */
 .homepage-main {
-    display: flex; /* Utilize flexbox layout */
-    max-width: 1200px; /* Set a max-width for the container */
-    margin: 0 auto; /* Center the container on the page */
-    padding-top: 4rem; /* Add space for the absolute positioned header */
+    display: flex;
+    justify-content: space-between;
 }
 
 .left-section {
-    flex: 1; /* Allocate space dynamically to the left section */
-    margin-right: 2rem; /* Space between the left and right sections */
+    width: 45%;
 }
 
 .right-section {
-    flex: 1; /* Allocate space dynamically to the right section */
-    display: flex; /* Enables flexbox properties within this container */
-    flex-direction: column; /* Aligns child elements in a column */
-    align-items: flex-start; /* Aligns items to the start of the flex container */
-    justify-content: flex-start; /* Aligns items to the start vertically */
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
-
-/* Update navigation styles for the right-side vertical menu */
-header {
-    position: absolute; /* Position the header absolutely to the top right corner */
-    right: 2rem; /* Distance from the right edge */
-    top: 2rem; /* Distance from the top */
-    text-align: right;
-}
-
-header nav ul {
-    flex-direction: column; /* Stack navigation items vertically */
-    gap: 10px; /* Add space between navigation items */
-}
-
-nav a {
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #30363d;
-    color: #c9d1d9; /* Ensure the text color is visible against the background */
-    display: block; /* Make each link a block element to occupy full available width */
-}
-
-nav a:hover {
-    background-color: #202428;
-}
-
-/* Footer styles - Update */
-footer {
-    position: absolute; /* Position the footer at the bottom */
-    bottom: 2rem; /* Distance from the bottom edge */
-    width: 100%; /* Full width of the viewport */
-    text-align: center; /* Center the text within the footer */
-}
-
 
 /* Navigation Styles */
 nav ul {
