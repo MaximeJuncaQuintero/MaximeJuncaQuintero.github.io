@@ -1,5 +1,3 @@
-
-Copy code
 # Maxime Junca-Quintero's E-Portfolio
 
 Welcome to my professional e-portfolio hosted on GitHub Pages. This repository contains a collection of my projects, experiences, and accomplishments in the field of Data Analytics.
