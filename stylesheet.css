@@ -171,3 +171,19 @@ nav a:hover {
 .certification-highlight {
     border-color: #58a6ff; /* Highlight with a brighter color */
 }
+
+/* Language Toggle Styles */
+.language-toggle {
+    padding: 5px 10px;
+    border: 2px solid #58a6ff; /* Using the highlight color for the border */
+    border-radius: 10px; /* Rounded corners for a button-like appearance */
+    margin-left: 10px; /* Space from the other nav links */
+    font-weight: bold; /* Make it bold to stand out */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+
+.language-toggle:hover {
+    background-color: #58a6ff; /* Highlight color background on hover */
+    color: #0d1117; /* Dark color text on hover */
+    text-decoration: none; /* No underline on hover */
+}
