@@ -175,7 +175,7 @@ nav a:hover {
 /* Language Toggle Styles */
 .language-toggle {
     padding: 5px 10px;
-    border: 2px solid #58a6ff; /* Using the highlight color for the border */
+    border: 2px solid #ffffff; /* Using the highlight color for the border */
     border-radius: 10px; /* Rounded corners for a button-like appearance */
     margin-left: 10px; /* Space from the other nav links */
     font-weight: bold; /* Make it bold to stand out */
@@ -183,7 +183,7 @@ nav a:hover {
 }
 
 .language-toggle:hover {
-    background-color: #58a6ff; /* Highlight color background on hover */
+    background-color: #ffffff; /* Highlight color background on hover */
     color: #0d1117; /* Dark color text on hover */
     text-decoration: none; /* No underline on hover */
 }
