@@ -1,0 +1,189 @@
+/* Resetting default browser styles */
+body, h2, h3, h4, h5, h6, p, ul, ol, li, table, thead, tbody, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: monospace;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+}
+
+body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+    padding: 2rem;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 3em;
+}
+
+h2 {
+    font-size: 1.5em;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 0.3em;
+}
+
+h3 {
+    font-size: 1.25em;
+}
+
+h4 {
+    font-size: 1.125em;
+}
+
+h5 {
+    font-size: 1em;
+}
+
+h6 {
+    font-size: 0.875em;
+}
+
+ul, ol {
+    margin-bottom: 1rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+a {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+th, td {
+    padding: 0.5rem;
+    border: 1px solid #30363d;
+}
+
+th {
+    background-color: #0d1117;
+    color: #c9d1d9;
+    font-weight: normal;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #161b22;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #0d1117;
+}
+
+pre {
+    background-color: #161B22;
+    color: #c9d1d9;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+
+code {
+    font-family: monospace;
+}
+
+/* Custom styling for specific elements */
+.body-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+ul ul, ol ol {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-left: 3rem;
+}
+
+/* Media Queries for responsive adjustments */
+@media (max-width: 767px) {
+    .body-content {
+        padding: 15px;
+    }
+}
+
+/* New Styles for ePortfolio */
+/* Homepage Layout */
+.homepage-main {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-section {
+    width: 45%;
+}
+
+.right-section {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Navigation Styles */
+nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+nav a {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #30363d;
+}
+
+nav a:hover {
+    background-color: #202428;
+}
+
+/* Styles for Projects and Certifications */
+.certification-article, .project-article {
+    border: 1px solid #30363d;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.certification-article embed, .project-article embed {
+    width: 100%;
+    height: 400px;
+}
+
+.certification-highlight {
+    border-color: #58a6ff; /* Highlight with a brighter color */
+}
+
+/* Language Toggle Styles */
+.language-toggle {
+    padding: 5px 10px;
+    border: 2px solid #58a6ff; /* Using the highlight color for the border */
+    border-radius: 10px; /* Rounded corners for a button-like appearance */
+    margin-left: 10px; /* Space from the other nav links */
+    font-weight: bold; /* Make it bold to stand out */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+
+.language-toggle:hover {
+    background-color: #58a6ff; /* Highlight color background on hover */
+    color: #0d1117; /* Dark color text on hover */
+    text-decoration: none; /* No underline on hover */
+}

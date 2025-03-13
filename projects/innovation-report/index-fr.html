@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Étude sur l'innovation et la capitalisation boursière</title>
+    <link rel="stylesheet" href="../../stylesheet.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../../index-fr.html">Accueil</a></li>
+                <li><a href="../index-fr.html">Projets</a></li>
+                <li><a href="../../certifications/index-fr.html">Certifications</a></li>
+                <li><a href="../../letters-of-reference/index-fr.html">Lettres de Référence</a></li>
+                <li><a href="../../media/index-fr.html">Médias</a></li>
+                <!-- Add Language Switch -->
+                <li><a href="../../index.html" class="language-toggle">ENG</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="project-details">
+            <h1>Étude sur l'innovation et la capitalisation boursière</h1>
+            
+            <p>Durée du projet : Semestre universitaire</p>
+
+            <h2>Contexte</h2>
+            <p>Mon rapport explore l'intersection entre l'innovation et la capitalisation boursière au sein des entreprises. Cette étude a été motivée par l'observation que, si l'innovation est largement considérée comme un moteur clé de la croissance des entreprises, la quantification de son impact sur la valorisation boursière présente un défi complexe. La question centrale sous-jacente à cette recherche est la mesure dans laquelle les brevets, en tant qu'actifs tangibles et indicateurs d'innovation, influencent la valorisation boursière des entreprises. Malgré le lien intuitif entre innovation et succès des entreprises, les preuves empiriques cartographiant cette relation, en particulier dans les industries intensives en R&D, restent rares.</p>
+            
+            <h2>Objectif</h2>
+            <p>L'objectif de mon étude, intitulée "Evaluating Market Valuation Drivers for Innovative Companies: An examination of Intellectual Property and Innovative Processes", est d'analyser rigoureusement comment les brevets contribuent à la valorisation boursière des entreprises innovantes. En exploitant des ensembles de données exhaustifs, cette recherche vise à éclairer les dynamiques nuancées entre l'activité de brevetage et la capitalisation boursière.</p>
+
+            <h2>Mise en œuvre</h2>
+            <p>Mes tâches s'étendaient de la conceptualisation à l'analyse des données, impliquant la collecte méticuleuse de données sur les brevets de patentsview, les informations sur la capitalisation boursière des bibliothèques Yahoo Finance et l'enregistrement manuel des dépenses en R&D.</p>
+            
+            <h2>Méthode</h2>
+            <p>Collecte et Préparation des Données : Compilation d'un ensemble de données englobant 29 entreprises dans des secteurs intensifs en R&D, assurant l'inclusion de portefeuilles de brevets complets et de données de capitalisation boursière s'étendant de 2013 à 2023.</p>
+            <p>Techniques Analytiques : Mise en œuvre d'une stratégie d'analyse à plusieurs volets, incorporant des analyses graphiques pour élucider la relation entre l'activité de brevetage et la capitalisation boursière. Les techniques incluaient le regroupement des entreprises en fonction de l'innovation et de la capitalisation boursière, une analyse de régression pour évaluer la relation linéaire entre le nombre de brevets et la valorisation boursière, et un examen par secteur des tendances en matière de brevets au fil du temps.</p>
+            <p>Intuitions Spécifiques au Secteur : Exploration des modèles d'innovation distincts dans les secteurs de la technologie, de la pharmacie et de la biotechnologie, mettant en lumière l'impact variable des brevets sur différents segments du marché.</p>
+            
+            <h2>Résultat</h2>
+            <p>L'étude sur l'impact des brevets sur la valorisation boursière a révélé une relation généralement positive mais complexe, influencée par la dynamique spécifique au secteur et les aspects qualitatifs des brevets, suggérant des domaines pour des recherches supplémentaires, y compris les dépenses en R&D et la diversité des brevets. Ces résultats fournissent des preuves empiriques sur l'interaction nuancée entre innovation et capitalisation boursière, ouvrant des voies pour des explorations futures afin d'approfondir notre compréhension de la manière dont l'innovation impacte la valorisation des entreprises.</p>
+            <p>Pour une compréhension plus complète, vous pouvez télécharger ma thèse complète ici : <a href="../../docs/Thesis_BusinessProject_MaximeJuncaQuintero.pdf" target="_blank">Télécharger la Thèse Complète</a>.</p>
+
+            <h2>Outils et Technologies Utilisés</h2>
+            <ul>
+                <li>Patentsview : Données sur les brevets</li>
+                <li>BASE DE DONNÉES EDGAR DE LA SEC : Dépenses en R&D</li>
+                <li>Python : Pour l'analyse globale des données, y compris la manipulation des données et les calculs.</li>
+                <li>Pandas : Pour lire, nettoyer et transformer les données en un format adapté à l'analyse.</li>
+                <li>YFinance : Pour récupérer des données de marché financier telles que les prix des actions et la capitalisation boursière depuis Yahoo Finance.</li>
+                <li>Scikit-Learn : Pour mettre en œuvre des modèles d'apprentissage automatique tels que les régresseurs RandomForest et GradientBoosting, ainsi que le clustering avec KMeans.</li>
+                <li>Statsmodels : Pour des modèles statistiques avancés et des tests d'hypothèses.</li>
+                <li>Matplotlib et Seaborn : Pour la visualisation des données, créer des graphiques pour illustrer les résultats.</li>
+                <li>Numpy et Scipy : Pour le calcul numérique et scientifique.</li>
+                <li>OneHotEncoder et StandardScaler : Pour le prétraitement des caractéristiques avant la modélisation.</li>
+                <li>GridSearchCV : Pour l'ajustement des hyperparamètres afin de trouver les meilleurs paramètres pour les modèles d'apprentissage automatique.</li>
+                <li>Techniques de validation croisée : Pour valider la performance des modèles.</li>
+                <li>Erreur quadratique moyenne, Score R² et Erreur absolue moyenne : Pour évaluer la performance du modèle.</li>
+            </ul>
+            <h2>Documentation</h2>
+            <iframe src="../../docs/vf_methodology_2.pdf" style="width:100%; height:500px;" frameborder="0">
+                Ce navigateur ne prend pas en charge les PDFs. Veuillez télécharger le PDF pour le visualiser : <a href="../../docs/vf_methodology_2.pdf">Télécharger le PDF</a>
+            </iframe>
+            <h3>Code</h3>
+            <iframe src="../../docs/Innovation_Impact_v5.3.html" style="width:100%; height:500px;" frameborder="0">
+                Ce navigateur ne prend pas en charge ce type de fichier. Veuillez télécharger le fichier pour le visualiser : <a href="../../docs/Innovation_Impact_v5.3.html">Télécharger le Code</a>
+            </iframe> 
+            <h2>Jeux de Données</h2>
+            <p>L'analyse de ce projet était basée sur des données de brevets approfondies obtenues de PatentsView et des données de dépenses en R&D de la base de données EDGAR de la SEC. J'ai utilisé deux tables : 'g_applicant_not_disambiguated' et 'g_ipc_at_issue'. Voici les liens pour télécharger les jeux de données utilisés :</p>
+            <ul>
+                <li>
+                    <a href="https://patentsview.org/download/data-download-tables" target="_blank">Télécharger les Tables de Données de PatentsView</a> (Notez s'il vous plaît : Ces fichiers sont volumineux, et leur téléchargement peut prendre un temps considérable.)
+                </li>
+                <li>
+                    <a href="https://www.sec.gov/edgar/search/" target="_blank">Accéder à la BASE DE DONNÉES EDGAR de la SEC pour les Dépenses en R&D</a>
+                </li>
+            </ul>
+ 
+        </section>
+    </main>
+
+    <footer>
+        <p>Droit d'auteur &copy; 2024 Maxime Junca-Quintero</p>
+    </footer>
+</body>
+</html>

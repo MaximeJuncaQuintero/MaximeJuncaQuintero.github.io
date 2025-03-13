@@ -81,4 +81,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Acknowledgments
 
 - Dublin City University
-- All references and mentors who have supported my professional journey 
+- All references and mentors who have supported my professional journey
