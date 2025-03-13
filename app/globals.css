@@ -13,30 +13,51 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-    to bottom,
-    rgb(var(--background-start-rgb)),
-    rgb(var(--background-end-rgb))
-  );
+  background: rgb(var(--background-start-rgb));
   min-height: 100vh;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-@layer components {
-  .section-heading {
-    @apply text-white font-bold relative;
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-white;
   }
   
-  .card, .project-card, .certificate-card, .reference-card, .experience-card, .media-card {
-    @apply bg-dark-800 rounded-lg border border-gray-700 hover:border-purple-700 transition-all duration-300 shadow-lg overflow-hidden;
+  h2.section-title {
+    @apply text-4xl font-bold mb-12 text-center relative;
+    @apply after:content-[''] after:absolute after:w-20 after:h-1 after:bg-purple-600 after:bottom-[-10px] after:left-1/2 after:transform after:-translate-x-1/2;
+  }
+}
+
+@layer components {
+  .section-heading {
+    @apply text-4xl font-bold mb-12 text-center relative;
+    @apply after:content-[''] after:absolute after:w-20 after:h-1 after:bg-purple-600 after:bottom-[-10px] after:left-1/2 after:transform after:-translate-x-1/2;
+  }
+  
+  .project-card {
+    @apply bg-dark-800 rounded-lg border border-gray-800 hover:border-purple-600 transition-all duration-300 shadow-lg overflow-hidden;
+    @apply transform hover:-translate-y-1 hover:shadow-xl;
+  }
+  
+  .certification-card, .reference-card, .media-card {
+    @apply bg-dark-800 rounded-lg border border-gray-800 hover:border-purple-600 transition-all duration-300 shadow-lg overflow-hidden;
+    @apply transform hover:-translate-y-1 hover:shadow-xl;
+  }
+  
+  .experience-card {
+    @apply bg-dark-800 rounded-lg border border-gray-800 hover:border-purple-600 transition-all duration-300 shadow-lg overflow-hidden;
   }
   
   .button {
-    @apply px-6 py-3 rounded-full font-medium transition-colors duration-300;
+    @apply px-6 py-3 rounded-full font-medium transition-all duration-300;
+    @apply bg-purple-700 hover:bg-purple-600 text-white;
+    @apply transform hover:-translate-y-0.5;
   }
   
   .contact-button {
-    @apply flex items-center justify-center gap-2 px-6 py-3 bg-dark-800 hover:bg-dark-700 rounded-full transition-colors duration-300 border border-gray-700 hover:border-purple-500;
+    @apply flex items-center justify-center gap-2 px-6 py-3 bg-dark-800 hover:bg-dark-700 rounded-full transition-all duration-300;
+    @apply border border-gray-700 hover:border-purple-500 transform hover:-translate-y-0.5;
   }
   
   .nav-link {
@@ -44,7 +65,31 @@ body {
   }
 }
 
-/* Dark theme colors */
+/* Custom color classes */
+.text-primary {
+  color: rgb(139, 92, 246); /* Purple-500 */
+}
+
+.text-secondary {
+  color: rgb(124, 58, 237); /* Purple-600 */
+}
+
+.text-accent {
+  color: rgb(167, 139, 250); /* Purple-400 */
+}
+
+.bg-primary {
+  background-color: rgb(139, 92, 246); /* Purple-500 */
+}
+
+.bg-secondary {
+  background-color: rgb(124, 58, 237); /* Purple-600 */
+}
+
+.bg-accent {
+  background-color: rgb(167, 139, 250); /* Purple-400 */
+}
+
 .bg-dark-900 {
   background-color: rgb(18, 18, 18);
 }
@@ -59,7 +104,7 @@ body {
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -68,7 +113,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: rgb(75, 75, 75);
-  border-radius: 5px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {

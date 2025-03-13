@@ -1,70 +1,84 @@
-# Maxime Junca - Portfolio
+# Maxime Junca - E-Portfolio
 
-A modern, responsive portfolio website built with Next.js and Tailwind CSS.
+A modern, responsive e-portfolio built with Next.js, Tailwind CSS, and Framer Motion.
 
 ## Features
 
-- Modern, responsive design
-- Smooth animations and transitions
-- Dynamic project showcases
-- Optimized for performance and SEO
-- Easy to maintain and update
+- Responsive design that works on all devices
+- Smooth animations and transitions using Framer Motion
+- Project showcase with detailed descriptions
+- Certifications display
+- Reference letters section
+- Contact form
+- CV download
 
-## Tech Stack
+## Technologies Used
 
-- Next.js 14
-- React 18
-- Tailwind CSS
-- Framer Motion
-- TypeScript
+- **Next.js**: React framework for server-rendered applications
+- **TypeScript**: For type safety and better developer experience
+- **Tailwind CSS**: Utility-first CSS framework
+- **Framer Motion**: Animation library for React
+- **React Icons**: Icon library
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js (v14 or later)
+- npm or yarn
+
+### Installation
+
 1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/portfolio.git
-cd portfolio
-```
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/eportfolio.git
+   cd eportfolio
+   ```
 
 2. Install dependencies:
-```bash
-npm install
-```
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
 3. Run the development server:
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
 ## Project Structure
 
 ```
-/eportfolio
-├── app/               # Next.js app directory
-│   ├── components/    # React components
-│   ├── pages/        # Page components
-│   └── styles/       # Global styles
-├── public/           # Static assets
-└── projects/         # Project documentation
+eportfolio/
+├── app/                  # Next.js app directory
+│   ├── components/       # React components
+│   ├── globals.css       # Global styles
+│   ├── layout.tsx        # Root layout
+│   └── page.tsx          # Home page
+├── public/               # Static assets
+│   └── assets/           # Images, documents, etc.
+├── scripts/              # Utility scripts
+└── ...                   # Configuration files
 ```
 
 ## Deployment
 
-The portfolio is configured for deployment on GitHub Pages. To deploy:
+This project can be deployed to any platform that supports Next.js applications, such as Vercel, Netlify, or GitHub Pages.
 
-1. Update the repository settings to use GitHub Pages
-2. Push changes to the main branch
-3. GitHub Actions will automatically build and deploy the site
+### Deploying to GitHub Pages
 
-## Customization
-
-1. Update content in the components
-2. Modify styles in `globals.css` and Tailwind config
-3. Add new projects in the Projects component
-4. Update contact information in the Contact component
+A GitHub Actions workflow is included in this repository to automatically deploy the application to GitHub Pages whenever changes are pushed to the main branch.
 
 ## License
 
-MIT License - feel free to use this template for your own portfolio! 
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Dublin City University
+- All references and mentors who have supported my professional journey 

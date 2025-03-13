@@ -1,0 +1,202 @@
+.react-chatbot-kit-chat-container {
+  width: 100% !important;
+  height: 100% !important;
+  background-color: rgb(30, 30, 30) !important;
+}
+
+.react-chatbot-kit-chat-inner-container {
+  height: 100% !important;
+  background-color: rgb(30, 30, 30) !important;
+}
+
+.react-chatbot-kit-chat-header {
+  background-color: rgb(139, 92, 246) !important;
+  color: white !important;
+  font-size: 1.1rem !important;
+}
+
+.react-chatbot-kit-chat-input-container {
+  background-color: rgb(45, 45, 45) !important;
+  border-top: 1px solid rgb(75, 75, 75) !important;
+}
+
+.react-chatbot-kit-chat-input {
+  background-color: rgb(45, 45, 45) !important;
+  color: white !important;
+  border: none !important;
+  font-size: 0.95rem !important;
+}
+
+.react-chatbot-kit-chat-input:focus {
+  outline: none !important;
+}
+
+.react-chatbot-kit-chat-input-form {
+  display: flex !important;
+}
+
+.react-chatbot-kit-chat-btn-send {
+  background-color: rgb(139, 92, 246) !important;
+  border-radius: 0.25rem !important;
+  margin-left: 0.5rem !important;
+}
+
+.react-chatbot-kit-chat-btn-send-icon {
+  fill: white !important;
+}
+
+.react-chatbot-kit-chat-message-container {
+  background-color: rgb(30, 30, 30) !important;
+  padding: 1rem !important;
+  overflow-y: auto !important;
+  scroll-behavior: smooth !important;
+}
+
+/* Bot message styling - left aligned */
+.react-chatbot-kit-chat-bot-message-container {
+  display: flex !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+}
+
+.react-chatbot-kit-chat-bot-message {
+  background-color: rgb(139, 92, 246) !important;
+  color: white !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  font-size: 0.9rem !important;
+  line-height: 1.4 !important;
+  max-width: 85% !important;
+  margin-bottom: 0.5rem !important;
+  margin-right: auto !important;
+  margin-left: 0 !important;
+}
+
+.react-chatbot-kit-chat-bot-message-arrow {
+  border-right-color: rgb(139, 92, 246) !important;
+}
+
+.react-chatbot-kit-chat-bot-avatar-container {
+  background-color: transparent !important;
+}
+
+.react-chatbot-kit-chat-bot-avatar-icon {
+  fill: white !important;
+}
+
+/* User message styling - right aligned */
+.react-chatbot-kit-user-chat-message-container {
+  display: flex !important;
+  justify-content: flex-end !important;
+  width: 100% !important;
+}
+
+.react-chatbot-kit-user-chat-message {
+  background-color: rgb(45, 45, 45) !important;
+  color: white !important;
+  border-radius: 1rem !important;
+  font-size: 0.9rem !important;
+  line-height: 1.4 !important;
+  max-width: 85% !important;
+  margin-bottom: 1.5rem !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+.react-chatbot-kit-user-chat-message-arrow {
+  border-left-color: rgb(45, 45, 45) !important;
+}
+
+/* Widget container styling */
+.react-chatbot-kit-chat-bot-message-container .react-chatbot-kit-chat-bot-message-container {
+  margin-top: 0 !important;
+}
+
+/* Ensure widgets are properly displayed below text */
+.react-chatbot-kit-chat-bot-message + div {
+  margin-top: 0.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.option-button {
+  background-color: rgb(45, 45, 45);
+  color: white;
+  border: 1px solid rgb(75, 75, 75);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.option-button:hover {
+  background-color: rgb(75, 75, 75);
+  border-color: rgb(139, 92, 246);
+}
+
+/* Widget styling */
+.experience-widget,
+.projects-widget,
+.skills-widget,
+.education-widget {
+  margin-top: 0.5rem !important;
+  margin-bottom: 1rem !important;
+  font-size: 0.85rem !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  background-color: rgb(40, 40, 40) !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid rgb(60, 60, 60) !important;
+}
+
+/* Fix for project widgets */
+.projects-widget a {
+  display: block !important;
+  margin-bottom: 0.5rem !important;
+  text-decoration: none !important;
+}
+
+.projects-widget a:hover {
+  text-decoration: none !important;
+}
+
+.projects-widget h4 {
+  margin-top: 0 !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.projects-widget p {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Ensure consistent styling across all widgets */
+.experience-widget h3,
+.projects-widget h3,
+.skills-widget h3,
+.education-widget h3 {
+  font-size: 0.95rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.experience-widget h4,
+.projects-widget h4,
+.skills-widget h4,
+.education-widget h4 {
+  font-size: 0.9rem !important;
+}
+
+.experience-widget p,
+.projects-widget p,
+.skills-widget p,
+.education-widget p {
+  font-size: 0.85rem !important;
+  line-height: 1.3 !important;
+} 

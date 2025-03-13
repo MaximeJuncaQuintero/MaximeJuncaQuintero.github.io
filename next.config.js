@@ -6,8 +6,7 @@ const nextConfig = {
     unoptimized: true,
   },
   output: 'export', // Enable static exports for GitHub Pages
-  basePath: '/eportfolio',
-  assetPrefix: '/eportfolio',
+  trailingSlash: true, // Add trailing slashes to all URLs for better compatibility with GitHub Pages
 }
 
 module.exports = nextConfig 

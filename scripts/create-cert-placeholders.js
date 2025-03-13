@@ -2,34 +2,43 @@ const { createCanvas } = require('canvas');
 const fs = require('fs');
 const path = require('path');
 
-// Define certifications
+// Define the certifications
 const certifications = [
   {
-    name: 'sql-certificate',
-    title: 'Understanding SQL Databases',
-    issuer: 'DataCamp',
-    color: '#4169E1' // Royal Blue
+    name: 'python-fundamentals',
+    title: 'Python Fundamentals',
+    color: '#3776AB' // Python blue
+  },
+  {
+    name: 'functions-loops',
+    title: 'Functions, Conditionality and Loops',
+    color: '#4B8BBE' // Another Python blue shade
+  },
+  {
+    name: 'data-visualization',
+    title: 'Storing, Transforming and Visualizing Data',
+    color: '#306998' // Another Python blue shade
   }
 ];
 
-// Set image dimensions
+// Constants for image dimensions
 const WIDTH = 800;
 const HEIGHT = 600;
 
 // Create directory if it doesn't exist
-const certDir = path.join(__dirname, '../public/assets/certifications');
-if (!fs.existsSync(certDir)) {
-  fs.mkdirSync(certDir, { recursive: true });
-  console.log(`Created directory: ${certDir}`);
+const dirPath = path.join(__dirname, '../public/assets/certifications');
+if (!fs.existsSync(dirPath)) {
+  fs.mkdirSync(dirPath, { recursive: true });
+  console.log(`Created directory: ${dirPath}`);
 }
 
-// Create placeholder images for each certification
+// Create a placeholder image for each certification
 certifications.forEach(cert => {
   // Create canvas
   const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext('2d');
 
-  // Fill background with certification color
+  // Fill background
   ctx.fillStyle = cert.color;
   ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
@@ -44,48 +53,64 @@ certifications.forEach(cert => {
     ctx.fill();
   }
 
-  // Add certification title
-  ctx.font = 'bold 48px Arial';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  
-  // Add text shadow for better visibility
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-  ctx.fillText(cert.title, WIDTH / 2 + 3, HEIGHT / 2 - 27);
-  
-  // Main text
-  ctx.fillStyle = 'white';
-  ctx.fillText(cert.title, WIDTH / 2, HEIGHT / 2 - 30);
-
-  // Add issuer
-  ctx.font = '32px Arial';
-  
-  // Add text shadow for better visibility
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-  ctx.fillText(cert.issuer, WIDTH / 2 + 2, HEIGHT / 2 + 22);
-  
-  // Main text
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-  ctx.fillText(cert.issuer, WIDTH / 2, HEIGHT / 2 + 20);
-
-  // Add "CERTIFICATE" text
-  ctx.font = 'bold 64px Arial';
-  
-  // Add text shadow for better visibility
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-  ctx.fillText('CERTIFICATE', WIDTH / 2 + 4, HEIGHT / 2 - 102);
-  
-  // Main text
+  // Add DataCamp logo placeholder
   ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-  ctx.fillText('CERTIFICATE', WIDTH / 2, HEIGHT / 2 - 100);
+  ctx.fillRect(WIDTH / 2 - 100, 100, 200, 80);
+  ctx.fillStyle = '#05192D'; // DataCamp dark blue
+  ctx.font = 'bold 30px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('DataCamp', WIDTH / 2, 150);
 
-  // Add decorative elements
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-  ctx.lineWidth = 10;
-  ctx.strokeRect(50, 50, WIDTH - 100, HEIGHT - 100);
+  // Add certificate title
+  ctx.fillStyle = 'white';
+  ctx.font = 'bold 40px Arial';
+  ctx.textAlign = 'center';
+  
+  // Handle long titles by splitting into multiple lines if needed
+  const words = cert.title.split(' ');
+  let line = '';
+  let lines = [];
+  let y = HEIGHT / 2;
+  
+  for (let i = 0; i < words.length; i++) {
+    const testLine = line + words[i] + ' ';
+    const metrics = ctx.measureText(testLine);
+    if (metrics.width > WIDTH - 100 && i > 0) {
+      lines.push(line);
+      line = words[i] + ' ';
+    } else {
+      line = testLine;
+    }
+  }
+  lines.push(line);
+  
+  // Adjust y position based on number of lines
+  y = HEIGHT / 2 - ((lines.length - 1) * 50 / 2);
+  
+  // Draw each line
+  lines.forEach((line, index) => {
+    // Add shadow for better readability
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetX = 5;
+    ctx.shadowOffsetY = 5;
+    
+    ctx.fillText(line, WIDTH / 2, y + index * 50);
+  });
+  
+  // Reset shadow
+  ctx.shadowColor = 'transparent';
+  
+  // Add "Certificate" text
+  ctx.font = 'bold 30px Arial';
+  ctx.fillText('Certificate', WIDTH / 2, HEIGHT - 150);
+
+  // Add name placeholder
+  ctx.font = 'italic 25px Arial';
+  ctx.fillText('Maxime Junca-Quintero', WIDTH / 2, HEIGHT - 100);
 
   // Save the image
-  const outputPath = path.join(certDir, `${cert.name}.jpg`);
+  const outputPath = path.join(dirPath, `${cert.name}.jpg`);
   const buffer = canvas.toBuffer('image/jpeg');
   fs.writeFileSync(outputPath, buffer);
   console.log(`Created placeholder image: ${outputPath}`);
