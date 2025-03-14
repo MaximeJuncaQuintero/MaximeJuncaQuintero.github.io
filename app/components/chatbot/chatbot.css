@@ -2,6 +2,11 @@
   width: 100% !important;
   height: 100% !important;
   background-color: rgb(30, 30, 30) !important;
+  border-radius: 1rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.3s ease-in-out !important;
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
 }
 
 .react-chatbot-kit-chat-inner-container {
@@ -10,46 +15,70 @@
 }
 
 .react-chatbot-kit-chat-header {
-  background-color: rgb(139, 92, 246) !important;
-  color: white !important;
-  font-size: 1.1rem !important;
+  display: none !important; /* Remove the double header */
 }
 
 .react-chatbot-kit-chat-input-container {
-  background-color: rgb(45, 45, 45) !important;
-  border-top: 1px solid rgb(75, 75, 75) !important;
+  background-color: rgb(40, 40, 40) !important;
+  border-top: 1px solid rgba(139, 92, 246, 0.2) !important;
+  padding: 0.75rem !important;
 }
 
 .react-chatbot-kit-chat-input {
-  background-color: rgb(45, 45, 45) !important;
+  background-color: rgb(50, 50, 50) !important;
   color: white !important;
   border: none !important;
   font-size: 0.95rem !important;
+  border-radius: 1.5rem !important;
+  padding: 0.75rem 1.25rem !important;
+  width: 100% !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  letter-spacing: 0.01em !important;
 }
 
 .react-chatbot-kit-chat-input:focus {
   outline: none !important;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5) !important;
+  background-color: rgb(55, 55, 55) !important;
 }
 
 .react-chatbot-kit-chat-input-form {
   display: flex !important;
+  align-items: center !important;
 }
 
 .react-chatbot-kit-chat-btn-send {
   background-color: rgb(139, 92, 246) !important;
-  border-radius: 0.25rem !important;
-  margin-left: 0.5rem !important;
+  border-radius: 50% !important;
+  margin-left: 0.75rem !important;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3) !important;
+}
+
+.react-chatbot-kit-chat-btn-send:hover {
+  background-color: rgb(124, 58, 237) !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4) !important;
 }
 
 .react-chatbot-kit-chat-btn-send-icon {
   fill: white !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
 }
 
 .react-chatbot-kit-chat-message-container {
   background-color: rgb(30, 30, 30) !important;
-  padding: 1rem !important;
+  padding: 1.25rem !important;
   overflow-y: auto !important;
   scroll-behavior: smooth !important;
+  background-image: radial-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
+  background-size: 20px 20px !important;
 }
 
 /* Bot message styling - left aligned */
@@ -57,19 +86,37 @@
   display: flex !important;
   justify-content: flex-start !important;
   width: 100% !important;
+  margin-bottom: 1.25rem !important;
+  animation: fadeInLeft 0.3s ease-out !important;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .react-chatbot-kit-chat-bot-message {
   background-color: rgb(139, 92, 246) !important;
+  background-image: linear-gradient(135deg, rgb(139, 92, 246) 0%, rgb(124, 58, 237) 100%) !important;
   color: white !important;
-  border-radius: 1rem !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-  font-size: 0.9rem !important;
-  line-height: 1.4 !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
   max-width: 85% !important;
-  margin-bottom: 0.5rem !important;
+  margin-bottom: 0 !important;
   margin-right: auto !important;
   margin-left: 0 !important;
+  padding: 0.9rem 1.2rem !important;
+  word-break: break-word !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  letter-spacing: 0.01em !important;
 }
 
 .react-chatbot-kit-chat-bot-message-arrow {
@@ -78,6 +125,7 @@
 
 .react-chatbot-kit-chat-bot-avatar-container {
   background-color: transparent !important;
+  margin-right: 0.75rem !important;
 }
 
 .react-chatbot-kit-chat-bot-avatar-icon {
@@ -89,22 +137,40 @@
   display: flex !important;
   justify-content: flex-end !important;
   width: 100% !important;
+  margin-bottom: 1.25rem !important;
+  animation: fadeInRight 0.3s ease-out !important;
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .react-chatbot-kit-user-chat-message {
-  background-color: rgb(45, 45, 45) !important;
+  background-color: rgb(60, 60, 60) !important;
   color: white !important;
-  border-radius: 1rem !important;
-  font-size: 0.9rem !important;
-  line-height: 1.4 !important;
+  border-radius: 1.25rem !important;
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
   max-width: 85% !important;
-  margin-bottom: 1.5rem !important;
+  margin-bottom: 0 !important;
   margin-left: auto !important;
   margin-right: 0 !important;
+  padding: 0.9rem 1.2rem !important;
+  word-break: break-word !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  letter-spacing: 0.01em !important;
 }
 
 .react-chatbot-kit-user-chat-message-arrow {
-  border-left-color: rgb(45, 45, 45) !important;
+  border-left-color: rgb(60, 60, 60) !important;
 }
 
 /* Widget container styling */
@@ -114,31 +180,54 @@
 
 /* Ensure widgets are properly displayed below text */
 .react-chatbot-kit-chat-bot-message + div {
-  margin-top: 0.5rem !important;
-  margin-bottom: 1.5rem !important;
+  margin-top: 0.75rem !important;
+  margin-bottom: 1.25rem !important;
+  width: 100% !important;
 }
 
 .options-container {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 0.625rem;
+  margin-top: 0.75rem;
+  width: 100%;
+  max-width: 90%;
 }
 
 .option-button {
-  background-color: rgb(45, 45, 45);
+  background-color: rgb(50, 50, 50);
   color: white;
-  border: 1px solid rgb(75, 75, 75);
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
   text-align: left;
-  transition: all 0.2s;
+  transition: all 0.25s;
   font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  letter-spacing: 0.01em !important;
+  border: 1px solid rgba(139, 92, 246, 0.1);
 }
 
 .option-button:hover {
-  background-color: rgb(75, 75, 75);
-  border-color: rgb(139, 92, 246);
+  background-color: rgb(60, 60, 60);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.option-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.option-button svg {
+  margin-right: 0.625rem;
+  color: rgb(139, 92, 246);
+  font-size: 1rem;
+  min-width: 1rem;
 }
 
 /* Widget styling */
@@ -146,14 +235,30 @@
 .projects-widget,
 .skills-widget,
 .education-widget {
-  margin-top: 0.5rem !important;
-  margin-bottom: 1rem !important;
-  font-size: 0.85rem !important;
+  margin-top: 0.75rem !important;
+  margin-bottom: 1.25rem !important;
+  font-size: 0.9rem !important;
   width: 100% !important;
+  max-width: 90% !important;
   overflow: hidden !important;
   background-color: rgb(40, 40, 40) !important;
-  border-radius: 0.75rem !important;
-  border: 1px solid rgb(60, 60, 60) !important;
+  border-radius: 1rem !important;
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  animation: fadeIn 0.3s ease-out !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  letter-spacing: 0.01em !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Fix for project widgets */
@@ -161,20 +266,26 @@
   display: block !important;
   margin-bottom: 0.5rem !important;
   text-decoration: none !important;
+  color: rgb(139, 92, 246) !important;
+  transition: color 0.2s !important;
+  font-weight: 500 !important;
 }
 
 .projects-widget a:hover {
   text-decoration: none !important;
+  color: rgb(167, 139, 250) !important;
 }
 
 .projects-widget h4 {
   margin-top: 0 !important;
   margin-bottom: 0.25rem !important;
+  font-size: 1rem !important;
 }
 
 .projects-widget p {
   margin-top: 0 !important;
-  margin-bottom: 0 !important;
+  margin-bottom: 0.75rem !important;
+  color: rgb(209, 213, 219) !important;
 }
 
 /* Ensure consistent styling across all widgets */
@@ -182,21 +293,891 @@
 .projects-widget h3,
 .skills-widget h3,
 .education-widget h3 {
-  font-size: 0.95rem !important;
-  margin-bottom: 0.5rem !important;
+  font-size: 1.1rem !important;
+  margin-bottom: 0.75rem !important;
+  color: rgb(139, 92, 246) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.experience-widget h3 svg,
+.projects-widget h3 svg,
+.skills-widget h3 svg,
+.education-widget h3 svg {
+  margin-right: 0.5rem !important;
 }
 
 .experience-widget h4,
 .projects-widget h4,
 .skills-widget h4,
 .education-widget h4 {
-  font-size: 0.9rem !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  color: rgb(229, 231, 235) !important;
+  margin-bottom: 0.25rem !important;
 }
 
 .experience-widget p,
 .projects-widget p,
 .skills-widget p,
 .education-widget p {
+  font-size: 0.9rem !important;
+  line-height: 1.6 !important;
+  color: rgb(209, 213, 219) !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Mobile responsiveness improvements */
+@media (max-width: 640px) {
+  .options-container {
+    max-width: 100%;
+  }
+  
+  .option-button {
+    font-size: 0.85rem;
+    padding: 0.7rem 0.9rem;
+  }
+  
+  .experience-widget,
+  .projects-widget,
+  .skills-widget,
+  .education-widget {
+    max-width: 100% !important;
+  }
+  
+  .react-chatbot-kit-chat-bot-message,
+  .react-chatbot-kit-user-chat-message {
+    font-size: 0.9rem !important;
+    max-width: 90% !important;
+    padding: 0.8rem 1rem !important;
+  }
+  
+  .react-chatbot-kit-chat-input {
+    font-size: 0.9rem !important;
+    padding: 0.7rem 1rem !important;
+  }
+  
+  .react-chatbot-kit-chat-btn-send {
+    width: 2.25rem !important;
+    height: 2.25rem !important;
+  }
+}
+
+/* Clear chat button */
+.clear-chat-button {
+  background-color: rgba(139, 92, 246, 0.2);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0.75rem;
+  right: 3.5rem;
+  z-index: 10;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.clear-chat-button:hover {
+  background-color: rgba(139, 92, 246, 0.3);
+  transform: translateY(-1px);
+}
+
+.clear-chat-button svg {
+  margin-right: 0.25rem;
+  color: white;
+}
+
+/* Formatting for role suitability answers */
+.react-chatbot-kit-chat-bot-message strong,
+.react-chatbot-kit-chat-bot-message b {
+  font-weight: 600 !important;
+  color: white !important;
+}
+
+/* Add a subtle highlight to bullet points */
+.react-chatbot-kit-chat-bot-message ul {
+  list-style-type: none !important;
+  padding-left: 1rem !important;
+  margin: 0.5rem 0 !important;
+}
+
+.react-chatbot-kit-chat-bot-message ul li {
+  margin-bottom: 0.25rem !important;
+  position: relative !important;
+  padding-left: 1.25rem !important;
+}
+
+.react-chatbot-kit-chat-bot-message ul li::before {
+  content: "•" !important;
+  color: rgba(167, 139, 250, 0.8) !important;
+  font-weight: bold !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+}
+
+/* Role suitability styling */
+.role-suitability {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+}
+
+.role-suitability p {
+  margin: 0 !important;
+}
+
+.role-section {
+  background-color: rgba(60, 60, 60, 0.5) !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem !important;
+  margin-top: 0.25rem !important;
+  border-left: 3px solid rgba(139, 92, 246, 0.7) !important;
+}
+
+.role-section h4 {
+  margin: 0 0 0.5rem 0 !important;
+  font-size: 0.95rem !important;
+  color: rgba(167, 139, 250, 0.9) !important;
+  font-weight: 600 !important;
+}
+
+/* Amazon roles styling */
+.amazon-roles {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+}
+
+.role-item {
+  background-color: rgba(60, 60, 60, 0.5) !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem !important;
+  margin-top: 0.25rem !important;
+  border-left: 3px solid rgba(139, 92, 246, 0.7) !important;
+}
+
+.role-item h4 {
+  margin: 0 0 0.25rem 0 !important;
+  font-size: 0.95rem !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.role-period {
+  font-size: 0.8rem !important;
+  color: rgba(167, 139, 250, 0.9) !important;
+  margin: 0 0 0.5rem 0 !important;
+}
+
+/* Programming languages styling */
+.programming-languages {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.programming-languages p {
+  margin: 0 !important;
+}
+
+/* Unique qualities styling */
+.unique-qualities {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.unique-qualities p {
+  margin: 0 !important;
+}
+
+/* Improve the header styling */
+.chatbot-header {
+  background-image: linear-gradient(135deg, rgb(139, 92, 246) 0%, rgb(124, 58, 237) 100%) !important;
+  padding: 0.9rem 1.25rem !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.chatbot-header h3 {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+  margin: 0 !important;
+  letter-spacing: 0.01em !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.chatbot-header h3 svg {
+  margin-right: 0.5rem !important;
+}
+
+/* Add a subtle typing indicator animation */
+.typing-indicator {
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 0.5rem !important;
+}
+
+.typing-indicator span {
+  height: 8px !important;
+  width: 8px !important;
+  background-color: rgba(139, 92, 246, 0.6) !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+  margin-right: 5px !important;
+  animation: typing 1.3s infinite ease-in-out !important;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s !important;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s !important;
+  margin-right: 0 !important;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Ensure HTML content in messages is styled correctly */
+.react-chatbot-kit-chat-bot-message div {
+  color: white !important;
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* Ensure all HTML elements in messages have proper styling */
+.react-chatbot-kit-chat-bot-message div p {
+  margin-bottom: 0.5rem !important;
+}
+
+.react-chatbot-kit-chat-bot-message div strong,
+.react-chatbot-kit-chat-bot-message div b {
+  font-weight: 600 !important;
+  color: white !important;
+}
+
+.react-chatbot-kit-chat-bot-message div ul {
+  list-style-type: none !important;
+  padding-left: 1rem !important;
+  margin: 0.5rem 0 !important;
+}
+
+.react-chatbot-kit-chat-bot-message div ul li {
+  margin-bottom: 0.25rem !important;
+  position: relative !important;
+  padding-left: 1.25rem !important;
+}
+
+.react-chatbot-kit-chat-bot-message div ul li::before {
+  content: "•" !important;
+  color: rgba(167, 139, 250, 0.8) !important;
+  font-weight: bold !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+}
+
+/* Ensure role suitability styling works with HTML content */
+.react-chatbot-kit-chat-bot-message .role-suitability {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+}
+
+.react-chatbot-kit-chat-bot-message .role-section {
+  background-color: rgba(60, 60, 60, 0.5) !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem !important;
+  margin-top: 0.25rem !important;
+  border-left: 3px solid rgba(139, 92, 246, 0.7) !important;
+}
+
+.react-chatbot-kit-chat-bot-message .role-section h4 {
+  margin: 0 0 0.5rem 0 !important;
+  font-size: 0.95rem !important;
+  color: rgba(167, 139, 250, 0.9) !important;
+  font-weight: 600 !important;
+}
+
+/* Amazon roles styling */
+.react-chatbot-kit-chat-bot-message .amazon-roles {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+}
+
+.react-chatbot-kit-chat-bot-message .role-item {
+  background-color: rgba(60, 60, 60, 0.5) !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem !important;
+  margin-top: 0.25rem !important;
+  border-left: 3px solid rgba(139, 92, 246, 0.7) !important;
+}
+
+.react-chatbot-kit-chat-bot-message .role-item h4 {
+  margin: 0 0 0.25rem 0 !important;
+  font-size: 0.95rem !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.react-chatbot-kit-chat-bot-message .role-period {
+  font-size: 0.8rem !important;
+  color: rgba(167, 139, 250, 0.9) !important;
+  margin: 0 0 0.5rem 0 !important;
+}
+
+/* Programming languages styling */
+.react-chatbot-kit-chat-bot-message .programming-languages {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.react-chatbot-kit-chat-bot-message .programming-languages p {
+  margin: 0 !important;
+}
+
+/* Unique qualities styling */
+.react-chatbot-kit-chat-bot-message .unique-qualities {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.react-chatbot-kit-chat-bot-message .unique-qualities p {
+  margin: 0 !important;
+}
+
+/* New card-based styling for role suitability */
+.role-card {
+  background-color: rgba(50, 50, 50, 0.6) !important;
+  border-radius: 0.75rem !important;
+  overflow: hidden !important;
+  margin-bottom: 0.5rem !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
+}
+
+.role-card-header {
+  padding: 0.75rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background-color: rgba(60, 60, 60, 0.7) !important;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
+}
+
+.role-card-header h3 {
+  margin: 0 !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+}
+
+.role-fit-badge {
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.5rem !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+  background-color: rgba(139, 92, 246, 0.7) !important;
+  white-space: nowrap !important;
+}
+
+.role-fit-badge.excellent-fit,
+.role-fit-badge.strong-fit,
+.role-fit-badge.high {
+  background-color: rgba(139, 92, 246, 0.8) !important;
+}
+
+.role-fit-badge.medium-high {
+  background-color: rgba(139, 92, 246, 0.6) !important;
+}
+
+.role-fit-badge.low-medium,
+.role-fit-badge.low {
+  background-color: rgba(139, 92, 246, 0.4) !important;
+}
+
+.role-card > p {
+  padding: 0.75rem !important;
+  margin: 0 !important;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.1) !important;
+  font-size: 0.9rem !important;
+}
+
+.role-card-section {
+  padding: 0.75rem !important;
+}
+
+.role-card-section h4 {
+  margin: 0 0 0.5rem 0 !important;
+  font-size: 0.9rem !important;
+  color: rgba(167, 139, 250, 0.9) !important;
+  font-weight: 600 !important;
+}
+
+.role-card-list {
+  list-style-type: none !important;
+  padding-left: 0.5rem !important;
+  margin: 0 !important;
+}
+
+.role-card-list li {
+  margin-bottom: 0.25rem !important;
+  position: relative !important;
+  padding-left: 1rem !important;
   font-size: 0.85rem !important;
-  line-height: 1.3 !important;
+}
+
+.role-card-list li::before {
+  content: "•" !important;
+  color: rgba(167, 139, 250, 0.8) !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+}
+
+.skill-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.4rem !important;
+}
+
+.skill-tag {
+  background-color: rgba(139, 92, 246, 0.15) !important;
+  color: rgba(209, 213, 219, 0.9) !important;
+  padding: 0.2rem 0.4rem !important;
+  border-radius: 0.4rem !important;
+  font-size: 0.75rem !important;
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
+}
+
+/* Amazon roles card styling */
+.amazon-roles-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.amazon-role-card {
+  background-color: rgba(50, 50, 50, 0.6) !important;
+  border-radius: 0.75rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
+}
+
+.amazon-role-header {
+  padding: 0.75rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background-color: rgba(60, 60, 60, 0.7) !important;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
+}
+
+.amazon-role-header h4 {
+  margin: 0 !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+}
+
+.amazon-role-period {
+  font-size: 0.75rem !important;
+  color: rgba(167, 139, 250, 0.9) !important;
+  white-space: nowrap !important;
+  margin-left: 0.5rem !important;
+}
+
+.amazon-role-company {
+  padding: 0.5rem 0.75rem 0 0.75rem !important;
+  font-size: 0.8rem !important;
+  color: rgba(209, 213, 219, 0.9) !important;
+  font-style: italic !important;
+}
+
+.amazon-role-card p {
+  padding: 0.25rem 0.75rem 0.75rem 0.75rem !important;
+  margin: 0 !important;
+  font-size: 0.85rem !important;
+}
+
+/* Programming languages card styling */
+.programming-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.programming-card {
+  background-color: rgba(50, 50, 50, 0.6) !important;
+  border-radius: 0.75rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
+}
+
+.programming-header {
+  padding: 0.75rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background-color: rgba(60, 60, 60, 0.7) !important;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
+}
+
+.programming-header h4 {
+  margin: 0 !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+}
+
+.programming-level {
+  padding: 0.2rem 0.4rem !important;
+  border-radius: 0.4rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+  background-color: rgba(139, 92, 246, 0.7) !important;
+  white-space: nowrap !important;
+}
+
+.programming-level.advanced {
+  background-color: rgba(139, 92, 246, 0.8) !important;
+}
+
+.programming-level.intermediate {
+  background-color: rgba(139, 92, 246, 0.6) !important;
+}
+
+.programming-level.beginner {
+  background-color: rgba(139, 92, 246, 0.4) !important;
+}
+
+.programming-card p {
+  padding: 0.75rem !important;
+  margin: 0 !important;
+  font-size: 0.85rem !important;
+}
+
+.programming-summary {
+  margin-top: 0.5rem !important;
+  font-size: 0.85rem !important;
+  font-style: italic !important;
+  color: rgba(209, 213, 219, 0.9) !important;
+  text-align: center !important;
+}
+
+/* Unique qualities card styling */
+.unique-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+}
+
+.unique-container h3 {
+  margin: 0 0 0.5rem 0 !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+  text-align: center !important;
+}
+
+.unique-qualities-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+}
+
+.unique-quality-card {
+  background-color: rgba(50, 50, 50, 0.6) !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
+  transition: transform 0.2s ease-in-out !important;
+  width: 100% !important;
+}
+
+.unique-quality-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(139, 92, 246, 0.4) !important;
+}
+
+.unique-quality-card h4 {
+  margin: 0 0 0.4rem 0 !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: rgba(167, 139, 250, 0.9) !important;
+}
+
+.unique-quality-card p {
+  margin: 0 !important;
+  font-size: 0.85rem !important;
+  color: rgba(209, 213, 219, 0.9) !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+/* Programming languages card styling */
+.programming-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+}
+
+.programming-card {
+  background-color: rgba(50, 50, 50, 0.6) !important;
+  border-radius: 0.75rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
+  width: 100% !important;
+}
+
+.programming-header {
+  padding: 0.75rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background-color: rgba(60, 60, 60, 0.7) !important;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem !important;
+}
+
+.programming-header h4 {
+  margin: 0 !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+}
+
+.programming-level {
+  padding: 0.2rem 0.4rem !important;
+  border-radius: 0.4rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+  background-color: rgba(139, 92, 246, 0.7) !important;
+  white-space: nowrap !important;
+}
+
+.programming-card p {
+  padding: 0.75rem !important;
+  margin: 0 !important;
+  font-size: 0.85rem !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+.programming-summary {
+  margin-top: 0.5rem !important;
+  font-size: 0.85rem !important;
+  font-style: italic !important;
+  color: rgba(209, 213, 219, 0.9) !important;
+  text-align: center !important;
+  padding: 0 0.75rem !important;
+}
+
+/* Amazon roles card styling */
+.amazon-roles-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+}
+
+.amazon-role-card {
+  background-color: rgba(50, 50, 50, 0.6) !important;
+  border-radius: 0.75rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
+  width: 100% !important;
+}
+
+.amazon-role-header {
+  padding: 0.75rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background-color: rgba(60, 60, 60, 0.7) !important;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem !important;
+}
+
+.amazon-role-header h4 {
+  margin: 0 !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+}
+
+.amazon-role-period {
+  font-size: 0.75rem !important;
+  color: rgba(167, 139, 250, 0.9) !important;
+  white-space: nowrap !important;
+}
+
+.amazon-role-company {
+  padding: 0.5rem 0.75rem 0 0.75rem !important;
+  font-size: 0.8rem !important;
+  color: rgba(209, 213, 219, 0.9) !important;
+  font-style: italic !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+.amazon-role-card p {
+  padding: 0.25rem 0.75rem 0.75rem 0.75rem !important;
+  margin: 0 !important;
+  font-size: 0.85rem !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+/* Role suitability styling */
+.role-card {
+  background-color: rgba(50, 50, 50, 0.6) !important;
+  border-radius: 0.75rem !important;
+  overflow: hidden !important;
+  margin-bottom: 0.5rem !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
+  width: 100% !important;
+}
+
+.role-card-header {
+  padding: 0.75rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background-color: rgba(60, 60, 60, 0.7) !important;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem !important;
+}
+
+.role-card-header h3 {
+  margin: 0 !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+}
+
+.role-card > p {
+  padding: 0.75rem !important;
+  margin: 0 !important;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.1) !important;
+  font-size: 0.9rem !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+.skill-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.4rem !important;
+}
+
+/* Mobile responsiveness for cards */
+@media (max-width: 640px) {
+  .unique-qualities-grid {
+    flex-direction: column !important;
+  }
+  
+  .unique-quality-card {
+    width: 100% !important;
+    padding: 0.6rem !important;
+  }
+  
+  .unique-quality-card h4 {
+    font-size: 0.85rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+  
+  .unique-quality-card p {
+    font-size: 0.8rem !important;
+  }
+  
+  .programming-header,
+  .amazon-role-header,
+  .role-card-header {
+    padding: 0.6rem !important;
+  }
+  
+  .programming-card p,
+  .amazon-role-card p,
+  .role-card > p {
+    padding: 0.6rem !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Fix for bot message container width */
+.react-chatbot-kit-chat-bot-message-container {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.react-chatbot-kit-chat-bot-message {
+  max-width: 85% !important;
+  word-break: break-word !important;
+  white-space: normal !important;
+}
+
+/* Ensure HTML content in messages is properly contained */
+.react-chatbot-kit-chat-bot-message div {
+  max-width: 100% !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+/* Ensure all card containers are properly sized */
+.react-chatbot-kit-chat-bot-message .unique-container,
+.react-chatbot-kit-chat-bot-message .programming-container,
+.react-chatbot-kit-chat-bot-message .amazon-roles-container,
+.react-chatbot-kit-chat-bot-message .role-card {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Ensure text doesn't overflow */
+.react-chatbot-kit-chat-bot-message * {
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  hyphens: auto !important;
 } 

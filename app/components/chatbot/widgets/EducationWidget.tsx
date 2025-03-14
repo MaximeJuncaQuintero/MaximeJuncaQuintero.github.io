@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import { FaGraduationCap } from 'react-icons/fa';
+import { FaGraduationCap, FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
 
 interface EducationWidgetProps {
   actionProvider?: any;
@@ -16,14 +16,14 @@ export const EducationWidget: React.FC<EducationWidgetProps> = (props) => {
       institution: "Dublin City University",
       location: "Dublin, Ireland",
       period: "Sep 2022 - May 2024",
-      description: "Specialized in Business Analytics, developed skills in data analysis, visualization, and business intelligence. Achieved First Class Honours (3.8/4.0 GPA)."
+      description: "Specialized in Business Analytics, developed skills in data analysis, visualization, and business intelligence."
     },
     {
       degree: "BBA - CESEM",
       institution: "NEOMA Business School",
       location: "Reims, France",
       period: "Sep 2019 - Jul 2021",
-      description: "Focused on international business and management fundamentals. Achieved top 10% of class ranking."
+      description: "Focused on international business and management fundamentals."
     }
   ];
 
@@ -35,15 +35,24 @@ export const EducationWidget: React.FC<EducationWidgetProps> = (props) => {
       </h3>
       <div className="space-y-4">
         {education.map((edu, index) => (
-          <div key={index} className="p-3 bg-dark-700 rounded-lg">
-            <div className="flex justify-between items-start mb-1">
+          <div key={index} className="p-3 bg-dark-700 rounded-lg border border-gray-700 hover:border-purple-500 transition-colors duration-300">
+            <div className="flex justify-between items-start mb-2">
               <div>
-                <h4 className="font-medium">{edu.degree}</h4>
-                <p className="text-sm text-purple-300">{edu.institution} • {edu.location}</p>
+                <h4 className="font-medium text-white">{edu.degree}</h4>
+                <p className="text-sm text-purple-300 flex items-center mt-1">
+                  {edu.institution}
+                </p>
+                <p className="text-xs text-gray-400 flex items-center mt-1">
+                  <FaMapMarkerAlt className="mr-1 text-purple-400" size={12} />
+                  {edu.location}
+                </p>
               </div>
-              <span className="text-xs text-gray-400">{edu.period}</span>
+              <span className="text-xs text-gray-400 flex items-center whitespace-nowrap">
+                <FaCalendarAlt className="mr-1 text-purple-400" size={12} />
+                {edu.period}
+              </span>
             </div>
-            <p className="text-sm text-gray-300 mt-2">{edu.description}</p>
+            <p className="text-sm text-gray-300 mt-2 border-t border-gray-700 pt-2">{edu.description}</p>
           </div>
         ))}
       </div>

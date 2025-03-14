@@ -14,253 +14,254 @@ class MessageParser {
   parse(message: string) {
     const lowerCaseMessage = message.toLowerCase();
     
+    // First, try to handle multiple questions
+    if (this.actionProvider.handleMultipleQuestions && this.actionProvider.handleMultipleQuestions(message)) {
+      return; // Multiple questions were handled
+    }
+    
+    // Handle greetings
+    if (this.isGreeting(lowerCaseMessage)) {
+      this.actionProvider.handleDefault();
+      return;
+    }
+    
+    // Handle Amazon role questions
+    if (this.isAmazonRoleQuestion(lowerCaseMessage)) {
+      this.actionProvider.handleAmazonRoleQuestion();
+      return;
+    }
+    
+    // Handle programming languages questions
+    if (this.isProgrammingLanguagesQuestion(lowerCaseMessage)) {
+      this.actionProvider.handleProgrammingLanguagesQuestion();
+      return;
+    }
+    
+    // Handle unique qualities questions
+    if (this.isUniqueQualitiesQuestion(lowerCaseMessage)) {
+      this.actionProvider.handleUniqueQualitiesQuestion();
+      return;
+    }
+    
     // Handle role suitability questions
-    if (
-      (lowerCaseMessage.includes('suitable') ||
-       lowerCaseMessage.includes('good fit') ||
-       lowerCaseMessage.includes('qualified') ||
-       lowerCaseMessage.includes('right for') ||
-       lowerCaseMessage.includes('fit for') ||
-       lowerCaseMessage.includes('good for') ||
-       lowerCaseMessage.includes('good candidate') ||
-       lowerCaseMessage.includes('would be good')) &&
-      (lowerCaseMessage.includes('role') ||
-       lowerCaseMessage.includes('position') ||
-       lowerCaseMessage.includes('job') ||
-       lowerCaseMessage.includes('program') ||
-       lowerCaseMessage.includes('data') ||
-       lowerCaseMessage.includes('product') ||
-       lowerCaseMessage.includes('operations') ||
-       lowerCaseMessage.includes('software') ||
-       lowerCaseMessage.includes('developer') ||
-       lowerCaseMessage.includes('engineer') ||
-       lowerCaseMessage.includes('analyst'))
-    ) {
-      // Extract potential role
-      let role = '';
-      if (lowerCaseMessage.includes('program') && (lowerCaseMessage.includes('manage') || lowerCaseMessage.includes('management'))) {
-        role = 'program management';
-      } else if ((lowerCaseMessage.includes('data') && lowerCaseMessage.includes('analy')) || lowerCaseMessage.includes('business intelligence')) {
-        role = 'data analyst';
-      } else if (lowerCaseMessage.includes('product') && (lowerCaseMessage.includes('manage') || lowerCaseMessage.includes('management'))) {
-        role = 'product management';
-      } else if (lowerCaseMessage.includes('operation') || lowerCaseMessage.includes('ops')) {
-        role = 'operations';
-      } else if (lowerCaseMessage.includes('software') || lowerCaseMessage.includes('developer') || lowerCaseMessage.includes('engineer')) {
-        role = 'software development';
-      }
-      
-      return this.actionProvider.handleRoleSuitability(role);
+    if (this.isRoleSuitabilityQuestion(lowerCaseMessage)) {
+      const role = this.extractRole(lowerCaseMessage);
+      this.actionProvider.handleRoleSuitability(role);
+      return;
     }
     
-    // Handle recruiter-specific questions about achievements
-    if (
-      (lowerCaseMessage.includes('achievement') ||
-       lowerCaseMessage.includes('accomplish') ||
-       lowerCaseMessage.includes('success') ||
-       lowerCaseMessage.includes('proud of')) &&
-      (lowerCaseMessage.includes('what') ||
-       lowerCaseMessage.includes('tell me') ||
-       lowerCaseMessage.includes('your'))
-    ) {
-      return this.actionProvider.handleAchievementsRequest();
+    // Handle experience questions
+    if (this.isExperienceQuestion(lowerCaseMessage)) {
+      this.actionProvider.handleExperienceRequest();
+      return;
     }
     
-    // Handle recruiter-specific questions about strengths
-    if (
-      (lowerCaseMessage.includes('strength') ||
-       lowerCaseMessage.includes('good at') ||
-       lowerCaseMessage.includes('excel at') ||
-       lowerCaseMessage.includes('best at')) &&
-      (lowerCaseMessage.includes('what') ||
-       lowerCaseMessage.includes('tell me') ||
-       lowerCaseMessage.includes('your'))
-    ) {
-      return this.actionProvider.handleStrengthsRequest();
+    // Handle education questions
+    if (this.isEducationQuestion(lowerCaseMessage)) {
+      this.actionProvider.handleEducationRequest();
+      return;
     }
     
-    // Handle recruiter-specific questions about why hire
-    if (
-      (lowerCaseMessage.includes('why hire') ||
-       lowerCaseMessage.includes('why should') ||
-       lowerCaseMessage.includes('why would') ||
-       lowerCaseMessage.includes('reason to hire') ||
-       lowerCaseMessage.includes('value')) &&
-      (lowerCaseMessage.includes('you') ||
-       lowerCaseMessage.includes('maxime') ||
-       lowerCaseMessage.includes('candidate'))
-    ) {
-      return this.actionProvider.handleWhyHireRequest();
-    }
-    
-    // Handle education-related questions
-    if (
-      lowerCaseMessage.includes('education') ||
-      lowerCaseMessage.includes('study') ||
-      lowerCaseMessage.includes('studies') ||
-      lowerCaseMessage.includes('school') ||
-      lowerCaseMessage.includes('university') ||
-      lowerCaseMessage.includes('college') ||
-      lowerCaseMessage.includes('degree') ||
-      lowerCaseMessage.includes('academic') ||
-      lowerCaseMessage.includes('graduate') ||
-      lowerCaseMessage.includes('graduated')
-    ) {
-      // Check if asking about specific schools
-      if (
-        lowerCaseMessage.includes('dublin') || 
-        lowerCaseMessage.includes('dcu') ||
-        lowerCaseMessage.includes('neoma') ||
-        lowerCaseMessage.includes('reims') ||
-        lowerCaseMessage.includes('where')
-      ) {
-        // Extract school name
-        let school = '';
-        if (lowerCaseMessage.includes('dublin') || lowerCaseMessage.includes('dcu')) {
-          school = 'dublin';
-        } else if (lowerCaseMessage.includes('neoma') || lowerCaseMessage.includes('reims')) {
-          school = 'neoma';
-        }
-        
-        return this.actionProvider.handleSchoolRequest(school);
-      } else {
-        // General education question
-        return this.actionProvider.handleEducationRequest();
-      }
-    }
-    
-    // Handle programming language questions
-    if (
-      (lowerCaseMessage.includes('programming') ||
-       lowerCaseMessage.includes('code') ||
-       lowerCaseMessage.includes('coding') ||
-       lowerCaseMessage.includes('developer') ||
-       lowerCaseMessage.includes('development')) ||
-      (lowerCaseMessage.includes('python') ||
-       lowerCaseMessage.includes('javascript') ||
-       lowerCaseMessage.includes('typescript') ||
-       lowerCaseMessage.includes('sql'))
-    ) {
-      // Check if asking about specific language
-      const languages = ['python', 'javascript', 'typescript', 'sql'];
-      for (const lang of languages) {
-        if (lowerCaseMessage.includes(lang)) {
-          return this.actionProvider.handleSpecificSkill(lang);
-        }
-      }
-      
-      // General programming languages question
-      return this.actionProvider.handleProgrammingLanguagesRequest();
-    }
-    
-    // Handle duration/time-related questions
-    if (
-      (lowerCaseMessage.includes('how long') || 
-       lowerCaseMessage.includes('how many years') || 
-       lowerCaseMessage.includes('how many months') ||
-       lowerCaseMessage.includes('duration') ||
-       lowerCaseMessage.includes('time')) &&
-      (lowerCaseMessage.includes('work') || 
-       lowerCaseMessage.includes('experience'))
-    ) {
-      // Check if asking about specific role
-      if (lowerCaseMessage.includes('project manager')) {
-        return this.actionProvider.handleExperienceDuration('project manager');
-      } else if (lowerCaseMessage.includes('operations manager')) {
-        return this.actionProvider.handleExperienceDuration('operations manager');
-      } else if (lowerCaseMessage.includes('founder')) {
-        return this.actionProvider.handleExperienceDuration('founder');
-      } else {
-        // General experience duration
-        return this.actionProvider.handleExperienceDuration();
-      }
-    }
-    
-    // Handle company-specific questions
-    if (
-      lowerCaseMessage.includes('amazon') ||
-      lowerCaseMessage.includes('tenoris') ||
-      lowerCaseMessage.includes('hub') ||
-      lowerCaseMessage.includes('ats')
-    ) {
-      // Extract company name
-      let company = '';
-      if (lowerCaseMessage.includes('amazon')) {
-        company = 'amazon';
-      } else if (lowerCaseMessage.includes('tenoris')) {
-        company = 'tenoris';
-      }
-      
-      return this.actionProvider.handleCompanyExperience(company);
-    }
-    
-    // Handle specific skill questions
-    if (
-      (lowerCaseMessage.includes('know') || 
-       lowerCaseMessage.includes('skill') || 
-       lowerCaseMessage.includes('proficient') ||
-       lowerCaseMessage.includes('experience with') ||
-       lowerCaseMessage.includes('familiar with'))
-    ) {
-      // Extract potential skill
-      const skills = [
-        'python', 'sql', 'data analysis', 'excel', 'mongodb', 'react', 'node.js',
-        'project management', 'operations', 'strategic planning', 'problem solving',
-        'kubernetes', 'graphql', 'aws'
-      ];
-      
-      for (const skill of skills) {
-        if (lowerCaseMessage.includes(skill)) {
-          return this.actionProvider.handleSpecificSkill(skill);
-        }
-      }
-    }
-    
-    // Handle general experience questions
-    if (
-      lowerCaseMessage.includes('experience') ||
-      lowerCaseMessage.includes('work') ||
-      lowerCaseMessage.includes('job') ||
-      lowerCaseMessage.includes('career') 
-    ) {
-      return this.actionProvider.handleExperienceRequest();
+    // Handle skills questions
+    if (this.isSkillsQuestion(lowerCaseMessage)) {
+      this.actionProvider.handleSkillsRequest();
+      return;
     }
     
     // Handle project questions
-    if (
-      lowerCaseMessage.includes('project') ||
-      lowerCaseMessage.includes('portfolio') ||
-      lowerCaseMessage.includes('built') ||
-      lowerCaseMessage.includes('created') ||
-      lowerCaseMessage.includes('developed')
-    ) {
-      return this.actionProvider.handleProjectsRequest();
-    }
-    
-    // Handle general skill questions
-    if (
-      lowerCaseMessage.includes('skill') ||
-      lowerCaseMessage.includes('ability') ||
-      lowerCaseMessage.includes('capable') ||
-      lowerCaseMessage.includes('proficient')
-    ) {
-      return this.actionProvider.handleSkillsRequest();
+    if (this.isProjectsQuestion(lowerCaseMessage)) {
+      this.actionProvider.handleProjectsRequest();
+      return;
     }
     
     // Handle contact questions
-    if (
-      lowerCaseMessage.includes('contact') ||
-      lowerCaseMessage.includes('email') ||
-      lowerCaseMessage.includes('reach') ||
-      lowerCaseMessage.includes('connect') ||
-      lowerCaseMessage.includes('linkedin') ||
-      lowerCaseMessage.includes('phone') ||
-      lowerCaseMessage.includes('call')
-    ) {
-      return this.actionProvider.handleContactRequest();
+    if (this.isContactQuestion(lowerCaseMessage)) {
+      this.actionProvider.handleContactRequest();
+      return;
     }
     
-    return this.actionProvider.handleDefault();
+    // Handle achievement questions
+    if (this.isAchievementsQuestion(lowerCaseMessage)) {
+      this.actionProvider.handleAchievementsRequest();
+      return;
+    }
+    
+    // Handle strengths questions
+    if (this.isStrengthsQuestion(lowerCaseMessage)) {
+      this.actionProvider.handleStrengthsRequest();
+      return;
+    }
+    
+    // Handle why hire questions
+    if (this.isWhyHireQuestion(lowerCaseMessage)) {
+      this.actionProvider.handleWhyHireRequest();
+      return;
+    }
+    
+    // Default response if no patterns match
+    this.actionProvider.handleDefault();
+  }
+  
+  // Helper methods to check message intent
+  
+  isGreeting(message: string): boolean {
+    const greetings = ['hello', 'hi', 'hey', 'greetings', 'howdy', 'hola'];
+    return greetings.some(greeting => message.includes(greeting)) && message.length < 20;
+  }
+  
+  isAmazonRoleQuestion(message: string): boolean {
+    return (
+      message.includes('amazon') && 
+      (message.includes('role') || 
+       message.includes('work') || 
+       message.includes('do') || 
+       message.includes('position') || 
+       message.includes('job') ||
+       message.includes('experience') ||
+       message.includes('tell'))
+    );
+  }
+  
+  isProgrammingLanguagesQuestion(message: string): boolean {
+    return (
+      (message.includes('programming') || 
+       message.includes('language') || 
+       message.includes('code') || 
+       message.includes('coding')) ||
+      (message.includes('python') || 
+       message.includes('javascript') || 
+       message.includes('typescript') || 
+       message.includes('sql'))
+    );
+  }
+  
+  isUniqueQualitiesQuestion(message: string): boolean {
+    return (
+      (message.includes('unique') || 
+       message.includes('special') || 
+       message.includes('different') || 
+       message.includes('stand out') || 
+       message.includes('stands out') ||
+       message.includes('makes him') ||
+       message.includes('makes maxime'))
+    );
+  }
+  
+  isRoleSuitabilityQuestion(message: string): boolean {
+    const suitabilityTerms = [
+      'suitable', 'good fit', 'qualified', 'right for', 'fit for', 
+      'good for', 'good candidate', 'would be good', 'match for'
+    ];
+    
+    const roleTerms = [
+      'role', 'position', 'job', 'program', 'data', 'product', 
+      'operations', 'software', 'developer', 'engineer', 'analyst',
+      'consultant', 'consulting', 'manager', 'management'
+    ];
+    
+    return (
+      suitabilityTerms.some(term => message.includes(term)) &&
+      roleTerms.some(term => message.includes(term))
+    );
+  }
+  
+  extractRole(message: string): string {
+    if (message.includes('program') && (message.includes('manage') || message.includes('management'))) {
+      return 'program management';
+    } else if ((message.includes('data') && message.includes('analy')) || message.includes('business intelligence')) {
+      return 'data analyst';
+    } else if (message.includes('product') && (message.includes('manage') || message.includes('management'))) {
+      return 'product management';
+    } else if (message.includes('operation') || message.includes('ops')) {
+      return 'operations';
+    } else if (message.includes('software') || message.includes('developer') || message.includes('engineer')) {
+      return 'software development';
+    } else if (message.includes('consult')) {
+      return 'consultant';
+    }
+    
+    // Extract the role from the message if possible
+    const rolePattern = /fit for (a|an) ([a-z\s]+) (role|position)/i;
+    const match = message.match(rolePattern);
+    if (match && match[2]) {
+      return match[2].trim();
+    }
+    
+    return '';
+  }
+  
+  isExperienceQuestion(message: string): boolean {
+    const experienceTerms = [
+      'experience', 'work', 'job', 'career', 'professional', 
+      'employment', 'worked', 'working', 'background'
+    ];
+    
+    return experienceTerms.some(term => message.includes(term)) &&
+      !message.includes('education') && 
+      !message.includes('school');
+  }
+  
+  isEducationQuestion(message: string): boolean {
+    const educationTerms = [
+      'education', 'school', 'university', 'college', 'degree', 
+      'academic', 'study', 'studied', 'background', 'qualification'
+    ];
+    
+    return educationTerms.some(term => message.includes(term));
+  }
+  
+  isSkillsQuestion(message: string): boolean {
+    const skillsTerms = [
+      'skill', 'ability', 'capable', 'competent', 'proficient', 
+      'know how', 'expertise', 'good at', 'competency'
+    ];
+    
+    return skillsTerms.some(term => message.includes(term));
+  }
+  
+  isProjectsQuestion(message: string): boolean {
+    const projectTerms = [
+      'project', 'portfolio', 'work on', 'worked on', 'develop', 
+      'created', 'built', 'made', 'implemented'
+    ];
+    
+    return projectTerms.some(term => message.includes(term));
+  }
+  
+  isContactQuestion(message: string): boolean {
+    const contactTerms = [
+      'contact', 'email', 'phone', 'reach', 'connect', 'get in touch', 
+      'linkedin', 'social media', 'website'
+    ];
+    
+    return contactTerms.some(term => message.includes(term));
+  }
+  
+  isAchievementsQuestion(message: string): boolean {
+    const achievementTerms = [
+      'achievement', 'accomplish', 'success', 'award', 'recognition', 
+      'milestone', 'proud', 'significant', 'important'
+    ];
+    
+    return achievementTerms.some(term => message.includes(term));
+  }
+  
+  isStrengthsQuestion(message: string): boolean {
+    const strengthTerms = [
+      'strength', 'strong', 'good at', 'excel', 'best', 'advantage', 
+      'talent', 'gifted', 'skilled'
+    ];
+    
+    return strengthTerms.some(term => message.includes(term));
+  }
+  
+  isWhyHireQuestion(message: string): boolean {
+    const hireTerms = [
+      'why hire', 'why should', 'reason to hire', 'benefit', 'value', 
+      'bring to', 'contribute', 'add value', 'asset'
+    ];
+    
+    return hireTerms.some(term => message.includes(term));
   }
 }
 

@@ -6,6 +6,7 @@ import { ExperienceWidget } from './widgets/ExperienceWidget';
 import { ProjectsWidget } from './widgets/ProjectsWidget';
 import { SkillsWidget } from './widgets/SkillsWidget';
 import { EducationWidget } from './widgets/EducationWidget';
+import { FaBriefcase, FaCode, FaGraduationCap, FaTrophy, FaChartLine, FaEnvelope, FaLightbulb, FaQuestion } from 'react-icons/fa';
 
 // Define the widget props interface
 interface WidgetProps {
@@ -17,9 +18,33 @@ interface WidgetProps {
 // Import the actual IWidget interface from the library
 import IWidget from 'react-chatbot-kit/build/src/interfaces/IWidget';
 
+// Custom message component that can render HTML
+const CustomMessage = ({ message }: { message: string }) => {
+  return <div dangerouslySetInnerHTML={{ __html: message }} />;
+};
+
+// SuggestedQuestions widget component
+const SuggestedQuestions: React.FC<WidgetProps> = (props) => {
+  const { questions } = props.payload || { questions: [] };
+  
+  return (
+    <div className="options-container">
+      {questions.map((question: any, index: number) => (
+        <button 
+          key={index}
+          className="option-button"
+          onClick={question.handler}
+        >
+          {question.icon} {question.text}
+        </button>
+      ))}
+    </div>
+  );
+};
+
 const config = {
   initialMessages: [
-    createChatBotMessage("Hello! I'm Maxime's virtual assistant. How can I help you learn more about his experience and skills?", {
+    createChatBotMessage("Hello! I'm Maxime's virtual assistant. I can help you learn about his professional background and qualifications. What would you like to know?", {
       widget: "options",
     }),
   ],
@@ -35,6 +60,13 @@ const config = {
   customComponents: {
     botAvatar: (props: any) => <BotAvatar {...props} />,
     userAvatar: (props: any) => <UserAvatar {...props} />,
+    botChatMessage: (props: any) => {
+      return (
+        <div className="react-chatbot-kit-chat-bot-message">
+          <CustomMessage message={props.message} />
+        </div>
+      );
+    },
   },
   widgets: [
     {
@@ -45,46 +77,52 @@ const config = {
             className="option-button"
             onClick={() => props.actionProvider.handleExperienceRequest()}
           >
-            Tell me about Maxime's experience
+            <FaBriefcase /> Work Experience
           </button>
           <button 
             className="option-button"
             onClick={() => props.actionProvider.handleProjectsRequest()}
           >
-            What projects has Maxime worked on?
+            <FaCode /> Projects
           </button>
           <button 
             className="option-button"
             onClick={() => props.actionProvider.handleSkillsRequest()}
           >
-            What are Maxime's skills?
+            <FaChartLine /> Skills
           </button>
           <button 
             className="option-button"
             onClick={() => props.actionProvider.handleEducationRequest()}
           >
-            What is Maxime's educational background?
+            <FaGraduationCap /> Education
           </button>
           <button 
             className="option-button"
             onClick={() => props.actionProvider.handleAchievementsRequest()}
           >
-            What are Maxime's key achievements?
+            <FaTrophy /> Key Achievements
           </button>
           <button 
             className="option-button"
             onClick={() => props.actionProvider.handleStrengthsRequest()}
           >
-            What are Maxime's strengths?
+            <FaLightbulb /> Strengths
           </button>
           <button 
             className="option-button"
             onClick={() => props.actionProvider.handleContactRequest()}
           >
-            How can I contact Maxime?
+            <FaEnvelope /> Contact Information
           </button>
         </div>
       ),
+      props: {},
+      mapStateToProps: [],
+    },
+    {
+      widgetName: "suggestedQuestions",
+      widgetFunc: (props: WidgetProps) => <SuggestedQuestions {...props} />,
       props: {},
       mapStateToProps: [],
     },
