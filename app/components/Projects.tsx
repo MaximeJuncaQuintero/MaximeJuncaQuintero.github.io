@@ -44,7 +44,7 @@ const projects: Project[] = [
     description: "Developed an MVP for a home appliance service that helps buyers find appliances with complex dimensions, access financing, and benefit from a buyback system. The platform enables custom kit configuration, cost estimation, and consolidated delivery to save money.",
     image: "/assets/projects/kits-full.jpg",
     link: "/projects/kits",
-    tech: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
+    tech: ["Flask", "Python", "SQLAlchemy", "Jinja2"],
     logoStyle: "object-contain" // Use object-contain to prevent cropping
   },
   {
@@ -52,7 +52,7 @@ const projects: Project[] = [
     description: "Built a minimalist e-commerce platform for furniture sales featuring Stripe payments, order management, and an admin dashboard. Includes image upload and storage, email notifications, and WhatsApp integration.",
     image: "/assets/projects/housedec.jpg",
     link: "/projects/housedec",
-    tech: ["Flask", "Python", "Stripe", "AWS S3"],
+    tech: ["Flask", "Python", "SQLAlchemy", "Stripe", "AWS S3"],
   },
 ]
 

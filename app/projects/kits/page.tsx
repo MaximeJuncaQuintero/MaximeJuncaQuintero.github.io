@@ -19,10 +19,10 @@ export default function KITSPage() {
         method="The service offers tailored appliance kits for different property types, flexible purchasing options (direct purchase, leasing, subscription), a buyback and reconditioning system for used appliances, a digital platform for equipment management, and integrated logistics for delivery, installation, and collection."
         result="The KITS MVP successfully demonstrates the ability to configure kits based on exact space constraints, suggest products that fit specific dimensions, calculate total and monthly costs, estimate savings compared to separate purchases, and adapt suggestions based on property type (with features like 'Ideal for Studio' badges)."
         tools={[
-          "React",
-          "Node.js",
-          "MongoDB",
-          "Tailwind CSS"
+          "Flask",
+          "Python",
+          "SQLAlchemy",
+          "Jinja2"
         ]}
         documentation={[
           {

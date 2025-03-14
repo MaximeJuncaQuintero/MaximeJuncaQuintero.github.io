@@ -17,6 +17,7 @@ export default function HouseDecPage() {
         tools={[
           "Flask",
           "Python",
+          "SQLAlchemy",
           "Stripe",
           "AWS S3",
           "WhatsApp API"
