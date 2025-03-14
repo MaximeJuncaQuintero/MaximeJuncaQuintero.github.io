@@ -2,6 +2,7 @@ import React from 'react'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import ChatbotWrapper from './components/chatbot/ChatbotWrapper'
+import SectionNav from './components/SectionNav'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -24,6 +25,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={inter.className}>
         <main className="min-h-screen bg-dark-900 text-white">
+          <SectionNav />
           {children}
           <ChatbotWrapper />
         </main>

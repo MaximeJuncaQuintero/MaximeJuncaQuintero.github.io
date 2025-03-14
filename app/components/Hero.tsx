@@ -3,6 +3,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { FaArrowDown } from 'react-icons/fa'
+import Image from 'next/image'
 
 export default function Hero() {
   return (
@@ -13,6 +14,24 @@ export default function Hero() {
       
       <div className="container mx-auto px-4 sm:px-6 z-10">
         <div className="text-center">
+          {/* Profile Picture */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="mb-6 sm:mb-8 flex justify-center"
+          >
+            <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-purple-500">
+              <Image
+                src="/assets/docs/processed_ID_pic.jpeg"
+                alt="Maxime Junca-Quintero"
+                fill
+                style={{ objectFit: 'cover' }}
+                priority
+              />
+            </div>
+          </motion.div>
+          
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -38,9 +57,9 @@ export default function Hero() {
             
             <a 
               href="#about" 
-              className="button"
+              className="button mb-16 sm:mb-20 inline-block"
             >
-              Explore My Work
+              Learn More About Me
             </a>
           </motion.div>
         </div>
@@ -53,7 +72,7 @@ export default function Hero() {
         className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2"
       >
         <a href="#about" className="flex flex-col items-center text-gray-400 hover:text-purple-400 transition-colors">
-          <span className="mb-2 text-sm sm:text-base">Scroll Down</span>
+          <span className="mb-2 text-sm sm:text-base">Scroll to Explore</span>
           <FaArrowDown className="animate-bounce" />
         </a>
       </motion.div>
