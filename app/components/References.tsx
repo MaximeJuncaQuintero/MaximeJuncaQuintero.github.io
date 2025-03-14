@@ -7,6 +7,7 @@ import { FaFilePdf } from 'react-icons/fa'
 interface Reference {
   name: string
   title: string
+  role: string
   date: string
   file: string
 }
@@ -16,12 +17,14 @@ export default function References() {
     {
       name: "Dupré DCU",
       title: "Letter of Reference",
+      role: "Program Director, Dublin City University",
       date: "2024",
       file: "/assets/docs/LoR-Dupre-DCU.pdf"
     },
     {
       name: "Richa Amazon",
       title: "Letter of Reference",
+      role: "Manager, Amazon Transportation Services",
       date: "2024",
       file: "/assets/docs/LoR-Richa-Amazon.pdf"
     }
@@ -50,6 +53,7 @@ export default function References() {
               className="reference-card p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
             >
               <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{reference.name}</h3>
+              <p className="text-gray-400 mb-1 text-sm sm:text-base">{reference.role}</p>
               <p className="text-gray-400 mb-3 sm:mb-4 text-sm sm:text-base">{reference.title} • {reference.date}</p>
               <a
                 href={reference.file}
