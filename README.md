@@ -4,7 +4,7 @@ A modern, responsive e-portfolio built with Next.js 14, Tailwind CSS, and Framer
 
 ## Live Demo
 
-Visit the live portfolio at [https://maxime-junca.github.io/eportfolio](https://maxime-junca.github.io/eportfolio)
+Visit the live portfolio at [https://maximejuncaquintero.github.io]
 
 ## Features
 
@@ -15,7 +15,6 @@ Visit the live portfolio at [https://maxime-junca.github.io/eportfolio](https://
 - **Interactive Chatbot**: AI-powered chatbot for visitor interaction
 - **Certifications Gallery**: Visual display of professional certifications
 - **Reference Letters**: Testimonials and letters of recommendation
-- **Media Section**: Videos and presentations showcasing my work
 - **Contact Form**: Easy way for visitors to get in touch
 
 ## Project Structure
@@ -51,78 +50,14 @@ eportfolio/
 
 ## Technologies Used
 
-- **Next.js 14**: React framework for server-rendered applications
-- **TypeScript**: For type safety and better developer experience
-- **Tailwind CSS**: Utility-first CSS framework for styling
-- **Framer Motion**: Animation library for React components
-- **React Icons**: Comprehensive icon library
-- **React Intersection Observer**: For scroll-based animations
-- **React Chatbot Kit**: For implementing the interactive chatbot
-- **GitHub Pages**: For hosting and deployment
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v18 or later recommended)
-- npm or yarn
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/maxime-junca/eportfolio.git
-   cd eportfolio
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-3. Run the development server:
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
-
-## Deployment
-
-This project is configured for deployment to GitHub Pages using GitHub Actions:
-
-1. Build the project:
-   ```bash
-   npm run build
-   # or
-   yarn build
-   ```
-
-2. Deploy to GitHub Pages:
-   ```bash
-   npm run deploy
-   # or
-   yarn deploy
-   ```
-
-The GitHub Actions workflow automatically deploys the application to GitHub Pages whenever changes are pushed to the main branch.
-
-## Customization
-
-To customize this portfolio for your own use:
-
-1. Update personal information in the component files
-2. Replace project details in the `app/projects/` directory
-3. Add your own certifications, references, and media
-4. Customize the color scheme in `tailwind.config.js`
-
-## License
-
-This project is licensed under the ISC License.
+- **Next.js 14**
+- **TypeScript**
+- **Tailwind CSS**
+- **Framer Motion**
+- **React Icons**
+- **React Intersection Observer**
+- **React Chatbot Kit**
+- **GitHub Pages**
 
 ## Acknowledgments
 
