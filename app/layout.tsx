@@ -3,6 +3,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import ChatbotWrapper from './components/chatbot/ChatbotWrapper'
 import SectionNav from './components/SectionNav'
+import GoogleAnalytics from './components/GoogleAnalytics'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -29,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={inter.className}>
+        <GoogleAnalytics />
         <main className="min-h-screen bg-dark-900 text-white">
           <SectionNav />
           {children}
