@@ -10,7 +10,6 @@ Visit the live portfolio at [https://maximejuncaquintero.github.io]
 
 - **Responsive Design**: Fully responsive layout that works seamlessly across all devices
 - **Interactive UI**: Smooth animations and transitions powered by Framer Motion
-- **Bilingual Support**: Available in both English and French
 - **Project Showcase**: Detailed project pages with comprehensive descriptions
 - **Interactive Chatbot**: AI-powered chatbot for visitor interaction
 - **Certifications Gallery**: Visual display of professional certifications
