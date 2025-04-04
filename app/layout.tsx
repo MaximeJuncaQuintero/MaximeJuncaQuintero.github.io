@@ -31,6 +31,16 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={inter.className}>
         <GoogleAnalytics />
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe 
+            src="https://www.googletagmanager.com/ns.html?id=GTM-TX52GJ3Z"
+            height="0" 
+            width="0" 
+            style={{ display: 'none', visibility: 'hidden' }}
+            title="GTM"
+          />
+        </noscript>
         <main className="min-h-screen bg-dark-900 text-white">
           <SectionNav />
           {children}

@@ -62,3 +62,35 @@ eportfolio/
 ## Acknowledgments
 
 - All references and mentors who have supported my professional journey
+
+## Analytics
+
+Le site intègre Google Analytics et Google Tag Manager pour le suivi des interactions des utilisateurs. Voici les données collectées:
+
+### Tracking mis en place
+
+- **Google Analytics (GA4)**: ID G-0H68W3N8HC
+- **Google Tag Manager**: ID GTM-TX52GJ3Z
+
+### Événements suivis
+
+1. **Navigation et visite**:
+   - Nombre de visiteurs et leurs régions
+   - Durée des sessions
+   - Pages visitées
+   - Source du trafic (d'où viennent les visiteurs)
+
+2. **Documents et téléchargements**:
+   - Clics sur les liens PDF (CV, documents de projets, certifications, médias)
+   - Nombre et types de documents consultés
+
+3. **Interactions avec le chatbot**:
+   - Ouverture et fermeture du chatbot
+   - Nombre de messages échangés
+   - Sessions de conversation (durée, fin de conversation)
+
+4. **Liens externes et contacts**:
+   - Clics sur les liens LinkedIn, GitHub, ou email
+   - Clics sur le lien du prototype KITS sur Render
+
+Toutes ces données sont anonymes et servent uniquement à améliorer l'expérience utilisateur et à comprendre le comportement des visiteurs.
