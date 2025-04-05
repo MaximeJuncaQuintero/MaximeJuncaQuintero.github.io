@@ -44,6 +44,16 @@ export default function Chatbot() {
       }, 300); // Match this with the CSS animation duration
     } else {
       setShowChat(true);
+      
+      // Envoyer un événement Google Analytics pour l'ouverture du chatbot
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'chatbot_open', {
+          'event_category': 'chatbot',
+          'event_label': 'open',
+          'value': 1
+        });
+        console.log('Événement chatbot_open envoyé à Google Analytics');
+      }
     }
   };
 
