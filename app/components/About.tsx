@@ -61,7 +61,7 @@ export default function About() {
             
             <div className="text-center">
               <a
-                href="/assets/docs/CV Maxime Junca ANG24 v2.pdf"
+                href="/assets/docs/CV Maxime Junca ANG24 v3.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="button inline-flex items-center gap-2 text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3"

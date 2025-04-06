@@ -66,7 +66,7 @@ export default function Contact() {
           className="text-center"
         >
           <a 
-            href="/assets/docs/CV Maxime Junca ANG24 v2.pdf" 
+            href="/assets/docs/CV Maxime Junca ANG24 v3.pdf" 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-block px-4 sm:px-6 py-2 sm:py-3 bg-purple-700 hover:bg-purple-600 text-white rounded-full transition-colors duration-300 text-sm sm:text-base"
