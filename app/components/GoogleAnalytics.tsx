@@ -58,23 +58,31 @@ export default function GoogleAnalytics() {
 
         // Suivi des interactions avec le chatbot
         let chatMessageCount = 0;
+        let chatbotState = { isOpen: false };
         
-        // Observer l'ouverture et la fermeture du chatbot
-        document.addEventListener('click', (e) => {
-          const target = e.target as HTMLElement;
-          const closeButton = target.closest('button');
-          
-          // Chercher le bouton d'ouverture/fermeture du chatbot (celui avec FaComments)
-          if (closeButton && closeButton.getAttribute('aria-label')?.includes('chat')) {
-            const isOpening = closeButton.getAttribute('aria-label') === 'Open chat';
+        // Observer directement le bouton du chatbot avec FaComments
+        const chatButton = document.querySelector('button.rounded-full');
+        if (chatButton) {
+          chatButton.addEventListener('click', () => {
+            // Inverser l'état à chaque clic
+            chatbotState.isOpen = !chatbotState.isOpen;
             
-            window.gtag('event', isOpening ? 'chatbot_open' : 'chatbot_close', {
-              'event_category': 'chatbot',
-              'event_label': isOpening ? 'open' : 'close',
-              'value': 1
-            });
-            
-            if (!isOpening) {
+            if (chatbotState.isOpen) {
+              // Envoyer l'événement d'ouverture
+              window.gtag('event', 'chatbot_open', {
+                'event_category': 'chatbot',
+                'event_label': 'open',
+                'value': 1
+              });
+              console.log('Chatbot ouvert - événement envoyé');
+            } else {
+              // Envoyer l'événement de fermeture
+              window.gtag('event', 'chatbot_close', {
+                'event_category': 'chatbot',
+                'event_label': 'close',
+                'value': 1
+              });
+              
               // Réinitialiser le compteur de messages quand on ferme le chatbot
               window.gtag('event', 'chatbot_conversation_end', {
                 'event_category': 'chatbot',
@@ -83,9 +91,12 @@ export default function GoogleAnalytics() {
               });
               chatMessageCount = 0;
             }
-          }
-          
-          // Suivi quand l'utilisateur efface le chat
+          });
+        }
+        
+        // Suivi quand l'utilisateur efface le chat
+        document.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement;
           if (target.closest('.clear-chat-button')) {
             window.gtag('event', 'chatbot_cleared', {
               'event_category': 'chatbot',
@@ -138,28 +149,22 @@ export default function GoogleAnalytics() {
         .forEach(link => {
           link.removeEventListener('click', () => {});
         });
+      
+      const chatButton = document.querySelector('button.rounded-full');
+      if (chatButton) {
+        chatButton.removeEventListener('click', () => {});
+      }
     };
   }, []);
 
   return (
     <>
-      {/* Google Tag Manager */}
-      <Script id="google-tagmanager" strategy="afterInteractive">
-        {`
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-TX52GJ3Z');
-        `}
-      </Script>
-
       {/* Google Analytics */}
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-0H68W3N8HC"
-        strategy="afterInteractive"
+        strategy="beforeInteractive"
       />
-      <Script id="google-analytics" strategy="afterInteractive">
+      <Script id="google-analytics" strategy="beforeInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
@@ -168,6 +173,17 @@ export default function GoogleAnalytics() {
             page_path: window.location.pathname,
             cookie_flags: 'SameSite=None;Secure'
           });
+        `}
+      </Script>
+
+      {/* Google Tag Manager */}
+      <Script id="google-tagmanager" strategy="afterInteractive">
+        {`
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-TBT7CJ4Q');
         `}
       </Script>
     </>
