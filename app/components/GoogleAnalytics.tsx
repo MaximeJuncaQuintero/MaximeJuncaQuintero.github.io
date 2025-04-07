@@ -116,10 +116,10 @@ export default function GoogleAnalytics() {
         const chatObserver = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+              // Vérifier si c'est un message utilisateur
               const userMessageAdded = Array.from(mutation.addedNodes).some(node => {
                 const element = node as HTMLElement;
-                return element.classList?.contains('react-chatbot-kit-chat-message-container') ||
-                       element.classList?.contains('react-chatbot-kit-user-chat-message');
+                return element.classList?.contains('react-chatbot-kit-user-chat-message-container');
               });
               
               if (userMessageAdded) {
@@ -137,13 +137,25 @@ export default function GoogleAnalytics() {
           });
         });
         
-        // Observer le conteneur de messages du chatbot
-        setTimeout(() => {
-          const chatContainer = document.querySelector('.react-chatbot-kit-chat-message-container');
+        // Observer le conteneur de messages du chatbot avec un délai plus long
+        const setupChatObserver = () => {
+          const chatContainer = document.querySelector('.react-chatbot-kit-chat-container');
           if (chatContainer) {
-            chatObserver.observe(chatContainer, { childList: true, subtree: true });
+            chatObserver.observe(chatContainer, { 
+              childList: true, 
+              subtree: true,
+              attributes: true,
+              characterData: true
+            });
+            console.log('Chat observer setup complete');
+          } else {
+            console.log('Chat container not found, retrying...');
+            setTimeout(setupChatObserver, 1000);
           }
-        }, 2000);
+        };
+        
+        // Démarrer l'observation après un délai
+        setTimeout(setupChatObserver, 3000);
       }
     };
 
