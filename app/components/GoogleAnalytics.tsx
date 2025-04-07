@@ -37,12 +37,14 @@ export default function GoogleAnalytics() {
             const type = target.href.includes('linkedin') ? 'linkedin' : 
                         target.href.includes('github') ? 'github' : 'email';
             
-            window.dataLayer.push({
+            const eventData = {
               'event': 'contact_click',
               'event_category': 'contact',
               'event_label': type,
               'value': 1
-            });
+            };
+            window.dataLayer.push(eventData);
+            console.log('Contact click event pushed:', eventData);
           });
         });
 
@@ -122,12 +124,14 @@ export default function GoogleAnalytics() {
               
               if (userMessageAdded) {
                 chatMessageCount++;
-                window.dataLayer.push({
+                const eventData = {
                   'event': 'chatbot_message',
                   'event_category': 'chatbot',
                   'event_label': 'user_message',
                   'value': chatMessageCount
-                });
+                };
+                window.dataLayer.push(eventData);
+                console.log('Chatbot message event pushed:', eventData);
               }
             }
           });
