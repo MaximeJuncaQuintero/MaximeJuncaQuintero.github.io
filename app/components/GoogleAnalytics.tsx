@@ -79,38 +79,9 @@ export default function GoogleAnalytics() {
                 'event_label': 'open',
                 'value': 1
               });
-            } else {
-              window.dataLayer.push({
-                'event': 'chatbot_close',
-                'event_category': 'chatbot',
-                'event_label': 'close',
-                'value': 1
-              });
-              
-              window.dataLayer.push({
-                'event': 'chatbot_conversation_end',
-                'event_category': 'chatbot',
-                'event_label': 'conversation_ended',
-                'value': chatMessageCount
-              });
-              chatMessageCount = 0;
             }
           });
         }
-        
-        // Suivi quand l'utilisateur efface le chat
-        document.addEventListener('click', (e) => {
-          const target = e.target as HTMLElement;
-          if (target.closest('.clear-chat-button')) {
-            window.dataLayer.push({
-              'event': 'chatbot_cleared',
-              'event_category': 'chatbot',
-              'event_label': 'conversation_cleared',
-              'value': chatMessageCount
-            });
-            chatMessageCount = 0;
-          }
-        });
         
         // Observer les nouveaux messages dans le chat
         const chatObserver = new MutationObserver((mutations) => {
