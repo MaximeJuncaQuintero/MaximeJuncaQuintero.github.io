@@ -45,8 +45,7 @@ export default function GoogleAnalytics() {
               pdfCategory = 'Recommandation';
             }
 
-            window.dataLayer.push({
-              'event': 'pdf_view',
+            window.gtag('event', 'pdf_view', {
               'event_category': 'document',
               'event_label': pdfCategory,
               'pdf_name': target.href.split('/').pop() || 'PDF inconnu',
@@ -188,7 +187,10 @@ export default function GoogleAnalytics() {
           gtag('js', new Date());
           gtag('config', 'G-0H68W3N8HC', {
             page_path: window.location.pathname,
-            cookie_flags: 'SameSite=None;Secure'
+            cookie_flags: 'SameSite=None;Secure',
+            custom_map: {
+              'dimension1': 'pdf_category'
+            }
           });
         `}
       </Script>
