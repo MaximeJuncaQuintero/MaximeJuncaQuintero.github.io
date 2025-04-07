@@ -16,12 +16,13 @@ export default function GoogleAnalytics() {
   useEffect(() => {
     // Attendre que le DOM soit chargé et que gtag soit disponible
     const setupEventTracking = () => {
-      if (typeof window !== 'undefined' && window.gtag) {
+      if (typeof window !== 'undefined' && window.dataLayer) {
         // Suivre les clics sur les liens PDF
         document.querySelectorAll('a[href$=".pdf"]').forEach(link => {
           link.addEventListener('click', (e) => {
             const target = e.currentTarget as HTMLAnchorElement;
-            window.gtag('event', 'pdf_view', {
+            window.dataLayer.push({
+              'event': 'pdf_view',
               'event_category': 'document',
               'event_label': target.href || 'PDF inconnu',
               'value': 1
@@ -36,7 +37,8 @@ export default function GoogleAnalytics() {
             const type = target.href.includes('linkedin') ? 'linkedin' : 
                         target.href.includes('github') ? 'github' : 'email';
             
-            window.gtag('event', 'contact_click', {
+            window.dataLayer.push({
+              'event': 'contact_click',
               'event_category': 'contact',
               'event_label': type,
               'value': 1
@@ -48,7 +50,8 @@ export default function GoogleAnalytics() {
         document.querySelectorAll('a[href*="render.com"]').forEach(link => {
           link.addEventListener('click', (e) => {
             const target = e.currentTarget as HTMLAnchorElement;
-            window.gtag('event', 'kits_prototype_click', {
+            window.dataLayer.push({
+              'event': 'kits_prototype_click',
               'event_category': 'external_link',
               'event_label': target.href,
               'value': 1
@@ -68,23 +71,22 @@ export default function GoogleAnalytics() {
             chatbotState.isOpen = !chatbotState.isOpen;
             
             if (chatbotState.isOpen) {
-              // Envoyer l'événement d'ouverture
-              window.gtag('event', 'chatbot_open', {
+              window.dataLayer.push({
+                'event': 'chatbot_open',
                 'event_category': 'chatbot',
                 'event_label': 'open',
                 'value': 1
               });
-              console.log('Chatbot ouvert - événement envoyé');
             } else {
-              // Envoyer l'événement de fermeture
-              window.gtag('event', 'chatbot_close', {
+              window.dataLayer.push({
+                'event': 'chatbot_close',
                 'event_category': 'chatbot',
                 'event_label': 'close',
                 'value': 1
               });
               
-              // Réinitialiser le compteur de messages quand on ferme le chatbot
-              window.gtag('event', 'chatbot_conversation_end', {
+              window.dataLayer.push({
+                'event': 'chatbot_conversation_end',
                 'event_category': 'chatbot',
                 'event_label': 'conversation_ended',
                 'value': chatMessageCount
@@ -98,7 +100,8 @@ export default function GoogleAnalytics() {
         document.addEventListener('click', (e) => {
           const target = e.target as HTMLElement;
           if (target.closest('.clear-chat-button')) {
-            window.gtag('event', 'chatbot_cleared', {
+            window.dataLayer.push({
+              'event': 'chatbot_cleared',
               'event_category': 'chatbot',
               'event_label': 'conversation_cleared',
               'value': chatMessageCount
@@ -111,7 +114,6 @@ export default function GoogleAnalytics() {
         const chatObserver = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-              // Vérifier si un nouveau message a été ajouté
               const userMessageAdded = Array.from(mutation.addedNodes).some(node => {
                 const element = node as HTMLElement;
                 return element.classList?.contains('react-chatbot-kit-chat-message-container') ||
@@ -120,7 +122,8 @@ export default function GoogleAnalytics() {
               
               if (userMessageAdded) {
                 chatMessageCount++;
-                window.gtag('event', 'chatbot_message', {
+                window.dataLayer.push({
+                  'event': 'chatbot_message',
                   'event_category': 'chatbot',
                   'event_label': 'user_message',
                   'value': chatMessageCount
