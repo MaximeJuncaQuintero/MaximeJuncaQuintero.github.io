@@ -21,12 +21,39 @@ export default function GoogleAnalytics() {
         document.querySelectorAll('a[href$=".pdf"]').forEach(link => {
           link.addEventListener('click', (e) => {
             const target = e.currentTarget as HTMLAnchorElement;
+            const url = target.href;
+            
+            // Déterminer la catégorie du PDF
+            let pdfCategory = 'Autre';
+            if (url.includes('CV%20Maxime%20Junca')) {
+              pdfCategory = 'CV';
+            } else if (url.includes('HouseDec_Executive_Summary')) {
+              pdfCategory = 'Projet HouseDec';
+            } else if (url.includes('KITS%20-%20Executive%20Summary')) {
+              pdfCategory = 'Projet KITS';
+            } else if (url.includes('Thesis_BusinessProject')) {
+              pdfCategory = 'Thèse';
+            } else if (url.includes('INTRA%20Report')) {
+              pdfCategory = 'Stage Amazon';
+            } else if (url.includes('Tenoris%20Analytics')) {
+              pdfCategory = 'Projet Tenoris';
+            } else if (url.includes('NXUTHINKTANK')) {
+              pdfCategory = 'Media NXU';
+            } else if (url.includes('Certificate')) {
+              pdfCategory = 'Certification';
+            } else if (url.includes('LoR')) {
+              pdfCategory = 'Recommandation';
+            }
+
             window.dataLayer.push({
               'event': 'pdf_view',
               'event_category': 'document',
-              'event_label': target.href || 'PDF inconnu',
+              'event_label': pdfCategory,
+              'pdf_name': target.href.split('/').pop() || 'PDF inconnu',
+              'pdf_category': pdfCategory,
               'value': 1
             });
+            console.log('PDF view event pushed:', pdfCategory);
           });
         });
 
