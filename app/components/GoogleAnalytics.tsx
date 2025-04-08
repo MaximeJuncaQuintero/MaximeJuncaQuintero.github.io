@@ -49,7 +49,6 @@ export default function GoogleAnalytics() {
 
             const eventData = {
               'event_category': 'document',
-              'event_label': pdfName,
               'custom_dimension': {
                 'pdf_category': pdfCategory
               },
@@ -57,18 +56,11 @@ export default function GoogleAnalytics() {
               'value': 1
             };
             
-            // Envoyer l'événement pdf_view
             window.gtag('event', 'pdf_view', eventData);
-            
             console.log('PDF view event sent:', {
               event: 'pdf_view',
               category: pdfCategory,
-              event_category: 'document',
-              custom_dimension: {
-                pdf_category: pdfCategory
-              },
-              pdf_name: pdfName,
-              value: 1
+              ...eventData
             });
           });
         });
@@ -204,11 +196,7 @@ export default function GoogleAnalytics() {
           gtag('js', new Date());
           gtag('config', 'G-0H68W3N8HC', {
             page_path: window.location.pathname,
-            cookie_flags: 'SameSite=None;Secure',
-            custom_map: {
-              'dimension1': 'pdf_category',
-              'dimension2': 'pdf_name'
-            }
+            cookie_flags: 'SameSite=None;Secure'
           });
         `}
       </Script>
