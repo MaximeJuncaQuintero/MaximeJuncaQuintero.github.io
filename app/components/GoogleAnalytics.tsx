@@ -45,14 +45,12 @@ export default function GoogleAnalytics() {
               pdfCategory = 'Recommandation';
             }
 
-            const pdfName = decodeURIComponent(target.href.split('/').pop() || 'PDF inconnu');
-
             const eventData = {
               'event_category': 'document',
               'custom_dimension': {
                 'pdf_category': pdfCategory
               },
-              'pdf_name': pdfName,
+              'pdf_name': target.href.split('/').pop() || 'PDF inconnu',
               'value': 1
             };
             
