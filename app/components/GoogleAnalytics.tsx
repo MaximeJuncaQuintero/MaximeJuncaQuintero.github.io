@@ -19,57 +19,65 @@ export default function GoogleAnalytics() {
       if (typeof window !== 'undefined' && window.dataLayer) {
         console.log('Setting up PDF tracking');
         
-        // Suivre les clics sur les liens PDF - ajout d'un véritable sélecteur CSS
-        const pdfLinks = document.querySelectorAll('a[href$=".pdf"], a[href*=".pdf"]');
-        console.log(`Found ${pdfLinks.length} PDF links on page:`, pdfLinks);
+        // Suivre les clics sur tous les liens
+        const allLinks = document.querySelectorAll('a');
+        console.log(`Found ${allLinks.length} links on page`);
         
-        pdfLinks.forEach(link => {
-          link.addEventListener('click', (e) => {
-            const target = e.currentTarget as HTMLAnchorElement;
-            const url = target.href;
-            console.log('PDF link clicked:', url);
+        allLinks.forEach(link => {
+          const href = (link as HTMLAnchorElement).href || '';
+          
+          // Vérifier si c'est un lien PDF
+          if (href.toLowerCase().includes('.pdf')) {
+            console.log('PDF link found:', href);
             
-            // Déterminer la catégorie du PDF
-            let pdfCategory = 'Autre';
-            if (url.includes('CV%20Maxime%20Junca') || url.includes('CV Maxime Junca')) {
-              pdfCategory = 'CV';
-            } else if (url.includes('HouseDec_Executive_Summary') || url.includes('HouseDec')) {
-              pdfCategory = 'Projet HouseDec';
-            } else if (url.includes('KITS%20-%20Executive%20Summary') || url.includes('KITS')) {
-              pdfCategory = 'Projet KITS';
-            } else if (url.includes('Thesis_BusinessProject') || url.includes('Thesis')) {
-              pdfCategory = 'Thèse';
-            } else if (url.includes('INTRA%20Report') || url.includes('INTRA Report')) {
-              pdfCategory = 'Stage Amazon';
-            } else if (url.includes('MVP%20Tenoris%20Analytics') || url.includes('Tenoris Analytics')) {
-              pdfCategory = 'Projet Tenoris';
-            } else if (url.includes('NXUTHINKTANK')) {
-              pdfCategory = 'Media NXU';
-            } else if (url.includes('Certificate')) {
-              pdfCategory = 'Certification';
-            } else if (url.includes('LoR')) {
-              pdfCategory = 'Recommandation';
-            }
-            
-            const pdfName = decodeURIComponent(url.split('/').pop() || 'PDF inconnu');
-            console.log(`PDF catégorisé: "${pdfName}" -> ${pdfCategory}`);
-            
-            // Format correct pour GA4
-            window.gtag('event', 'pdf_view', {
-              pdf_name: pdfName,
-              pdf_category: pdfCategory,
-              event_category: 'document',
-              value: 1
+            link.addEventListener('click', (e) => {
+              const target = e.currentTarget as HTMLAnchorElement;
+              const url = target.href;
+              console.log('PDF link clicked:', url);
+              
+              // Déterminer la catégorie du PDF
+              let pdfCategory = 'Autre';
+              if (url.includes('CV%20Maxime%20Junca') || url.includes('CV Maxime Junca')) {
+                pdfCategory = 'CV';
+              } else if (url.includes('HouseDec_Executive_Summary') || url.includes('HouseDec')) {
+                pdfCategory = 'Projet HouseDec';
+              } else if (url.includes('KITS%20-%20Executive%20Summary') || url.includes('KITS')) {
+                pdfCategory = 'Projet KITS';
+              } else if (url.includes('Thesis_BusinessProject') || url.includes('Thesis')) {
+                pdfCategory = 'Thèse';
+              } else if (url.includes('INTRA%20Report') || url.includes('INTRA Report')) {
+                pdfCategory = 'Stage Amazon';
+              } else if (url.includes('MVP%20Tenoris%20Analytics') || url.includes('Tenoris Analytics')) {
+                pdfCategory = 'Projet Tenoris';
+              } else if (url.includes('NXUTHINKTANK')) {
+                pdfCategory = 'Media NXU';
+              } else if (url.includes('Certificate')) {
+                pdfCategory = 'Certification';
+              } else if (url.includes('LoR')) {
+                pdfCategory = 'Recommandation';
+              }
+              
+              const pdfName = decodeURIComponent(url.split('/').pop() || 'PDF inconnu');
+              console.log(`PDF catégorisé: "${pdfName}" -> ${pdfCategory}`);
+              
+              // Format correct pour GA4 - assurer que pdf_category est envoyé correctement
+              window.gtag('event', 'pdf_view', {
+                'pdf_name': pdfName,
+                'pdf_category': pdfCategory,
+                'event_category': 'document',
+                'value': 1
+              });
+              
+              // Journalisation complète pour déboguer
+              console.log('Événement GA4 envoyé:', {
+                'event_name': 'pdf_view',
+                'pdf_name': pdfName,
+                'pdf_category': pdfCategory,
+                'event_category': 'document',
+                'value': 1
+              });
             });
-
-            console.log('PDF view event sent:', {
-              event: 'pdf_view',
-              pdf_name: pdfName,
-              pdf_category: pdfCategory,
-              event_category: 'document',
-              value: 1
-            });
-          });
+          }
         });
 
         // Suivre les clics sur les liens de contact (LinkedIn, GitHub, Email)
