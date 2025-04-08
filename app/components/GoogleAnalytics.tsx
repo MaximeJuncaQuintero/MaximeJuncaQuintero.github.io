@@ -18,7 +18,7 @@ export default function GoogleAnalytics() {
     const setupEventTracking = () => {
       if (typeof window !== 'undefined' && window.dataLayer) {
         // Suivre les clics sur les liens PDF
-        document.querySelectorAll('a[href$=".pdf"]').forEach(link => {
+        document.querySelectorAll('a[href$=".pdf"], a[href*=".pdf"]').forEach(link => {
           link.addEventListener('click', (e) => {
             const target = e.currentTarget as HTMLAnchorElement;
             const url = target.href;
@@ -45,20 +45,30 @@ export default function GoogleAnalytics() {
               pdfCategory = 'Recommandation';
             }
 
+            const pdfName = decodeURIComponent(target.href.split('/').pop() || 'PDF inconnu');
+
             const eventData = {
               'event_category': 'document',
+              'event_label': pdfName,
               'custom_dimension': {
                 'pdf_category': pdfCategory
               },
-              'pdf_name': target.href.split('/').pop() || 'PDF inconnu',
+              'pdf_name': pdfName,
               'value': 1
             };
             
+            // Envoyer l'événement pdf_view
             window.gtag('event', 'pdf_view', eventData);
+            
             console.log('PDF view event sent:', {
               event: 'pdf_view',
               category: pdfCategory,
-              ...eventData
+              event_category: 'document',
+              custom_dimension: {
+                pdf_category: pdfCategory
+              },
+              pdf_name: pdfName,
+              value: 1
             });
           });
         });
@@ -168,7 +178,7 @@ export default function GoogleAnalytics() {
 
     // Nettoyage à la déconnexion
     return () => {
-      document.querySelectorAll('a[href$=".pdf"], a[href*="linkedin.com"], a[href*="github.com"], a[href^="mailto:"], a[href*="render.com"]')
+      document.querySelectorAll('a[href$=".pdf"], a[href*=".pdf"], a[href*="linkedin.com"], a[href*="github.com"], a[href^="mailto:"], a[href*="render.com"]')
         .forEach(link => {
           link.removeEventListener('click', () => {});
         });
@@ -196,7 +206,8 @@ export default function GoogleAnalytics() {
             page_path: window.location.pathname,
             cookie_flags: 'SameSite=None;Secure',
             custom_map: {
-              'dimension1': 'pdf_category'
+              'dimension1': 'pdf_category',
+              'dimension2': 'pdf_name'
             }
           });
         `}
