@@ -45,14 +45,21 @@ export default function GoogleAnalytics() {
               pdfCategory = 'Recommandation';
             }
 
-            window.gtag('event', 'pdf_view', {
+            const eventData = {
               'event_category': 'document',
-              'event_label': pdfCategory,
+              'custom_dimension': {
+                'pdf_category': pdfCategory
+              },
               'pdf_name': target.href.split('/').pop() || 'PDF inconnu',
-              'pdf_category': pdfCategory,
               'value': 1
+            };
+            
+            window.gtag('event', 'pdf_view', eventData);
+            console.log('PDF view event sent:', {
+              event: 'pdf_view',
+              category: pdfCategory,
+              ...eventData
             });
-            console.log('PDF view event pushed:', pdfCategory);
           });
         });
 
