@@ -55,16 +55,16 @@ export default function GoogleAnalytics() {
     if (typeof window !== 'undefined' && window.gtag) {
       const pageTitle = getPageTitle(pathname);
       
-      window.gtag('event', 'view_page', {
-        custom_page_title: pageTitle,
+      window.gtag('event', 'view_page', {  // Changement du nom de l'événement pour éviter le conflit avec GA4
+        page_title: pageTitle,
         page_path: pathname,
         page_location: window.location.href,
-        event_category: 'engagement',
-        send_page_view: false
+        event_category: 'engagement',  // Ajout d'une catégorie claire
+        send_page_view: false  // Désactivation du double comptage
       });
 
       console.log('Page view tracked:', {
-        custom_page_title: pageTitle,
+        page_title: pageTitle,
         page_path: pathname,
         page_location: window.location.href
       });
