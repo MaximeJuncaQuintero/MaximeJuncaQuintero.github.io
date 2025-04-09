@@ -14,7 +14,7 @@ declare global {
 
 // Function to get page title based on pathname
 const getPageTitle = (pathname: string): string => {
-  if (pathname === '/') return 'Page d\'accueil';
+  if (pathname === '/') return 'Maxime Junca';
   if (pathname.startsWith('/projects/')) {
     // Remove trailing slash for consistent matching
     const cleanPath = pathname.replace(/\/$/, '');
@@ -36,6 +36,15 @@ const getPageTitle = (pathname: string): string => {
   return 'Page d\'accueil';
 };
 
+// Nouveau: Fonction pour normaliser le titre de la page pour Looker Studio
+const normalizePageTitle = (title: string): string => {
+  // Tronquer les titres trop longs pour Looker Studio
+  if (title.length > 30) {
+    return title.substring(0, 27) + '...';
+  }
+  return title;
+};
+
 const GA_MEASUREMENT_ID = 'G-0H68W3N8HC';
 
 export default function GoogleAnalytics() {
@@ -45,18 +54,25 @@ export default function GoogleAnalytics() {
   useEffect(() => {
     if (typeof window !== 'undefined' && window.gtag) {
       const pageTitle = getPageTitle(pathname);
+      const normalizedTitle = normalizePageTitle(pageTitle);
       
       window.gtag('event', 'page_view', {
         page_title: pageTitle,
         page_path: pathname,
         page_location: window.location.href,
+        // Ajouter des paramètres spécifiques pour Looker Studio
+        'Page Title': normalizedTitle, // Paramètre explicite pour Looker Studio
+        'event_category': 'page_engagement',
+        'non_interaction': false,
         send_page_view: true
       });
 
       console.log('Page view tracked:', {
         page_title: pageTitle,
+        'Page Title': normalizedTitle,
         page_path: pathname,
-        page_location: window.location.href
+        page_location: window.location.href,
+        'event_category': 'page_engagement'
       });
     }
   }, [pathname]);
@@ -115,9 +131,12 @@ export default function GoogleAnalytics() {
                 'pdf_name': pdfName,
                 'pdf_category': pdfCategory,
                 'PDF Category': pdfCategory,  // Ajout pour compatibilité avec Looker Studio
-                'document_name': pdfName,  // Ajout pour compatibilité avec GTM
-                'document_type': 'pdf',    // Ajout pour compatibilité avec GTM
+                'Page Title': pdfCategory,    // Ajouter pour grouper correctement dans le rapport Looker Studio
+                'document_name': pdfName,     // Ajout pour compatibilité avec GTM
+                'document_type': 'pdf',       // Ajout pour compatibilité avec GTM
                 'event_category': 'document',
+                'content_type': 'pdf',        // Standardiser pour GA4
+                'item_name': pdfName,         // Standardiser pour GA4
                 'value': 1
               });
               
@@ -126,7 +145,8 @@ export default function GoogleAnalytics() {
                 'event_name': 'pdf_view',
                 'pdf_name': pdfName,
                 'pdf_category': pdfCategory,
-                'PDF Category': pdfCategory,  // Ajout pour compatibilité avec Looker Studio
+                'PDF Category': pdfCategory,
+                'Page Title': pdfCategory,    // Pour la cohérence du rapport
                 'document_name': pdfName,
                 'document_type': 'pdf',
                 'event_category': 'document',
@@ -147,6 +167,7 @@ export default function GoogleAnalytics() {
               'event': 'contact_click',
               'event_category': 'contact',
               'event_label': type,
+              'Page Title': 'Contact - ' + type,
               'value': 1
             };
             window.dataLayer.push(eventData);
@@ -162,6 +183,7 @@ export default function GoogleAnalytics() {
               'event': 'kits_prototype_click',
               'event_category': 'external_link',
               'event_label': target.href,
+              'Page Title': 'Prototype KITS',
               'value': 1
             });
           });
@@ -183,6 +205,7 @@ export default function GoogleAnalytics() {
                 'event': 'chatbot_open',
                 'event_category': 'chatbot',
                 'event_label': 'open',
+                'Page Title': 'Chatbot',
                 'value': 1
               });
             }
@@ -205,6 +228,7 @@ export default function GoogleAnalytics() {
                   'event': 'chatbot_message',
                   'event_category': 'chatbot',
                   'event_label': 'user_message',
+                  'Page Title': 'Chatbot',
                   'value': chatMessageCount
                 };
                 window.dataLayer.push(eventData);
@@ -267,7 +291,10 @@ export default function GoogleAnalytics() {
           gtag('js', new Date());
           gtag('config', '${GA_MEASUREMENT_ID}', {
             send_page_view: false, // Disable automatic page views
-            cookie_flags: 'SameSite=None;Secure'
+            cookie_flags: 'SameSite=None;Secure',
+            custom_map: {
+              'dimension1': 'Page Title'  // Définir une dimension personnalisée pour le titre de page
+            }
           });
         `}
       </Script>
