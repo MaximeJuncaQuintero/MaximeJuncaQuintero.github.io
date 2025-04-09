@@ -5,19 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maxime Junca-Quintero Portfolio - Redirecting</title>
+    <meta http-equiv="refresh" content="0;url=https://maximejuncaquintero.github.io/">
     <script>
-        // Préserver les paramètres UTM de l'URL d'origine
-        const currentUrl = new URL(window.location.href);
-        const baseUrl = "https://maximejuncaquintero.github.io/";
-        const utmSource = currentUrl.searchParams.get('utm_source') || '';
-        const utmMedium = currentUrl.searchParams.get('utm_medium') || '';
-        
-        let redirectUrl = baseUrl;
-        if (utmSource && utmMedium) {
-            redirectUrl += `?utm_source=${utmSource}&utm_medium=${utmMedium}`;
-        }
-        
-        window.location.href = redirectUrl;
+        window.location.href = "https://maximejuncaquintero.github.io/";
     </script>
     <style>
         body {
