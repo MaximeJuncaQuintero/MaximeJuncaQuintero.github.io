@@ -65,6 +65,7 @@ export default function GoogleAnalytics() {
               window.gtag('event', 'pdf_view', {
                 'pdf_name': pdfName,
                 'pdf_category': pdfCategory,
+                'PDF Category': pdfCategory,  // Ajout pour compatibilité avec Looker Studio
                 'document_name': pdfName,  // Ajout pour compatibilité avec GTM
                 'document_type': 'pdf',    // Ajout pour compatibilité avec GTM
                 'event_category': 'document',
@@ -76,6 +77,7 @@ export default function GoogleAnalytics() {
                 'event_name': 'pdf_view',
                 'pdf_name': pdfName,
                 'pdf_category': pdfCategory,
+                'PDF Category': pdfCategory,  // Ajout pour compatibilité avec Looker Studio
                 'document_name': pdfName,
                 'document_type': 'pdf',
                 'event_category': 'document',
