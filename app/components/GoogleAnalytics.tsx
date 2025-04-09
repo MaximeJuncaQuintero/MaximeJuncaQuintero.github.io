@@ -2,6 +2,7 @@
 
 import Script from 'next/script';
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 // Déclaration des types pour window.gtag
 declare global {
@@ -11,7 +12,42 @@ declare global {
   }
 }
 
+// Function to get page title based on pathname
+const getPageTitle = (pathname: string): string => {
+  if (pathname === '/') return 'Page d\'accueil';
+  if (pathname.startsWith('/projects/')) {
+    const project = pathname.split('/').pop();
+    switch (project) {
+      case 'kits': return 'Projet KITS';
+      case 'housedec': return 'Projet HouseDec';
+      case 'innovation-report': return 'Innovation Report';
+      case 'tenoris-analytics': return 'Projet Tenoris Analytics';
+      case 'amazon-kpi': return 'Projet Amazon KPI';
+      default: return 'Projets';
+    }
+  }
+  return 'Maxime Junca - Portfolio';
+};
+
 export default function GoogleAnalytics() {
+  const pathname = usePathname();
+
+  // Track page views
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'page_view', {
+        page_title: getPageTitle(pathname),
+        page_path: pathname,
+        page_location: window.location.href
+      });
+      console.log('Page view tracked:', {
+        page_title: getPageTitle(pathname),
+        page_path: pathname,
+        page_location: window.location.href
+      });
+    }
+  }, [pathname]);
+
   // Cette fonction configure les écouteurs d'événements pour suivre les interactions
   useEffect(() => {
     // Attendre que le DOM soit chargé et que gtag soit disponible
