@@ -284,7 +284,8 @@ export default function GoogleAnalytics() {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', '${GA_MEASUREMENT_ID}', {
-            send_page_view: false,  // Désactiver les page views automatiques
+            send_page_view: false,  // Désactiver complètement les page_view automatiques
+            page_view_event_enabled: false,  // Désactiver explicitement l'événement page_view
             cookie_flags: 'SameSite=None;Secure'
           });
         `}
