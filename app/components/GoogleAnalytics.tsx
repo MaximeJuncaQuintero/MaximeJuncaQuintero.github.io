@@ -2,7 +2,7 @@
 
 import Script from 'next/script';
 import { useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 // Déclaration des types pour window.gtag
 declare global {
@@ -40,12 +40,10 @@ const GA_MEASUREMENT_ID = 'G-0H68W3N8HC';
 
 export default function GoogleAnalytics() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   // Track page views
   useEffect(() => {
     if (typeof window !== 'undefined' && window.gtag) {
-      // Use our getPageTitle function directly instead of document.title
       const pageTitle = getPageTitle(pathname);
       
       window.gtag('event', 'page_view', {
@@ -55,7 +53,6 @@ export default function GoogleAnalytics() {
         send_page_view: true
       });
 
-      // Log for debugging
       console.log('Page view tracked:', {
         page_title: pageTitle,
         page_path: pathname,
