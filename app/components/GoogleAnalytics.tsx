@@ -2,7 +2,7 @@
 
 import Script from 'next/script';
 import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 // Déclaration des types pour window.gtag
 declare global {
@@ -16,32 +16,48 @@ declare global {
 const getPageTitle = (pathname: string): string => {
   if (pathname === '/') return 'Page d\'accueil';
   if (pathname.startsWith('/projects/')) {
-    const project = pathname.split('/').pop();
-    switch (project) {
-      case 'kits': return 'Projet KITS';
-      case 'housedec': return 'Projet HouseDec';
-      case 'innovation-report': return 'Innovation Report';
-      case 'tenoris-analytics': return 'Projet Tenoris Analytics';
-      case 'amazon-kpi': return 'Projet Amazon KPI';
-      default: return 'Projets';
+    // Remove trailing slash for consistent matching
+    const cleanPath = pathname.replace(/\/$/, '');
+    switch (cleanPath) {
+      case '/projects/kits':
+        return 'Projet KITS';
+      case '/projects/housedec':
+        return 'Projet HouseDec';
+      case '/projects/innovation-report':
+        return 'Innovation Report';
+      case '/projects/tenoris-analytics':
+        return 'Projet Tenoris Analytics';
+      case '/projects/amazon-kpi':
+        return 'Projet Amazon KPI';
+      default:
+        return 'Projets';
     }
   }
   return 'Maxime Junca - Portfolio';
 };
 
+const GA_MEASUREMENT_ID = 'G-0H68W3N8HC';
+
 export default function GoogleAnalytics() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   // Track page views
   useEffect(() => {
     if (typeof window !== 'undefined' && window.gtag) {
+      // Use our getPageTitle function directly instead of document.title
+      const pageTitle = getPageTitle(pathname);
+      
       window.gtag('event', 'page_view', {
-        page_title: getPageTitle(pathname),
+        page_title: pageTitle,
         page_path: pathname,
-        page_location: window.location.href
+        page_location: window.location.href,
+        send_page_view: true
       });
+
+      // Log for debugging
       console.log('Page view tracked:', {
-        page_title: getPageTitle(pathname),
+        page_title: pageTitle,
         page_path: pathname,
         page_location: window.location.href
       });
@@ -244,16 +260,16 @@ export default function GoogleAnalytics() {
     <>
       {/* Google Analytics */}
       <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-0H68W3N8HC"
-        strategy="beforeInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        strategy="afterInteractive"
       />
-      <Script id="google-analytics" strategy="beforeInteractive">
+      <Script id="google-analytics" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', 'G-0H68W3N8HC', {
-            page_path: window.location.pathname,
+          gtag('config', '${GA_MEASUREMENT_ID}', {
+            send_page_view: false, // Disable automatic page views
             cookie_flags: 'SameSite=None;Secure'
           });
         `}
