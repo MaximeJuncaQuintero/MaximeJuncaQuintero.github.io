@@ -54,25 +54,19 @@ export default function GoogleAnalytics() {
   useEffect(() => {
     if (typeof window !== 'undefined' && window.gtag) {
       const pageTitle = getPageTitle(pathname);
-      const normalizedTitle = normalizePageTitle(pageTitle);
       
-      window.gtag('event', 'page_view', {
+      window.gtag('event', 'view_page', {  // Changement du nom de l'événement pour éviter le conflit avec GA4
         page_title: pageTitle,
         page_path: pathname,
         page_location: window.location.href,
-        // Ajouter des paramètres spécifiques pour Looker Studio
-        'Page Title': normalizedTitle, // Paramètre explicite pour Looker Studio
-        'event_category': 'page_engagement',
-        'non_interaction': false,
-        send_page_view: true
+        event_category: 'engagement',  // Ajout d'une catégorie claire
+        send_page_view: false  // Désactivation du double comptage
       });
 
       console.log('Page view tracked:', {
         page_title: pageTitle,
-        'Page Title': normalizedTitle,
         page_path: pathname,
-        page_location: window.location.href,
-        'event_category': 'page_engagement'
+        page_location: window.location.href
       });
     }
   }, [pathname]);
@@ -290,11 +284,8 @@ export default function GoogleAnalytics() {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', '${GA_MEASUREMENT_ID}', {
-            send_page_view: false, // Disable automatic page views
-            cookie_flags: 'SameSite=None;Secure',
-            custom_map: {
-              'dimension1': 'Page Title'  // Définir une dimension personnalisée pour le titre de page
-            }
+            send_page_view: false,  // Désactiver les page views automatiques
+            cookie_flags: 'SameSite=None;Secure'
           });
         `}
       </Script>
