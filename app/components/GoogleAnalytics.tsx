@@ -33,7 +33,7 @@ const getPageTitle = (pathname: string): string => {
         return 'Projets';
     }
   }
-  return 'Maxime Junca - Portfolio';
+  return 'Page d\'accueil';
 };
 
 const GA_MEASUREMENT_ID = 'G-0H68W3N8HC';
