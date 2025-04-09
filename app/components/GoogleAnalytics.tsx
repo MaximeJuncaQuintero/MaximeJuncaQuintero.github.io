@@ -57,13 +57,16 @@ export default function GoogleAnalytics() {
                 pdfCategory = 'Recommandation';
               }
               
-              const pdfName = decodeURIComponent(url.split('/').pop() || 'PDF inconnu');
+              // Normaliser le nom du PDF pour éviter les doublons
+              const pdfName = decodeURIComponent(url.split('/').pop() || 'PDF inconnu').replace(/%20/g, ' ');
               console.log(`PDF catégorisé: "${pdfName}" -> ${pdfCategory}`);
               
-              // Format correct pour GA4 - assurer que pdf_category est envoyé correctement
+              // Envoyer les paramètres cohérents avec GTM
               window.gtag('event', 'pdf_view', {
                 'pdf_name': pdfName,
                 'pdf_category': pdfCategory,
+                'document_name': pdfName,  // Ajout pour compatibilité avec GTM
+                'document_type': 'pdf',    // Ajout pour compatibilité avec GTM
                 'event_category': 'document',
                 'value': 1
               });
@@ -73,6 +76,8 @@ export default function GoogleAnalytics() {
                 'event_name': 'pdf_view',
                 'pdf_name': pdfName,
                 'pdf_category': pdfCategory,
+                'document_name': pdfName,
+                'document_type': 'pdf',
                 'event_category': 'document',
                 'value': 1
               });
