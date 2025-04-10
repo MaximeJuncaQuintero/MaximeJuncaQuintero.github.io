@@ -20,36 +20,6 @@ Visit the live portfolio at [https://maximejuncaquintero.github.io]
 - **Reference Letters**: Testimonials and letters of recommendation
 - **Contact Form**: Easy way for visitors to get in touch
 
-## Project Structure
-
-```
-eportfolio/
-├── app/                      # Next.js app directory
-│   ├── components/           # React components
-│   │   ├── About.tsx         # About section
-│   │   ├── Certifications.tsx# Certifications section
-│   │   ├── Contact.tsx       # Contact form
-│   │   ├── Experience.tsx    # Work experience timeline
-│   │   ├── Hero.tsx          # Hero/landing section
-│   │   ├── Media.tsx         # Media gallery
-│   │   ├── Projects.tsx      # Projects overview
-│   │   ├── References.tsx    # Reference letters
-│   │   ├── ProjectDetail.tsx # Individual project view
-│   │   └── chatbot/          # Chatbot implementation
-│   ├── projects/             # Project-specific pages
-│   │   ├── amazon-kpi/       # Amazon KPI project
-│   │   ├── housedec/         # HouseDec project
-│   │   ├── innovation-report/# Innovation Report project
-│   │   ├── kits/             # KITS project
-│   │   └── tenoris-analytics/# Tenoris Analytics project
-│   ├── globals.css           # Global styles
-│   ├── layout.tsx            # Root layout
-│   └── page.tsx              # Home page
-├── public/                   # Static assets
-│   └── assets/               # Images, documents, etc.
-├── scripts/                  # Utility scripts
-└── ...                       # Configuration files
-```
 
 ## Technologies Used
 
@@ -70,11 +40,6 @@ eportfolio/
 
 Le site intègre Google Analytics et Google Tag Manager pour le suivi des interactions des utilisateurs. Voici les données collectées:
 
-### Tracking mis en place
-
-- **Google Analytics (GA4)**: ID G-0H68W3N8HC
-- **Google Tag Manager**: ID GTM-TX52GJ3Z
-
 ### Événements suivis
 
 1. **Navigation et visite**:
@@ -83,7 +48,7 @@ Le site intègre Google Analytics et Google Tag Manager pour le suivi des intera
    - Pages visitées
    - Source du trafic (d'où viennent les visiteurs)
 
-2. **Documents et téléchargements**:
+2. **Documents consultés**:
    - Clics sur les liens PDF (CV, documents de projets, certifications, médias)
    - Nombre et types de documents consultés
 
