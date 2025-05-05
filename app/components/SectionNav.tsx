@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { usePathname } from 'next/navigation'
 
 interface NavItem {
   id: string
@@ -11,6 +12,10 @@ interface NavItem {
 export default function SectionNav() {
   const [activeSection, setActiveSection] = useState<string>('')
   const [isVisible, setIsVisible] = useState<boolean>(false)
+  const pathname = usePathname()
+  
+  // Check if this is a project page
+  const isProjectPage = pathname?.includes('/projects')
 
   const navItems: NavItem[] = [
     { id: 'about', label: 'About' },
@@ -23,6 +28,9 @@ export default function SectionNav() {
   ]
 
   useEffect(() => {
+    // Don't add event listeners if on a project page
+    if (isProjectPage) return;
+    
     // Function to check which section is currently in view
     const handleScroll = () => {
       // Show nav after scrolling past hero section (adjust threshold as needed)
@@ -63,7 +71,7 @@ export default function SectionNav() {
     
     // Cleanup
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [navItems])
+  }, [navItems, isProjectPage])
 
   // Smooth scroll to section
   const scrollToSection = (id: string) => {
@@ -71,6 +79,11 @@ export default function SectionNav() {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
     }
+  }
+
+  // If this is a project page, don't render the navigation bar
+  if (isProjectPage) {
+    return null;
   }
 
   return (
