@@ -26,7 +26,7 @@ const projects: Project[] = [
   {
     title: "Tenoris Analytics",
     description: "Led the development of an MVP platform to democratize alternative financial data for individual investors across Europe. Built a web scraping infrastructure to collect financial data, with a Kubernetes-based architecture and GraphQL API for efficient data access and analysis.",
-    image: "/assets/projects/tenoris-analytics.jpg",
+    image: "/assets/projects/TA_Logo.png",
     link: "/projects/tenoris-analytics",
     tech: ["Web Scraping", "Kubernetes", "GraphQL", "Data Architecture"],
     logoStyle: "object-contain bg-white p-4 scale-150" // Zoomed in logo
@@ -42,10 +42,10 @@ const projects: Project[] = [
   {
     title: "Flowmap",
     description: "Developing an innovative SaaS platform that fully automates project progress tracking through AI-powered code analysis. The system integrates with GitHub repositories to provide real-time insights into feature development progress without requiring manual updates from development teams.",
-    image: "/assets/projects/flowmap.png",
+    image: "/assets/projects/TA_Logo.png",
     link: "/projects/flowmap",
     tech: ["AI/ML", "GitHub Integration", "SaaS Architecture", "Automated Reporting"],
-    logoStyle: "object-contain bg-white p-4 scale-150" // Flowmap logo needs white background and contain fit
+    logoStyle: "object-contain bg-white p-4 scale-150" // Tenoris Analytics logo for Flowmap project
   },
   {
     title: "KITS - Appliance Kit Service",
@@ -54,13 +54,6 @@ const projects: Project[] = [
     link: "/projects/kits",
     tech: ["Flask", "Python", "SQLAlchemy", "Jinja2"],
     logoStyle: "object-contain" // Use object-contain to prevent cropping
-  },
-  {
-    title: "HouseDec - Furniture E-commerce",
-    description: "Built a minimalist e-commerce platform for furniture sales featuring Stripe payments, order management, and an admin dashboard. Includes image upload and storage, email notifications, and WhatsApp integration.",
-    image: "/assets/projects/housedec.jpg",
-    link: "/projects/housedec",
-    tech: ["Flask", "Python", "SQLAlchemy", "Stripe", "AWS S3"],
   },
 ]
 

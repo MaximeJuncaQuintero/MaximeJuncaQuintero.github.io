@@ -7,7 +7,7 @@ export default function FlowmapPage() {
   return (
     <ProjectDetail
       title="Flowmap"
-      image="/assets/projects/flowmap.png"
+      image="/assets/projects/TA_Logo.png"
       logoStyle="object-contain bg-white p-4 scale-150"
       poc="Tenoris Analytics Team"
       meetingFrequency="Weekly"

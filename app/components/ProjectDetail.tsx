@@ -146,22 +146,22 @@ export default function ProjectDetail({
         
         {screenshots && screenshots.length > 0 && (
           <section>
-            <h2 className="text-2xl font-bold mb-6 text-purple-400">Screenshots</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <h2 className="text-2xl font-bold mb-6 text-purple-400">Project Screenshots</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {screenshots.map((screenshot, index) => (
                 <div key={index} className="bg-dark-700 rounded-lg overflow-hidden">
-                  <div className="relative h-48 w-full">
+                  <div className="relative h-80 w-full">
                     <Image
                       src={screenshot.image}
                       alt={screenshot.title}
                       fill
-                      className="object-cover"
+                      className="object-contain bg-white"
                     />
                   </div>
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-2">{screenshot.title}</h3>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-3">{screenshot.title}</h3>
                     {screenshot.description && (
-                      <p className="text-gray-300 text-sm">{screenshot.description}</p>
+                      <p className="text-gray-300 text-base leading-relaxed">{screenshot.description}</p>
                     )}
                   </div>
                 </div>

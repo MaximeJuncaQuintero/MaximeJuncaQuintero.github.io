@@ -7,7 +7,7 @@ export default function TenorisAnalyticsPage() {
   return (
     <ProjectDetail
       title="Tenoris Analytics"
-      image="/assets/projects/tenoris-analytics.jpg"
+      image="/assets/projects/TA_Logo.png"
       logoStyle="object-contain bg-white p-4 scale-150"
       poc="Kayané Robach (Data Scientist POC), Jérémy Dallard (SDE POC), Frédéric Ghenassia (PM POC)"
       meetingFrequency="Weekly"
