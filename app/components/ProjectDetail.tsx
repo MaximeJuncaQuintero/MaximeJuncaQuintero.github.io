@@ -22,6 +22,11 @@ interface ProjectDetailProps {
     title: string
     link: string
   }[]
+  screenshots?: {
+    title: string
+    image: string
+    description?: string
+  }[]
 }
 
 export default function ProjectDetail({
@@ -37,7 +42,8 @@ export default function ProjectDetail({
   method,
   result,
   tools,
-  documentation
+  documentation,
+  screenshots
 }: ProjectDetailProps) {
   return (
     <div className="p-6 md:p-8">
@@ -133,6 +139,32 @@ export default function ProjectDetail({
                   <FaDownload />
                   <span>{doc.title}</span>
                 </a>
+              ))}
+            </div>
+          </section>
+        )}
+        
+        {screenshots && screenshots.length > 0 && (
+          <section>
+            <h2 className="text-2xl font-bold mb-6 text-purple-400">Screenshots</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {screenshots.map((screenshot, index) => (
+                <div key={index} className="bg-dark-700 rounded-lg overflow-hidden">
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={screenshot.image}
+                      alt={screenshot.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold mb-2">{screenshot.title}</h3>
+                    {screenshot.description && (
+                      <p className="text-gray-300 text-sm">{screenshot.description}</p>
+                    )}
+                  </div>
+                </div>
               ))}
             </div>
           </section>

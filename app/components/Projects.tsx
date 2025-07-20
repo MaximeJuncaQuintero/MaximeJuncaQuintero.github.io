@@ -40,6 +40,14 @@ const projects: Project[] = [
     logoStyle: "object-contain bg-white p-4" // DCU logo needs white background and contain fit
   },
   {
+    title: "Flowmap",
+    description: "Developing an innovative SaaS platform that fully automates project progress tracking through AI-powered code analysis. The system integrates with GitHub repositories to provide real-time insights into feature development progress without requiring manual updates from development teams.",
+    image: "/assets/projects/flowmap.png",
+    link: "/projects/flowmap",
+    tech: ["AI/ML", "GitHub Integration", "SaaS Architecture", "Automated Reporting"],
+    logoStyle: "object-contain bg-white p-4 scale-150" // Flowmap logo needs white background and contain fit
+  },
+  {
     title: "KITS - Appliance Kit Service",
     description: "Developed an MVP for a home appliance service that helps buyers find appliances with complex dimensions, access financing, and benefit from a buyback system. The platform enables custom kit configuration, cost estimation, and consolidated delivery to save money.",
     image: "/assets/projects/kits-full.jpg",
