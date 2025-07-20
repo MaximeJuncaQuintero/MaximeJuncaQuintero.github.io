@@ -42,11 +42,11 @@ const experiences: ExperienceItem[] = [
     title: "Founder",
     company: "Tenoris Analytics",
     location: "Toulouse, France",
-    period: "Nov 2021 – Jan 2023",
+    period: "Nov 2021 – Present",
     description: [
-      "Led strategy and team management for alternative financial data project",
-      "Monitored technical progress",
-      "Developed solutions to production and financial challenges"
+      "Founded and lead digital project development company",
+      "Manage technical teams for innovative SaaS solutions",
+      "Oversee strategic direction and project execution"
     ],
     type: 'work'
   },
