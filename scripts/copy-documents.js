@@ -28,8 +28,8 @@ const lorSources = [
 ];
 
 // Copy CV
-const cvSource = '/Users/mjunca/ObsidianMD/ObsidianVault/Projects/eportfolio/public/assets/docs/CV Maxime Junca ANG24 v3.pdf';
-const cvDestination = 'public/assets/docs/CV Maxime Junca ANG24 v3.pdf';
+const cvSource = '/Users/mjunca/ObsidianMD/ObsidianVault/Projects/eportfolio/public/assets/docs/CV Maxime Junca ANG24 v4.pdf';
+const cvDestination = 'public/assets/docs/CV Maxime Junca ANG24 v4.pdf';
 
 // Copy NXU Think Tank Report
 const nxuSource = '/Users/mjunca/DataAnalytics/eportfolio/MaximeJuncaQuintero.github.io/docs/NXUTHINKTANK.pdf';
