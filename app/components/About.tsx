@@ -25,13 +25,13 @@ export default function About() {
           >
             <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Maxime Junca-Quintero</h3>
             <p className="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">
-              Hello! I'm Maxime Junca-Quintero, a project manager based in France, with a keen focus on innovation and strategic data analysis.
+              Hello! I'm Maxime Junca-Quintero, a project manager based in France, focused on innovation, strategy consulting, and strategic data analysis.
             </p>
             <p className="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">
-              My background in business analytics from Dublin City University, where I honed my skills in Python, SQL, and Machine Learning, complements my hands-on experience in managing key projects and leading strategic initiatives.
+              I am currently pursuing an MSc in Strategy, Consulting and Organization at ESCP Business School (2025–2026), building on a business analytics background from Dublin City University, where I honed my skills in Python, SQL, and Machine Learning. This academic foundation complements my hands-on experience managing key projects and leading strategic initiatives.
             </p>
             <p className="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">
-              My professional journey is underscored by a deep commitment to using advanced analytics and strategic insights to drive business decisions and innovation. With skills in project management, data analytics, operations management and strategic problem-solving, I am dedicated to transforming complex data into actionable insights.
+              My professional journey is driven by a consulting mindset—problem structuring, hypothesis-driven analysis, and stakeholder-ready recommendations—combined with advanced analytics to drive business decisions and innovation. With skills in project management, data analytics, operations management, and strategic problem-solving, I am dedicated to transforming complex data into actionable, business-ready insights.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-6 sm:mb-8">

@@ -15,6 +15,17 @@ interface ExperienceItem {
 
 const experiences: ExperienceItem[] = [
   {
+    title: "MSc – Strategy, Consulting and Organization",
+    company: "ESCP Business School",
+    location: "Paris, France",
+    period: "Sep 2025 – Dec 2026",
+    description: [
+      "Master's program focused on strategy, consulting, and organizational transformation",
+      "Strengthening structured problem-solving and client-ready communication"
+    ],
+    type: 'education'
+  },
+  {
     title: "Operations Manager",
     company: "Amazon Hub",
     location: "Paris, France",

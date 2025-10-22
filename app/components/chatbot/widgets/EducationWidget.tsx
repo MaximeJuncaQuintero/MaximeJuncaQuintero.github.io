@@ -12,6 +12,13 @@ interface EducationWidgetProps {
 export const EducationWidget: React.FC<EducationWidgetProps> = (props) => {
   const education = [
     {
+      degree: "MSc – Strategy, Consulting and Organization",
+      institution: "ESCP Business School",
+      location: "Paris, France",
+      period: "Sep 2025 – Dec 2026",
+      description: "Master's program focused on strategy, consulting, and organizational transformation."
+    },
+    {
       degree: "BBA - Specialization in Business Analytics",
       institution: "Dublin City University",
       location: "Dublin, Ireland",

@@ -66,6 +66,13 @@ class ActionProvider {
   // Education data with corrected information
   educationData = [
     {
+      degree: "MSc – Strategy, Consulting and Organization",
+      institution: "ESCP Business School",
+      location: "Paris, France",
+      period: "2025 – 2026",
+      description: "Master's program focused on strategy, consulting, and organizational transformation."
+    },
+    {
       degree: "BBA - Specialization in Business Analytics",
       institution: "Dublin City University",
       location: "Dublin, Ireland",

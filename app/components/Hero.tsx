@@ -47,11 +47,11 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             <h2 className="text-xl sm:text-2xl md:text-3xl text-purple-400 mb-6 sm:mb-8">
-              Project Management & Operations
+              Consulting & Project Management
             </h2>
             
             <p className="text-gray-300 max-w-2xl mx-auto mb-8 sm:mb-12 text-base sm:text-lg px-4 sm:px-0">
-              Business professional with expertise in project management and operations.
+              Business professional with expertise in strategy consulting, project management and operations.
               Passionate about leveraging data analytics to drive business innovation.
             </p>
             
