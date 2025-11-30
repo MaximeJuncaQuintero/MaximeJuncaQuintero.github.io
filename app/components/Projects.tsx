@@ -55,6 +55,14 @@ const projects: Project[] = [
     tech: ["Flask", "Python", "SQLAlchemy", "Jinja2"],
     logoStyle: "object-contain" // Use object-contain to prevent cropping
   },
+  {
+    title: "TalentGrid",
+    description: "An exploratory project addressing the disconnect between education and employment. Led as project manager to develop a three-sided platform connecting universities, students, and employers through rich ePortfolios and AI-powered engagement, replacing traditional CV-based hiring.",
+    image: "/assets/projects/Logo_black.png",
+    link: "/projects/talentgrid",
+    tech: ["No-Code Platform", "AI Chatbot", "ePortfolio System", "Three-Sided Marketplace"],
+    logoStyle: "object-contain bg-white p-4" // Logo needs white background and contain fit
+  },
 ]
 
 export default function Projects() {

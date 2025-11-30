@@ -150,12 +150,13 @@ export default function ProjectDetail({
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {screenshots.map((screenshot, index) => (
                 <div key={index} className="bg-dark-700 rounded-lg overflow-hidden">
-                  <div className="relative h-80 w-full">
+                  <div className="relative aspect-[16/10] w-full">
                     <Image
                       src={screenshot.image}
                       alt={screenshot.title}
                       fill
-                      className="object-contain bg-white"
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
                     />
                   </div>
                   <div className="p-6">
