@@ -48,14 +48,6 @@ const projects: Project[] = [
     logoStyle: "object-contain bg-white p-4 scale-150" // Tenoris Analytics logo for Flowmap project
   },
   {
-    title: "KITS - Appliance Kit Service",
-    description: "Developed an MVP for a home appliance service that helps buyers find appliances with complex dimensions, access financing, and benefit from a buyback system. The platform enables custom kit configuration, cost estimation, and consolidated delivery to save money.",
-    image: "/assets/projects/kits-full.jpg",
-    link: "/projects/kits",
-    tech: ["Flask", "Python", "SQLAlchemy", "Jinja2"],
-    logoStyle: "object-contain" // Use object-contain to prevent cropping
-  },
-  {
     title: "TalentGrid",
     description: "An exploratory project addressing the disconnect between education and employment. Led as project manager to develop a three-sided platform connecting universities, students, and employers through rich ePortfolios and AI-powered engagement, replacing traditional CV-based hiring.",
     image: "/assets/projects/Logo_black.png",

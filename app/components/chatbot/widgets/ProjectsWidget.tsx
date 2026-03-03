@@ -28,11 +28,6 @@ export const ProjectsWidget: React.FC<ProjectsWidgetProps> = (props) => {
       link: "/projects/innovation-report"
     },
     {
-      title: "KITS - Appliance Kit Service",
-      description: "Developed an MVP for a home appliance service with custom kit configuration and buyback system.",
-      link: "/projects/kits"
-    },
-    {
       title: "HouseDec - Furniture E-commerce",
       description: "Built a minimalist e-commerce platform for furniture sales with Stripe payments and admin dashboard.",
       link: "/projects/housedec"

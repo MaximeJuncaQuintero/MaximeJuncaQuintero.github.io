@@ -16,7 +16,7 @@ interface ProjectDetailProps {
   objective: string
   implementation: string
   method: string
-  result: string
+  result?: string
   tools: string[]
   documentation?: {
     title: string
@@ -105,10 +105,12 @@ export default function ProjectDetail({
           <p className="text-gray-300">{method}</p>
         </section>
         
-        <section>
-          <h2 className="text-2xl font-bold mb-4 text-purple-400">Result</h2>
-          <p className="text-gray-300">{result}</p>
-        </section>
+        {result && (
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-purple-400">Result</h2>
+            <p className="text-gray-300">{result}</p>
+          </section>
+        )}
         
         <section>
           <h2 className="text-2xl font-bold mb-4 text-purple-400">Tools and Technologies Used</h2>
