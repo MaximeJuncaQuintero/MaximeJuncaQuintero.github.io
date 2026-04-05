@@ -51,7 +51,8 @@ const config = {
   botName: "Maxime's Assistant",
   customStyles: {
     botMessageBox: {
-      background: 'linear-gradient(135deg, #1a3a6b 0%, #1e2d5a 100%)',
+      /* IConfig requires backgroundColor; .cb-window CSS applies the real gradient */
+      backgroundColor: '#1a3a6b',
     },
     chatButton: {
       backgroundColor: '#2563EB',
