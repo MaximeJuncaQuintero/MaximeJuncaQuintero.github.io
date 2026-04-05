@@ -44,17 +44,17 @@ const SuggestedQuestions: React.FC<WidgetProps> = (props) => {
 
 const config = {
   initialMessages: [
-    createChatBotMessage("Hello! I'm Maxime's virtual assistant. I can help you learn about his professional background and qualifications. What would you like to know?", {
+    createChatBotMessage("Hi — I'm Maxime's assistant. Ask me anything about his background, projects, or experience.", {
       widget: "options",
     }),
   ],
   botName: "Maxime's Assistant",
   customStyles: {
     botMessageBox: {
-      backgroundColor: 'rgb(139, 92, 246)',
+      background: 'linear-gradient(135deg, #1a3a6b 0%, #1e2d5a 100%)',
     },
     chatButton: {
-      backgroundColor: 'rgb(139, 92, 246)',
+      backgroundColor: '#2563EB',
     },
   },
   customComponents: {

@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations'
 import { FaBriefcase, FaGraduationCap, FaLayerGroup } from 'react-icons/fa'
 
 interface ExperienceItem {
@@ -87,15 +89,14 @@ const experiences: ExperienceItem[] = [
 ]
 
 type Filter = 'all' | 'work' | 'education'
-
-const filters: { key: Filter; label: string; Icon: React.ElementType }[] = [
-  { key: 'all',       label: 'All',       Icon: FaLayerGroup   },
-  { key: 'work',      label: 'Work',      Icon: FaBriefcase    },
-  { key: 'education', label: 'Education', Icon: FaGraduationCap },
-]
+const filterKeys: Filter[] = ['all', 'work', 'education']
+const filterIcons = [FaLayerGroup, FaBriefcase, FaGraduationCap]
 
 export default function Experience() {
   const [active, setActive] = useState<Filter>('all')
+  const { lang }  = useLanguage()
+  const t         = translations[lang].experience
+  const filters   = filterKeys.map((key, i) => ({ key, label: t.filters[i], Icon: filterIcons[i] }))
 
   const visible = experiences.filter(e => active === 'all' || e.type === active)
 
@@ -114,8 +115,8 @@ export default function Experience() {
             viewport={{ once: true }}
             className="mb-10 text-center"
           >
-            <span className="section-label">Career Path</span>
-            <h2 className="section-heading mb-8">Experience &amp; Education</h2>
+            <span className="section-label">{t.label}</span>
+            <h2 className="section-heading mb-8">{t.heading}</h2>
 
             {/* Underline tab filter — centered */}
             <div className="flex items-end justify-center border-b" style={{ borderColor: 'var(--border)' }}>

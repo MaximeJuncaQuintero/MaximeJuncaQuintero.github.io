@@ -3,6 +3,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { FaExternalLinkAlt, FaUsers } from 'react-icons/fa'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations'
 
 interface MediaItem {
   title:       string
@@ -27,6 +29,8 @@ const mediaItems: MediaItem[] = [
 ]
 
 export default function Media() {
+  const { lang } = useLanguage()
+  const t        = translations[lang].media
   if (mediaItems.length === 0) return null
 
   return (
@@ -40,8 +44,8 @@ export default function Media() {
           viewport={{ once: true }}
           className="mb-12 text-center"
         >
-          <span className="section-label">Thought Leadership</span>
-          <h2 className="section-heading">Media &amp; Publications</h2>
+          <span className="section-label">{t.label}</span>
+          <h2 className="section-heading">{t.heading}</h2>
         </motion.div>
 
         <div className="max-w-4xl mx-auto space-y-5">
@@ -106,7 +110,7 @@ export default function Media() {
                   style={{ color: 'var(--text-muted)' }}
                 >
                   <FaUsers className="text-[10px]" style={{ color: 'var(--secondary)' }} />
-                  {item.authors}
+                  {t.coAuthored} · NXU Think Tank
                 </p>
 
                 {/* Abstract */}
@@ -144,7 +148,7 @@ export default function Media() {
                   className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-200"
                   style={{ color: 'var(--accent)' }}
                 >
-                  Read Full Report
+                  {t.read}
                   <FaExternalLinkAlt className="text-[10px] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
                 </a>
               </div>

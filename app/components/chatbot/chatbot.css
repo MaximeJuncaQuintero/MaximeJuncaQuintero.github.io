@@ -1,1183 +1,619 @@
-.react-chatbot-kit-chat-container {
-  width: 100% !important;
-  height: 100% !important;
-  background-color: rgb(30, 30, 30) !important;
-  border-radius: 1rem !important;
-  overflow: hidden !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
-  transition: all 0.3s ease-in-out !important;
-  border: 1px solid rgba(139, 92, 246, 0.2) !important;
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHATBOT — Premium dark / tech design
+   Always-dark regardless of site theme.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Design tokens + site CSS-var overrides ───────────────────────────────── */
+/* Setting on .cb-window forces ALL descendant var() lookups to use dark values
+   regardless of the site's light/dark theme. */
+.cb-window {
+  /* Chatbot-private tokens */
+  --cb-bg:        #080F1C;
+  --cb-surface:   #101C35;
+  --cb-surface2:  #162540;
+  --cb-border:    rgba(59,130,246,0.14);
+  --cb-accent:    #2563EB;
+  --cb-accent2:   #6366F1;
+  --cb-text:      #E2E8F0;
+  --cb-muted:     #64748B;
+  --cb-glow:      rgba(37,99,235,0.25);
+
+  /* Override every site CSS variable that widgets use */
+  --bg:           #080F1C;
+  --bg-alt:       #080F1C;
+  --surface:      #101C35;
+  --surface-2:    #162540;
+  --border:       rgba(59,130,246,0.14);
+  --text:         #E2E8F0;
+  --text-muted:   #94A3B8;
+  --accent:       #3B82F6;
+  --secondary:    #818CF8;
 }
 
-.react-chatbot-kit-chat-inner-container {
-  height: 100% !important;
-  background-color: rgb(30, 30, 30) !important;
-}
-
-.react-chatbot-kit-chat-header {
-  display: none !important; /* Remove the double header */
-}
-
-.react-chatbot-kit-chat-input-container {
-  background-color: rgb(40, 40, 40) !important;
-  border-top: 1px solid rgba(139, 92, 246, 0.2) !important;
-  padding: 0.75rem !important;
-}
-
-.react-chatbot-kit-chat-input {
-  background-color: rgb(50, 50, 50) !important;
-  color: white !important;
-  border: none !important;
-  font-size: 0.95rem !important;
-  border-radius: 1.5rem !important;
-  padding: 0.75rem 1.25rem !important;
-  width: 100% !important;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  letter-spacing: 0.01em !important;
-}
-
-.react-chatbot-kit-chat-input:focus {
-  outline: none !important;
-  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5) !important;
-  background-color: rgb(55, 55, 55) !important;
-}
-
-.react-chatbot-kit-chat-input-form {
-  display: flex !important;
-  align-items: center !important;
-}
-
-.react-chatbot-kit-chat-btn-send {
-  background-color: rgb(139, 92, 246) !important;
-  border-radius: 50% !important;
-  margin-left: 0.75rem !important;
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 0.2s ease !important;
-  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3) !important;
-}
-
-.react-chatbot-kit-chat-btn-send:hover {
-  background-color: rgb(124, 58, 237) !important;
-  transform: scale(1.05) !important;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4) !important;
-}
-
-.react-chatbot-kit-chat-btn-send-icon {
-  fill: white !important;
-  width: 1.25rem !important;
-  height: 1.25rem !important;
-}
-
-.react-chatbot-kit-chat-message-container {
-  background-color: rgb(30, 30, 30) !important;
-  padding: 1.25rem !important;
-  overflow-y: auto !important;
-  scroll-behavior: smooth !important;
-  background-image: radial-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
-  background-size: 20px 20px !important;
-}
-
-/* Bot message styling - left aligned */
-.react-chatbot-kit-chat-bot-message-container {
-  display: flex !important;
-  justify-content: flex-start !important;
-  width: 100% !important;
-  margin-bottom: 1.25rem !important;
-  animation: fadeInLeft 0.3s ease-out !important;
-}
-
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.react-chatbot-kit-chat-bot-message {
-  background-color: rgb(139, 92, 246) !important;
-  background-image: linear-gradient(135deg, rgb(139, 92, 246) 0%, rgb(124, 58, 237) 100%) !important;
-  color: white !important;
-  border-radius: 1.25rem !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-  font-size: 0.95rem !important;
-  line-height: 1.6 !important;
-  max-width: 85% !important;
-  margin-bottom: 0 !important;
-  margin-right: auto !important;
-  margin-left: 0 !important;
-  padding: 0.9rem 1.2rem !important;
-  word-break: break-word !important;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  letter-spacing: 0.01em !important;
-}
-
-.react-chatbot-kit-chat-bot-message-arrow {
-  border-right-color: rgb(139, 92, 246) !important;
-}
-
-.react-chatbot-kit-chat-bot-avatar-container {
-  background-color: transparent !important;
-  margin-right: 0.75rem !important;
-}
-
-.react-chatbot-kit-chat-bot-avatar-icon {
-  fill: white !important;
-}
-
-/* User message styling - right aligned */
-.react-chatbot-kit-user-chat-message-container {
-  display: flex !important;
-  justify-content: flex-end !important;
-  width: 100% !important;
-  margin-bottom: 1.25rem !important;
-  animation: fadeInRight 0.3s ease-out !important;
-}
-
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.react-chatbot-kit-user-chat-message {
-  background-color: rgb(60, 60, 60) !important;
-  color: white !important;
-  border-radius: 1.25rem !important;
-  font-size: 0.95rem !important;
-  line-height: 1.6 !important;
-  max-width: 85% !important;
-  margin-bottom: 0 !important;
-  margin-left: auto !important;
-  margin-right: 0 !important;
-  padding: 0.9rem 1.2rem !important;
-  word-break: break-word !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  letter-spacing: 0.01em !important;
-}
-
-.react-chatbot-kit-user-chat-message-arrow {
-  border-left-color: rgb(60, 60, 60) !important;
-}
-
-/* Widget container styling */
-.react-chatbot-kit-chat-bot-message-container .react-chatbot-kit-chat-bot-message-container {
-  margin-top: 0 !important;
-}
-
-/* Ensure widgets are properly displayed below text */
-.react-chatbot-kit-chat-bot-message + div {
-  margin-top: 0.75rem !important;
-  margin-bottom: 1.25rem !important;
-  width: 100% !important;
-}
-
-.options-container {
+/* ── Window ───────────────────────────────────────────────────────────────── */
+.cb-window {
+  width: calc(100vw - 32px);
+  max-width: 520px;
+  height: min(82vh, 680px);
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
-  margin-top: 0.75rem;
-  width: 100%;
-  max-width: 90%;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--cb-bg);
+  border: 1px solid var(--cb-border);
+  box-shadow:
+    0 0 0 1px rgba(37,99,235,0.08),
+    0 24px 64px rgba(0,0,0,0.6),
+    0 4px 24px rgba(37,99,235,0.12);
+  position: absolute;
+  bottom: 72px;
+  right: 0;
+  transform-origin: bottom right;
 }
 
-.option-button {
-  background-color: rgb(50, 50, 50);
-  color: white;
-  border: none;
-  border-radius: 0.75rem;
-  padding: 0.75rem 1rem;
-  text-align: left;
-  transition: all 0.25s;
-  font-size: 0.9rem;
+/* ── Animations ───────────────────────────────────────────────────────────── */
+.cb-enter {
+  animation: cbEnter 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.cb-exit {
+  animation: cbExit 0.22s ease-in forwards;
+}
+
+@keyframes cbEnter {
+  from { opacity: 0; transform: scale(0.88) translateY(16px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+@keyframes cbExit {
+  from { opacity: 1; transform: scale(1)    translateY(0); }
+  to   { opacity: 0; transform: scale(0.92) translateY(12px); }
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.cb-header {
   display: flex;
   align-items: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  letter-spacing: 0.01em !important;
-  border: 1px solid rgba(139, 92, 246, 0.1);
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #0D1B35 0%, #0A1628 100%);
+  border-bottom: 1px solid var(--cb-border);
+  flex-shrink: 0;
+  position: relative;
 }
 
-.option-button:hover {
-  background-color: rgb(60, 60, 60);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  border-color: rgba(139, 92, 246, 0.3);
+.cb-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cb-accent) 0%, var(--cb-accent2) 100%);
 }
 
-.option-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.cb-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.option-button svg {
-  margin-right: 0.625rem;
-  color: rgb(139, 92, 246);
-  font-size: 1rem;
-  min-width: 1rem;
-}
-
-/* Widget styling */
-.experience-widget,
-.projects-widget,
-.skills-widget,
-.education-widget {
-  margin-top: 0.75rem !important;
-  margin-bottom: 1.25rem !important;
-  font-size: 0.9rem !important;
-  width: 100% !important;
-  max-width: 90% !important;
-  overflow: hidden !important;
-  background-color: rgb(40, 40, 40) !important;
-  border-radius: 1rem !important;
-  border: 1px solid rgba(139, 92, 246, 0.2) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-  animation: fadeIn 0.3s ease-out !important;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  letter-spacing: 0.01em !important;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Fix for project widgets */
-.projects-widget a {
-  display: block !important;
-  margin-bottom: 0.5rem !important;
-  text-decoration: none !important;
-  color: rgb(139, 92, 246) !important;
-  transition: color 0.2s !important;
-  font-weight: 500 !important;
-}
-
-.projects-widget a:hover {
-  text-decoration: none !important;
-  color: rgb(167, 139, 250) !important;
-}
-
-.projects-widget h4 {
-  margin-top: 0 !important;
-  margin-bottom: 0.25rem !important;
-  font-size: 1rem !important;
-}
-
-.projects-widget p {
-  margin-top: 0 !important;
-  margin-bottom: 0.75rem !important;
-  color: rgb(209, 213, 219) !important;
-}
-
-/* Ensure consistent styling across all widgets */
-.experience-widget h3,
-.projects-widget h3,
-.skills-widget h3,
-.education-widget h3 {
-  font-size: 1.1rem !important;
-  margin-bottom: 0.75rem !important;
-  color: rgb(139, 92, 246) !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.01em !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-.experience-widget h3 svg,
-.projects-widget h3 svg,
-.skills-widget h3 svg,
-.education-widget h3 svg {
-  margin-right: 0.5rem !important;
-}
-
-.experience-widget h4,
-.projects-widget h4,
-.skills-widget h4,
-.education-widget h4 {
-  font-size: 1rem !important;
-  font-weight: 500 !important;
-  color: rgb(229, 231, 235) !important;
-  margin-bottom: 0.25rem !important;
-}
-
-.experience-widget p,
-.projects-widget p,
-.skills-widget p,
-.education-widget p {
-  font-size: 0.9rem !important;
-  line-height: 1.6 !important;
-  color: rgb(209, 213, 219) !important;
-  margin-bottom: 0.5rem !important;
-}
-
-/* Mobile responsiveness improvements */
-@media (max-width: 640px) {
-  .options-container {
-    max-width: 100%;
-  }
-  
-  .option-button {
-    font-size: 0.85rem;
-    padding: 0.7rem 0.9rem;
-  }
-  
-  .experience-widget,
-  .projects-widget,
-  .skills-widget,
-  .education-widget {
-    max-width: 100% !important;
-  }
-  
-  .react-chatbot-kit-chat-bot-message,
-  .react-chatbot-kit-user-chat-message {
-    font-size: 0.9rem !important;
-    max-width: 90% !important;
-    padding: 0.8rem 1rem !important;
-  }
-  
-  .react-chatbot-kit-chat-input {
-    font-size: 0.9rem !important;
-    padding: 0.7rem 1rem !important;
-  }
-  
-  .react-chatbot-kit-chat-btn-send {
-    width: 2.25rem !important;
-    height: 2.25rem !important;
-  }
-}
-
-/* Clear chat button */
-.clear-chat-button {
-  background-color: rgba(139, 92, 246, 0.2);
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.85rem;
+.cb-header-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--cb-accent) 0%, var(--cb-accent2) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 0.75rem;
-  right: 3.5rem;
-  z-index: 10;
-  transition: all 0.2s;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-.clear-chat-button:hover {
-  background-color: rgba(139, 92, 246, 0.3);
-  transform: translateY(-1px);
-}
-
-.clear-chat-button svg {
-  margin-right: 0.25rem;
   color: white;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(37,99,235,0.4);
 }
 
-/* Formatting for role suitability answers */
-.react-chatbot-kit-chat-bot-message strong,
-.react-chatbot-kit-chat-bot-message b {
-  font-weight: 600 !important;
-  color: white !important;
+.cb-header-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #F1F5F9;
+  letter-spacing: 0.01em;
+  margin: 0;
+  line-height: 1.2;
 }
 
-/* Add a subtle highlight to bullet points */
-.react-chatbot-kit-chat-bot-message ul {
-  list-style-type: none !important;
-  padding-left: 1rem !important;
-  margin: 0.5rem 0 !important;
+.cb-header-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--cb-muted);
+  margin: 0;
+  margin-top: 2px;
+  line-height: 1;
 }
 
-.react-chatbot-kit-chat-bot-message ul li {
-  margin-bottom: 0.25rem !important;
+.cb-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22C55E;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(34,197,94,0.7);
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+.cb-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cb-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.05);
+  color: #94A3B8;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  line-height: 1;
+}
+
+.cb-action-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: #E2E8F0;
+  border-color: rgba(255,255,255,0.15);
+}
+
+.cb-close-btn {
+  padding: 6px 8px;
+}
+
+/* ── Messages area ────────────────────────────────────────────────────────── */
+.cb-messages {
+  flex: 1;
+  min-height: 0;          /* critical: lets flex child shrink & scroll */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* react-chatbot-kit overrides — full flex chain must be consistent */
+.cb-window .react-chatbot-kit-chat-container {
+  flex: 1 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  background: var(--cb-bg) !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  border: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.cb-window .react-chatbot-kit-chat-inner-container {
+  /* Must be a flex column so input is NOT overlaid on messages */
   position: relative !important;
-  padding-left: 1.25rem !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  background: var(--cb-bg) !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-.react-chatbot-kit-chat-bot-message ul li::before {
-  content: "•" !important;
-  color: rgba(167, 139, 250, 0.8) !important;
-  font-weight: bold !important;
+.cb-window .react-chatbot-kit-chat-header {
+  display: none !important;
+}
+
+/* Message container — only scrollable region; sits ABOVE input (not behind it) */
+.cb-window .react-chatbot-kit-chat-message-container {
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  background: var(--cb-bg) !important;
+  padding: 16px 16px 20px !important;
+  scroll-behavior: smooth !important;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(37,99,235,0.05) 0%, transparent 70%) !important;
+}
+
+/* Scrollbar */
+.cb-window .react-chatbot-kit-chat-message-container::-webkit-scrollbar {
+  width: 4px;
+}
+.cb-window .react-chatbot-kit-chat-message-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cb-window .react-chatbot-kit-chat-message-container::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+}
+.cb-window .react-chatbot-kit-chat-message-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* ── Bot messages ─────────────────────────────────────────────────────────── */
+.cb-window .react-chatbot-kit-chat-bot-message-container {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  width: 100% !important;
+  margin-bottom: 16px !important;
+  animation: msgIn 0.22s ease-out !important;
+}
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cb-window .react-chatbot-kit-chat-bot-message {
+  background: linear-gradient(135deg, #1a3a6b 0%, #1e2d5a 100%) !important;
+  color: #E2E8F0 !important;
+  border-radius: 4px 16px 16px 16px !important;
+  border: 1px solid rgba(59,130,246,0.2) !important;
+  font-size: 13.5px !important;
+  line-height: 1.65 !important;
+  max-width: 82% !important;
+  padding: 11px 14px !important;
+  word-break: break-word !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  box-shadow: 0 2px 16px rgba(37,99,235,0.12) !important;
+  margin: 0 !important;
+}
+
+.cb-window .react-chatbot-kit-chat-bot-message-arrow {
+  display: none !important;
+}
+
+/* ── Bot avatar ───────────────────────────────────────────────────────────── */
+.cb-window .react-chatbot-kit-chat-bot-avatar-container {
+  background: transparent !important;
+  margin-right: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+/* ── User messages ────────────────────────────────────────────────────────── */
+.cb-window .react-chatbot-kit-user-chat-message-container {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: flex-end !important;
+  width: 100% !important;
+  margin-bottom: 16px !important;
+  animation: msgIn 0.22s ease-out !important;
+}
+
+.cb-window .react-chatbot-kit-user-chat-message {
+  background: var(--cb-surface2) !important;
+  color: #E2E8F0 !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 16px 4px 16px 16px !important;
+  font-size: 13.5px !important;
+  line-height: 1.65 !important;
+  max-width: 82% !important;
+  padding: 11px 14px !important;
+  word-break: break-word !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  margin: 0 !important;
+}
+
+.cb-window .react-chatbot-kit-user-chat-message-arrow {
+  display: none !important;
+}
+
+.cb-window .react-chatbot-kit-user-avatar {
+  margin-left: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+/* ── Input bar — kill library absolute positioning (it hid content under the bar) ─ */
+.cb-window .react-chatbot-kit-chat-input-container {
+  position: relative !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  flex-shrink: 0 !important;
+  width: 100% !important;
+  background: var(--cb-surface) !important;
+  border-top: 1px solid var(--cb-border) !important;
+  padding: 12px 14px !important;
+  z-index: 2 !important;
+}
+
+.cb-window .react-chatbot-kit-chat-input-form {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: var(--cb-surface2) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 14px !important;
+  padding: 4px 4px 4px 14px !important;
+  transition: border-color 0.2s !important;
+}
+
+.cb-window .react-chatbot-kit-chat-input-form:focus-within {
+  border-color: rgba(37,99,235,0.5) !important;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1) !important;
+}
+
+.cb-window .react-chatbot-kit-chat-input {
+  background: transparent !important;
+  color: var(--cb-text) !important;
+  border: none !important;
+  font-size: 13.5px !important;
+  padding: 8px 0 !important;
+  width: 100% !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  outline: none !important;
+}
+
+.cb-window .react-chatbot-kit-chat-input::placeholder {
+  color: var(--cb-muted) !important;
+}
+
+.cb-window .react-chatbot-kit-chat-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.cb-window .react-chatbot-kit-chat-btn-send {
+  background: linear-gradient(135deg, var(--cb-accent) 0%, var(--cb-accent2) 100%) !important;
+  border-radius: 10px !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.18s ease !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.35) !important;
+  flex-shrink: 0 !important;
+}
+
+.cb-window .react-chatbot-kit-chat-btn-send:hover {
+  transform: scale(1.06) !important;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.5) !important;
+}
+
+.cb-window .react-chatbot-kit-chat-btn-send-icon {
+  fill: white !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* ── Option buttons ───────────────────────────────────────────────────────── */
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.option-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 13px;
+  background: var(--cb-surface);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 11px;
+  color: #CBD5E1;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s ease;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.option-button:hover {
+  background: var(--cb-surface2);
+  border-color: rgba(37,99,235,0.35);
+  color: #F1F5F9;
+  transform: translateX(2px);
+  box-shadow: 0 2px 12px rgba(37,99,235,0.1);
+}
+
+.option-button svg,
+.option-button > *:first-child {
+  color: var(--cb-accent);
+  flex-shrink: 0;
+  font-size: 14px;
+  width: 16px;
+}
+
+/* ── Widgets ──────────────────────────────────────────────────────────────── */
+.cb-window .experience-widget,
+.cb-window .projects-widget,
+.cb-window .skills-widget,
+.cb-window .education-widget {
+  margin-top: 10px !important;
+  margin-bottom: 16px !important;
+  width: 100% !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--cb-border) !important;
+  background: var(--cb-surface) !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* ── Bot message text content ─────────────────────────────────────────────── */
+.cb-window .react-chatbot-kit-chat-bot-message strong,
+.cb-window .react-chatbot-kit-chat-bot-message b {
+  font-weight: 600 !important;
+  color: #93C5FD !important;
+}
+
+.cb-window .react-chatbot-kit-chat-bot-message ul {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 6px 0 !important;
+}
+
+.cb-window .react-chatbot-kit-chat-bot-message ul li {
+  position: relative !important;
+  padding-left: 14px !important;
+  margin-bottom: 4px !important;
+  color: #CBD5E1 !important;
+}
+
+.cb-window .react-chatbot-kit-chat-bot-message ul li::before {
+  content: '›' !important;
   position: absolute !important;
   left: 0 !important;
-  top: 0 !important;
+  color: var(--cb-accent) !important;
+  font-weight: 700 !important;
 }
 
-/* Role suitability styling */
-.role-suitability {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.75rem !important;
-}
-
-.role-suitability p {
-  margin: 0 !important;
-}
-
-.role-section {
-  background-color: rgba(60, 60, 60, 0.5) !important;
-  border-radius: 0.75rem !important;
-  padding: 0.75rem !important;
-  margin-top: 0.25rem !important;
-  border-left: 3px solid rgba(139, 92, 246, 0.7) !important;
-}
-
-.role-section h4 {
-  margin: 0 0 0.5rem 0 !important;
-  font-size: 0.95rem !important;
-  color: rgba(167, 139, 250, 0.9) !important;
-  font-weight: 600 !important;
-}
-
-/* Amazon roles styling */
-.amazon-roles {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.75rem !important;
-}
-
-.role-item {
-  background-color: rgba(60, 60, 60, 0.5) !important;
-  border-radius: 0.75rem !important;
-  padding: 0.75rem !important;
-  margin-top: 0.25rem !important;
-  border-left: 3px solid rgba(139, 92, 246, 0.7) !important;
-}
-
-.role-item h4 {
-  margin: 0 0 0.25rem 0 !important;
-  font-size: 0.95rem !important;
-  color: white !important;
-  font-weight: 600 !important;
-}
-
-.role-period {
-  font-size: 0.8rem !important;
-  color: rgba(167, 139, 250, 0.9) !important;
-  margin: 0 0 0.5rem 0 !important;
-}
-
-/* Programming languages styling */
-.programming-languages {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.5rem !important;
-}
-
-.programming-languages p {
-  margin: 0 !important;
-}
-
-/* Unique qualities styling */
-.unique-qualities {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.5rem !important;
-}
-
-.unique-qualities p {
-  margin: 0 !important;
-}
-
-/* Improve the header styling */
-.chatbot-header {
-  background-image: linear-gradient(135deg, rgb(139, 92, 246) 0%, rgb(124, 58, 237) 100%) !important;
-  padding: 0.9rem 1.25rem !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-.chatbot-header h3 {
-  font-size: 1.1rem !important;
-  font-weight: 600 !important;
-  color: white !important;
-  margin: 0 !important;
-  letter-spacing: 0.01em !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-.chatbot-header h3 svg {
-  margin-right: 0.5rem !important;
-}
-
-/* Add a subtle typing indicator animation */
-.typing-indicator {
-  display: flex !important;
-  align-items: center !important;
-  margin-top: 0.5rem !important;
-}
-
-.typing-indicator span {
-  height: 8px !important;
-  width: 8px !important;
-  background-color: rgba(139, 92, 246, 0.6) !important;
-  border-radius: 50% !important;
-  display: inline-block !important;
-  margin-right: 5px !important;
-  animation: typing 1.3s infinite ease-in-out !important;
-}
-
-.typing-indicator span:nth-child(2) {
-  animation-delay: 0.2s !important;
-}
-
-.typing-indicator span:nth-child(3) {
-  animation-delay: 0.4s !important;
-  margin-right: 0 !important;
-}
-
-@keyframes typing {
-  0%, 60%, 100% {
-    transform: translateY(0);
-  }
-  30% {
-    transform: translateY(-5px);
-  }
-}
-
-/* Ensure HTML content in messages is styled correctly */
-.react-chatbot-kit-chat-bot-message div {
-  color: white !important;
-  font-size: 0.95rem !important;
-  line-height: 1.6 !important;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  letter-spacing: 0.01em !important;
-}
-
-/* Ensure all HTML elements in messages have proper styling */
-.react-chatbot-kit-chat-bot-message div p {
-  margin-bottom: 0.5rem !important;
-}
-
-.react-chatbot-kit-chat-bot-message div strong,
-.react-chatbot-kit-chat-bot-message div b {
-  font-weight: 600 !important;
-  color: white !important;
-}
-
-.react-chatbot-kit-chat-bot-message div ul {
-  list-style-type: none !important;
-  padding-left: 1rem !important;
-  margin: 0.5rem 0 !important;
-}
-
-.react-chatbot-kit-chat-bot-message div ul li {
-  margin-bottom: 0.25rem !important;
-  position: relative !important;
-  padding-left: 1.25rem !important;
-}
-
-.react-chatbot-kit-chat-bot-message div ul li::before {
-  content: "•" !important;
-  color: rgba(167, 139, 250, 0.8) !important;
-  font-weight: bold !important;
-  position: absolute !important;
-  left: 0 !important;
-  top: 0 !important;
-}
-
-/* Ensure role suitability styling works with HTML content */
-.react-chatbot-kit-chat-bot-message .role-suitability {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.75rem !important;
-}
-
-.react-chatbot-kit-chat-bot-message .role-section {
-  background-color: rgba(60, 60, 60, 0.5) !important;
-  border-radius: 0.75rem !important;
-  padding: 0.75rem !important;
-  margin-top: 0.25rem !important;
-  border-left: 3px solid rgba(139, 92, 246, 0.7) !important;
-}
-
-.react-chatbot-kit-chat-bot-message .role-section h4 {
-  margin: 0 0 0.5rem 0 !important;
-  font-size: 0.95rem !important;
-  color: rgba(167, 139, 250, 0.9) !important;
-  font-weight: 600 !important;
-}
-
-/* Amazon roles styling */
-.react-chatbot-kit-chat-bot-message .amazon-roles {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.75rem !important;
-}
-
-.react-chatbot-kit-chat-bot-message .role-item {
-  background-color: rgba(60, 60, 60, 0.5) !important;
-  border-radius: 0.75rem !important;
-  padding: 0.75rem !important;
-  margin-top: 0.25rem !important;
-  border-left: 3px solid rgba(139, 92, 246, 0.7) !important;
-}
-
-.react-chatbot-kit-chat-bot-message .role-item h4 {
-  margin: 0 0 0.25rem 0 !important;
-  font-size: 0.95rem !important;
-  color: white !important;
-  font-weight: 600 !important;
-}
-
-.react-chatbot-kit-chat-bot-message .role-period {
-  font-size: 0.8rem !important;
-  color: rgba(167, 139, 250, 0.9) !important;
-  margin: 0 0 0.5rem 0 !important;
-}
-
-/* Programming languages styling */
-.react-chatbot-kit-chat-bot-message .programming-languages {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.5rem !important;
-}
-
-.react-chatbot-kit-chat-bot-message .programming-languages p {
-  margin: 0 !important;
-}
-
-/* Unique qualities styling */
-.react-chatbot-kit-chat-bot-message .unique-qualities {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.5rem !important;
-}
-
-.react-chatbot-kit-chat-bot-message .unique-qualities p {
-  margin: 0 !important;
-}
-
-/* New card-based styling for role suitability */
-.role-card {
-  background-color: rgba(50, 50, 50, 0.6) !important;
-  border-radius: 0.75rem !important;
-  overflow: hidden !important;
-  margin-bottom: 0.5rem !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid rgba(139, 92, 246, 0.2) !important;
-}
-
-.role-card-header {
-  padding: 0.75rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  background-color: rgba(60, 60, 60, 0.7) !important;
-  border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
-}
-
-.role-card-header h3 {
-  margin: 0 !important;
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-  color: white !important;
-}
-
-.role-fit-badge {
-  padding: 0.25rem 0.5rem !important;
-  border-radius: 0.5rem !important;
-  font-size: 0.8rem !important;
-  font-weight: 600 !important;
-  color: white !important;
-  background-color: rgba(139, 92, 246, 0.7) !important;
-  white-space: nowrap !important;
-}
-
-.role-fit-badge.excellent-fit,
-.role-fit-badge.strong-fit,
-.role-fit-badge.high {
-  background-color: rgba(139, 92, 246, 0.8) !important;
-}
-
-.role-fit-badge.medium-high {
-  background-color: rgba(139, 92, 246, 0.6) !important;
-}
-
-.role-fit-badge.low-medium,
-.role-fit-badge.low {
-  background-color: rgba(139, 92, 246, 0.4) !important;
-}
-
-.role-card > p {
-  padding: 0.75rem !important;
-  margin: 0 !important;
-  border-bottom: 1px solid rgba(139, 92, 246, 0.1) !important;
-  font-size: 0.9rem !important;
-}
-
-.role-card-section {
-  padding: 0.75rem !important;
-}
-
-.role-card-section h4 {
-  margin: 0 0 0.5rem 0 !important;
-  font-size: 0.9rem !important;
-  color: rgba(167, 139, 250, 0.9) !important;
-  font-weight: 600 !important;
-}
-
-.role-card-list {
-  list-style-type: none !important;
-  padding-left: 0.5rem !important;
-  margin: 0 !important;
-}
-
-.role-card-list li {
-  margin-bottom: 0.25rem !important;
-  position: relative !important;
-  padding-left: 1rem !important;
-  font-size: 0.85rem !important;
-}
-
-.role-card-list li::before {
-  content: "•" !important;
-  color: rgba(167, 139, 250, 0.8) !important;
-  position: absolute !important;
-  left: 0 !important;
-  top: 0 !important;
-}
-
-.skill-tags {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 0.4rem !important;
-}
-
-.skill-tag {
-  background-color: rgba(139, 92, 246, 0.15) !important;
-  color: rgba(209, 213, 219, 0.9) !important;
-  padding: 0.2rem 0.4rem !important;
-  border-radius: 0.4rem !important;
-  font-size: 0.75rem !important;
-  border: 1px solid rgba(139, 92, 246, 0.2) !important;
-}
-
-/* Amazon roles card styling */
-.amazon-roles-container {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.5rem !important;
-}
-
-.amazon-role-card {
-  background-color: rgba(50, 50, 50, 0.6) !important;
-  border-radius: 0.75rem !important;
-  overflow: hidden !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid rgba(139, 92, 246, 0.2) !important;
-}
-
-.amazon-role-header {
-  padding: 0.75rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  background-color: rgba(60, 60, 60, 0.7) !important;
-  border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
-}
-
-.amazon-role-header h4 {
-  margin: 0 !important;
-  font-size: 0.9rem !important;
-  font-weight: 600 !important;
-  color: white !important;
-}
-
-.amazon-role-period {
-  font-size: 0.75rem !important;
-  color: rgba(167, 139, 250, 0.9) !important;
-  white-space: nowrap !important;
-  margin-left: 0.5rem !important;
-}
-
-.amazon-role-company {
-  padding: 0.5rem 0.75rem 0 0.75rem !important;
-  font-size: 0.8rem !important;
-  color: rgba(209, 213, 219, 0.9) !important;
-  font-style: italic !important;
-}
-
-.amazon-role-card p {
-  padding: 0.25rem 0.75rem 0.75rem 0.75rem !important;
-  margin: 0 !important;
-  font-size: 0.85rem !important;
-}
-
-/* Programming languages card styling */
-.programming-container {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.5rem !important;
-}
-
-.programming-card {
-  background-color: rgba(50, 50, 50, 0.6) !important;
-  border-radius: 0.75rem !important;
-  overflow: hidden !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid rgba(139, 92, 246, 0.2) !important;
-}
-
-.programming-header {
-  padding: 0.75rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  background-color: rgba(60, 60, 60, 0.7) !important;
-  border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
-}
-
-.programming-header h4 {
-  margin: 0 !important;
-  font-size: 0.9rem !important;
-  font-weight: 600 !important;
-  color: white !important;
-}
-
-.programming-level {
-  padding: 0.2rem 0.4rem !important;
-  border-radius: 0.4rem !important;
-  font-size: 0.75rem !important;
-  font-weight: 600 !important;
-  color: white !important;
-  background-color: rgba(139, 92, 246, 0.7) !important;
-  white-space: nowrap !important;
-}
-
-.programming-level.advanced {
-  background-color: rgba(139, 92, 246, 0.8) !important;
-}
-
-.programming-level.intermediate {
-  background-color: rgba(139, 92, 246, 0.6) !important;
-}
-
-.programming-level.beginner {
-  background-color: rgba(139, 92, 246, 0.4) !important;
-}
-
-.programming-card p {
-  padding: 0.75rem !important;
-  margin: 0 !important;
-  font-size: 0.85rem !important;
-}
-
-.programming-summary {
-  margin-top: 0.5rem !important;
-  font-size: 0.85rem !important;
-  font-style: italic !important;
-  color: rgba(209, 213, 219, 0.9) !important;
-  text-align: center !important;
-}
-
-/* Unique qualities card styling */
-.unique-container {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.5rem !important;
-  width: 100% !important;
-}
-
-.unique-container h3 {
-  margin: 0 0 0.5rem 0 !important;
-  font-size: 0.95rem !important;
-  font-weight: 600 !important;
-  color: white !important;
-  text-align: center !important;
-}
-
-.unique-qualities-grid {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.5rem !important;
-  width: 100% !important;
-}
-
-.unique-quality-card {
-  background-color: rgba(50, 50, 50, 0.6) !important;
-  border-radius: 0.75rem !important;
-  padding: 0.75rem !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid rgba(139, 92, 246, 0.2) !important;
-  transition: transform 0.2s ease-in-out !important;
-  width: 100% !important;
-}
-
-.unique-quality-card:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2) !important;
-  border-color: rgba(139, 92, 246, 0.4) !important;
-}
-
-.unique-quality-card h4 {
-  margin: 0 0 0.4rem 0 !important;
-  font-size: 0.9rem !important;
-  font-weight: 600 !important;
-  color: rgba(167, 139, 250, 0.9) !important;
-}
-
-.unique-quality-card p {
-  margin: 0 !important;
-  font-size: 0.85rem !important;
-  color: rgba(209, 213, 219, 0.9) !important;
+.cb-window .react-chatbot-kit-chat-bot-message div {
+  color: #CBD5E1 !important;
+  font-size: 13.5px !important;
+  line-height: 1.65 !important;
   word-wrap: break-word !important;
-  white-space: normal !important;
 }
 
-/* Programming languages card styling */
-.programming-container {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.5rem !important;
-  width: 100% !important;
+/* ── Widget inner styling ─────────────────────────────────────────────────── */
+.cb-window [class$="-widget"] .divide-y > div {
+  border-color: var(--cb-border) !important;
 }
 
-.programming-card {
-  background-color: rgba(50, 50, 50, 0.6) !important;
-  border-radius: 0.75rem !important;
-  overflow: hidden !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid rgba(139, 92, 246, 0.2) !important;
-  width: 100% !important;
+/* Widget text colours */
+.cb-window [class$="-widget"] p,
+.cb-window [class$="-widget"] span {
+  --text: #E2E8F0;
+  --text-muted: #64748B;
+  --border: rgba(59,130,246,0.15);
+  --surface: #0F1D33;
+  --accent: #2563EB;
+  --secondary: #6366F1;
 }
 
-.programming-header {
-  padding: 0.75rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  background-color: rgba(60, 60, 60, 0.7) !important;
-  border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
-  flex-wrap: wrap !important;
-  gap: 0.5rem !important;
+/* ── FAB button ───────────────────────────────────────────────────────────── */
+.cb-fab {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--cb-accent, #2563EB) 0%, #3B4FD8 100%);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 20px rgba(37,99,235,0.4),
+    0 1px 4px rgba(0,0,0,0.3);
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.programming-header h4 {
-  margin: 0 !important;
-  font-size: 0.9rem !important;
-  font-weight: 600 !important;
-  color: white !important;
+.cb-fab:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 6px 28px rgba(37,99,235,0.55),
+    0 2px 8px rgba(0,0,0,0.3);
 }
 
-.programming-level {
-  padding: 0.2rem 0.4rem !important;
-  border-radius: 0.4rem !important;
-  font-size: 0.75rem !important;
-  font-weight: 600 !important;
-  color: white !important;
-  background-color: rgba(139, 92, 246, 0.7) !important;
-  white-space: nowrap !important;
+.cb-fab-active {
+  background: linear-gradient(135deg, #1e40af 0%, #312e81 100%);
 }
 
-.programming-card p {
-  padding: 0.75rem !important;
-  margin: 0 !important;
-  font-size: 0.85rem !important;
-  word-wrap: break-word !important;
-  white-space: normal !important;
+.cb-fab-icon {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.22s ease;
 }
 
-.programming-summary {
-  margin-top: 0.5rem !important;
-  font-size: 0.85rem !important;
-  font-style: italic !important;
-  color: rgba(209, 213, 219, 0.9) !important;
-  text-align: center !important;
-  padding: 0 0.75rem !important;
+.cb-fab-pulse {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #22C55E;
+  border: 2px solid white;
+  animation: fabPulse 2s ease-in-out infinite;
 }
 
-/* Amazon roles card styling */
-.amazon-roles-container {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.5rem !important;
-  width: 100% !important;
+@keyframes fabPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.3); opacity: 0.7; }
 }
 
-.amazon-role-card {
-  background-color: rgba(50, 50, 50, 0.6) !important;
-  border-radius: 0.75rem !important;
-  overflow: hidden !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid rgba(139, 92, 246, 0.2) !important;
-  width: 100% !important;
+/* ── Tailwind divide-y override (border-color is not inherited) ───────────── */
+.cb-window .divide-y > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(59,130,246,0.12) !important;
 }
 
-.amazon-role-header {
-  padding: 0.75rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  background-color: rgba(60, 60, 60, 0.7) !important;
-  border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
-  flex-wrap: wrap !important;
-  gap: 0.5rem !important;
+/* ── Widget card polish ───────────────────────────────────────────────────── */
+/* The rounded wrapper each widget renders */
+.cb-window .rounded-2xl {
+  background: #101C35 !important;
+  border-color: rgba(59,130,246,0.14) !important;
 }
 
-.amazon-role-header h4 {
-  margin: 0 !important;
-  font-size: 0.9rem !important;
-  font-weight: 600 !important;
-  color: white !important;
+/* Header row inside each widget */
+.cb-window .rounded-2xl > div:first-child {
+  background: #162540 !important;
+  border-color: rgba(59,130,246,0.14) !important;
 }
 
-.amazon-role-period {
-  font-size: 0.75rem !important;
-  color: rgba(167, 139, 250, 0.9) !important;
-  white-space: nowrap !important;
-}
+/* All text inside widgets — enforce dark-theme text colours */
+.cb-window .rounded-2xl p { color: #94A3B8 !important; }
+.cb-window .rounded-2xl .font-semibold { color: #E2E8F0 !important; }
+.cb-window .rounded-2xl .font-medium   { color: #E2E8F0 !important; }
+.cb-window .rounded-2xl .font-bold     { color: #E2E8F0 !important; }
+/* accent spans / labels keep their inline colour (--accent resolves dark now) */
+.cb-window .rounded-2xl .uppercase     { letter-spacing: 0.06em; }
+/* links in project widget */
+.cb-window .rounded-2xl a              { color: #60A5FA !important; }
+.cb-window .rounded-2xl a:hover        { color: #93C5FD !important; }
 
-.amazon-role-company {
-  padding: 0.5rem 0.75rem 0 0.75rem !important;
-  font-size: 0.8rem !important;
-  color: rgba(209, 213, 219, 0.9) !important;
-  font-style: italic !important;
-  word-wrap: break-word !important;
-  white-space: normal !important;
-}
-
-.amazon-role-card p {
-  padding: 0.25rem 0.75rem 0.75rem 0.75rem !important;
-  margin: 0 !important;
-  font-size: 0.85rem !important;
-  word-wrap: break-word !important;
-  white-space: normal !important;
-}
-
-/* Role suitability styling */
-.role-card {
-  background-color: rgba(50, 50, 50, 0.6) !important;
-  border-radius: 0.75rem !important;
-  overflow: hidden !important;
-  margin-bottom: 0.5rem !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid rgba(139, 92, 246, 0.2) !important;
-  width: 100% !important;
-}
-
-.role-card-header {
-  padding: 0.75rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  background-color: rgba(60, 60, 60, 0.7) !important;
-  border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
-  flex-wrap: wrap !important;
-  gap: 0.5rem !important;
-}
-
-.role-card-header h3 {
-  margin: 0 !important;
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-  color: white !important;
-}
-
-.role-card > p {
-  padding: 0.75rem !important;
-  margin: 0 !important;
-  border-bottom: 1px solid rgba(139, 92, 246, 0.1) !important;
-  font-size: 0.9rem !important;
-  word-wrap: break-word !important;
-  white-space: normal !important;
-}
-
-.skill-tags {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 0.4rem !important;
-}
-
-/* Mobile responsiveness for cards */
-@media (max-width: 640px) {
-  .unique-qualities-grid {
-    flex-direction: column !important;
-  }
-  
-  .unique-quality-card {
-    width: 100% !important;
-    padding: 0.6rem !important;
-  }
-  
-  .unique-quality-card h4 {
-    font-size: 0.85rem !important;
-    margin-bottom: 0.3rem !important;
-  }
-  
-  .unique-quality-card p {
-    font-size: 0.8rem !important;
-  }
-  
-  .programming-header,
-  .amazon-role-header,
-  .role-card-header {
-    padding: 0.6rem !important;
-  }
-  
-  .programming-card p,
-  .amazon-role-card p,
-  .role-card > p {
-    padding: 0.6rem !important;
-    font-size: 0.8rem !important;
-  }
-}
-
-/* Fix for bot message container width */
-.react-chatbot-kit-chat-bot-message-container {
+/* Container sizing fix */
+.cb-window .react-chatbot-kit-chat-bot-message-container {
   width: 100% !important;
   max-width: 100% !important;
 }
 
-.react-chatbot-kit-chat-bot-message {
-  max-width: 85% !important;
+.cb-window .react-chatbot-kit-chat-bot-message {
+  max-width: 82% !important;
   word-break: break-word !important;
   white-space: normal !important;
 }
 
-/* Ensure HTML content in messages is properly contained */
-.react-chatbot-kit-chat-bot-message div {
-  max-width: 100% !important;
-  word-wrap: break-word !important;
-  white-space: normal !important;
-}
-
-/* Ensure all card containers are properly sized */
-.react-chatbot-kit-chat-bot-message .unique-container,
-.react-chatbot-kit-chat-bot-message .programming-container,
-.react-chatbot-kit-chat-bot-message .amazon-roles-container,
-.react-chatbot-kit-chat-bot-message .role-card {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-/* Ensure text doesn't overflow */
-.react-chatbot-kit-chat-bot-message * {
+.cb-window .react-chatbot-kit-chat-bot-message * {
   overflow-wrap: break-word !important;
   word-wrap: break-word !important;
-  word-break: break-word !important;
-  hyphens: auto !important;
-} 
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .cb-window {
+    width: calc(100vw - 24px);
+    height: min(88vh, 620px);
+    bottom: 64px;
+  }
+}

@@ -3,6 +3,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { FaEnvelope, FaLinkedin, FaGithub, FaFilePdf, FaArrowDown, FaMapMarkerAlt } from 'react-icons/fa'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations'
 
 const socialLinks = [
   {
@@ -77,6 +79,9 @@ function ContactCard({
 }
 
 export default function Contact() {
+  const { lang } = useLanguage()
+  const t        = translations[lang].contact
+
   return (
     <section id="contact" className="py-16 sm:py-24 relative overflow-hidden" style={{ background: 'var(--bg-alt)' }}>
       {/* Subtle background glow */}
@@ -99,30 +104,28 @@ export default function Contact() {
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <span className="section-label">Let&apos;s Connect</span>
-              <h2 className="section-title mb-6">Get in Touch</h2>
+              <span className="section-label">{t.label}</span>
+              <h2 className="section-title mb-6">{t.heading}</h2>
 
               <p
                 className="text-base sm:text-lg leading-relaxed mb-8"
                 style={{ color: 'var(--text-muted)' }}
               >
-                I&apos;m open to new opportunities and collaborations in strategy, business analytics, and project
-                management. Whether it&apos;s a consulting mission, a PM role, or an interesting project—feel free
-                to reach out.
+                {t.bio}
               </p>
 
-              {/* Location + availability */}
+              {/* Location + professional reachability */}
               <div className="flex flex-col gap-3 mb-8">
                 <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-muted)' }}>
                   <FaMapMarkerAlt className="text-xs shrink-0" style={{ color: 'var(--accent)' }} />
-                  <span>Based in France · Open to remote &amp; international</span>
+                  <span>{t.location}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-muted)' }}>
                   <span
                     className="inline-block w-2 h-2 rounded-full shrink-0"
                     style={{ background: '#22C55E' }}
                   />
-                  <span>Currently available for opportunities</span>
+                  <span>{t.statusNote}</span>
                 </div>
               </div>
 
@@ -147,10 +150,10 @@ export default function Contact() {
                   <FaFilePdf className="text-base" style={{ color: 'var(--accent)' }} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold" style={{ color: 'var(--text)' }}>Download CV</p>
-                  <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>
-                    CV_Maxime_Junca_Quintero.pdf
-                  </p>
+                    <p className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{t.cv.label}</p>
+                    <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>
+                      {t.cv.filename}
+                    </p>
                 </div>
                 <FaArrowDown
                   className="text-xs shrink-0 group-hover:translate-y-0.5 transition-transform duration-200"
@@ -179,7 +182,7 @@ export default function Contact() {
                   style={{ borderColor: 'var(--border)', background: 'var(--surface-2)' }}
                 >
                   <p className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
-                    Contact Channels
+                    {t.channels}
                   </p>
                 </div>
                 <div className="p-5 space-y-3">
@@ -198,7 +201,7 @@ export default function Contact() {
                 className="mt-4 text-center text-xs"
                 style={{ color: 'var(--text-muted)' }}
               >
-                Typically responds within 24 hours.
+                {t.response}
               </motion.p>
             </div>
           </div>

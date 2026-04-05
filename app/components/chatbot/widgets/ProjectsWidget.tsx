@@ -1,55 +1,107 @@
 'use client'
 
-import React from 'react';
-import { FaCode } from 'react-icons/fa';
-import Link from 'next/link';
+import React from 'react'
+import Link from 'next/link'
+import { FaLayerGroup, FaArrowRight } from 'react-icons/fa'
 
 interface ProjectsWidgetProps {
-  actionProvider?: any;
-  setState?: any;
-  [key: string]: any;
+  actionProvider?: unknown
+  setState?: unknown
+  [key: string]: unknown
 }
 
-export const ProjectsWidget: React.FC<ProjectsWidgetProps> = (props) => {
-  const projects = [
-    {
-      title: "Amazon KPI Dashboard",
-      description: "Enhanced internal reporting tools and consolidated metrics visibility for Amazon Transportation Services.",
-      link: "/projects/amazon-kpi"
-    },
-    {
-      title: "Tenoris Analytics",
-      description: "Led development of a platform to democratize alternative financial data for individual investors across Europe.",
-      link: "/projects/tenoris-analytics"
-    },
-    {
-      title: "Innovation Report",
-      description: "Analyzed how patents contribute to market valuation of innovative companies across R&D-intensive sectors.",
-      link: "/projects/innovation-report"
-    },
-    {
-      title: "HouseDec - Furniture E-commerce",
-      description: "Built a minimalist e-commerce platform for furniture sales with Stripe payments and admin dashboard.",
-      link: "/projects/housedec"
-    }
-  ];
+const projects = [
+  {
+    title: 'Amazon KPI Dashboard',
+    description: 'Consolidated metrics visibility for Amazon Transportation Services.',
+    link: '/projects/amazon-kpi',
+    tag: 'PM',
+    color: 'var(--accent)',
+  },
+  {
+    title: 'Consulting Reports Monitor',
+    description: 'Automated AI-powered pipeline for McKinsey & BCG intelligence digests.',
+    link: '/projects/consulting-reports-monitor',
+    tag: 'Consulting',
+    color: 'var(--secondary)',
+  },
+  {
+    title: 'Tenoris Analytics',
+    description: 'Platform to democratize alternative financial data for individual investors.',
+    link: '/projects/tenoris-analytics',
+    tag: 'PM',
+    color: 'var(--accent)',
+  },
+  {
+    title: 'Innovation Report',
+    description: "Patents' contribution to market valuation in R&D-intensive sectors.",
+    link: '/projects/innovation-report',
+    tag: 'Research',
+    color: 'var(--secondary)',
+  },
+]
 
+export const ProjectsWidget: React.FC<ProjectsWidgetProps> = () => {
   return (
-    <div className="projects-widget p-4 bg-dark-800 rounded-lg mt-2 mb-4">
-      <h3 className="text-lg font-semibold mb-3 text-purple-400 flex items-center">
-        <FaCode className="mr-2" />
-        Projects
-      </h3>
-      <div className="space-y-2">
-        {projects.map((project, index) => (
-          <div key={index} className="p-3 bg-dark-700 rounded-lg">
-            <Link href={project.link} className="font-medium hover:text-purple-300 transition-colors">
-              {project.title}
-            </Link>
-            <p className="text-sm text-gray-300 mt-1">{project.description}</p>
-          </div>
+    <div
+      className="mt-2 mb-4 rounded-2xl overflow-hidden"
+      style={{ border: '1px solid var(--border)', background: 'var(--surface)' }}
+    >
+      {/* Header */}
+      <div
+        className="flex items-center gap-2 px-4 py-3"
+        style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}
+      >
+        <FaLayerGroup style={{ color: 'var(--accent)' }} />
+        <span className="font-semibold text-sm" style={{ color: 'var(--accent)' }}>
+          Projects
+        </span>
+      </div>
+
+      {/* Items */}
+      <div className="divide-y" style={{ borderColor: 'var(--border)' }}>
+        {projects.map((p, i) => (
+          <Link
+            key={i}
+            href={p.link}
+            className="flex items-start gap-3 px-4 py-3 group transition-colors"
+            style={{ display: 'flex', textDecoration: 'none' }}
+          >
+            <div
+              className="mt-1.5 w-2 h-2 rounded-full shrink-0"
+              style={{ background: p.color }}
+            />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-2">
+                <p
+                  className="font-semibold text-sm leading-snug transition-colors"
+                  style={{ color: 'var(--text)' }}
+                >
+                  {p.title}
+                </p>
+                <FaArrowRight
+                  size={10}
+                  className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ color: p.color }}
+                />
+              </div>
+              <span
+                className="inline-block text-xs px-1.5 py-0.5 rounded-full font-medium mt-0.5"
+                style={{
+                  background: `color-mix(in srgb, ${p.color} 12%, transparent)`,
+                  color: p.color,
+                  border: `1px solid color-mix(in srgb, ${p.color} 25%, transparent)`,
+                }}
+              >
+                {p.tag}
+              </span>
+              <p className="text-xs mt-1 leading-relaxed" style={{ color: 'var(--text-muted, #64748b)' }}>
+                {p.description}
+              </p>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
-  );
-}; 
+  )
+}

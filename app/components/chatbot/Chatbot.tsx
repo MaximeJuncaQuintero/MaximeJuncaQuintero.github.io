@@ -1,219 +1,124 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Chatbot as ReactChatbot } from 'react-chatbot-kit';
-import 'react-chatbot-kit/build/main.css';
-import './chatbot.css';
-import { FaComments, FaTimes, FaTrash, FaRobot } from 'react-icons/fa';
+import React, { useState, useEffect, useRef } from 'react'
+import { Chatbot as ReactChatbot } from 'react-chatbot-kit'
+import 'react-chatbot-kit/build/main.css'
+import './chatbot.css'
+import { FaComments, FaTimes, FaTrash } from 'react-icons/fa'
+import { HiSparkles } from 'react-icons/hi2'
 
-import config from './config';
-import MessageParser from './MessageParser';
-import ActionProvider from './ActionProvider';
+import config from './config'
+import MessageParser from './MessageParser'
+import ActionProvider from './ActionProvider'
 
 export default function Chatbot() {
-  const [showChat, setShowChat] = useState(false);
-  const [key, setKey] = useState(Date.now()); // Key for forcing re-render on clear
-  const chatContainerRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(true);
-  const [isClosing, setIsClosing] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
-
-  // Check if the screen is mobile or desktop
-  useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 640);
-    };
-    
-    // Initial check
-    checkIfMobile();
-    
-    // Add event listener for window resize
-    window.addEventListener('resize', checkIfMobile);
-    
-    // Cleanup
-    return () => window.removeEventListener('resize', checkIfMobile);
-  }, []);
+  const [showChat, setShowChat]     = useState(false)
+  const [key, setKey]               = useState(Date.now())
+  const [isClosing, setIsClosing]   = useState(false)
+  const chatContainerRef            = useRef<HTMLDivElement>(null)
 
   const toggleChat = () => {
     if (showChat) {
-      // Add closing animation
-      setIsClosing(true);
-      setTimeout(() => {
-        setShowChat(false);
-        setIsClosing(false);
-      }, 300); // Match this with the CSS animation duration
+      setIsClosing(true)
+      setTimeout(() => { setShowChat(false); setIsClosing(false) }, 280)
     } else {
-      setShowChat(true);
-      
-      // Envoyer un événement Google Analytics pour l'ouverture du chatbot
+      setShowChat(true)
       if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('event', 'chatbot_open', {
-          'event_category': 'chatbot',
-          'event_label': 'open',
-          'value': 1
-        });
-        console.log('Événement chatbot_open envoyé à Google Analytics');
+        window.gtag('event', 'chatbot_open', { event_category: 'chatbot', event_label: 'open', value: 1 })
       }
     }
-  };
+  }
 
-  const clearChat = () => {
-    // Generate a new key to force a complete re-render of the chatbot
-    setKey(Date.now());
-  };
+  const clearChat = () => setKey(Date.now())
 
-  // This effect will ensure the chat is scrolled to show the latest messages
+  /* ── Auto-scroll to newest message ─────────────────────────────────────── */
   useEffect(() => {
-    if (showChat && chatContainerRef.current) {
-      const messageContainer = chatContainerRef.current.querySelector('.react-chatbot-kit-chat-message-container');
-      if (messageContainer) {
-        // Set initial scroll position to show the beginning of the conversation
-        messageContainer.scrollTop = 0;
-      }
-    }
-  }, [showChat]);
+    if (!showChat) return
+    const container = chatContainerRef.current
+    if (!container) return
 
-  // Add a mutation observer to detect new messages and scroll appropriately
-  useEffect(() => {
-    if (showChat && chatContainerRef.current) {
-      const messageContainer = chatContainerRef.current.querySelector('.react-chatbot-kit-chat-message-container');
-      
-      if (messageContainer) {
-        const observer = new MutationObserver((mutations) => {
-          // When new content is added, scroll to show the latest message
-          // But not all the way to the bottom to ensure text is visible
-          const scrollHeight = messageContainer.scrollHeight;
-          const clientHeight = messageContainer.clientHeight;
-          
-          // Scroll to position that shows the latest message but not all the way to the bottom
-          // This ensures the text answer is visible without scrolling
-          messageContainer.scrollTop = Math.max(0, scrollHeight - clientHeight - 100);
-          
-          // Show typing indicator briefly when new messages are added
-          setIsTyping(true);
-          setTimeout(() => setIsTyping(false), 1000);
-        });
-        
-        observer.observe(messageContainer, { 
-          childList: true, 
-          subtree: true 
-        });
-        
-        return () => observer.disconnect();
-      }
+    const scrollToBottom = () => {
+      const msgBox = container.querySelector('.react-chatbot-kit-chat-message-container')
+      if (msgBox) msgBox.scrollTop = msgBox.scrollHeight
     }
-  }, [showChat]);
 
-  // Add an effect to fix HTML rendering in messages
-  useEffect(() => {
-    if (showChat && chatContainerRef.current) {
-      // Function to process messages and ensure HTML is rendered correctly
-      const processMessages = () => {
-        const botMessages = chatContainerRef.current?.querySelectorAll('.react-chatbot-kit-chat-bot-message');
-        
-        if (botMessages) {
-          botMessages.forEach(message => {
-            // Check if the message contains HTML tags but hasn't been processed
-            const messageText = message.textContent || '';
-            if (messageText.includes('<div') || messageText.includes('<p>') || messageText.includes('<ul>')) {
-              // If the message contains HTML tags but is displayed as text, refresh the chatbot
-              console.log('Found unprocessed HTML in message, refreshing chatbot');
-              setKey(Date.now()); // Force a re-render
-            }
-          });
-        }
-      };
-      
-      // Process messages after a short delay to ensure they're loaded
-      const timer = setTimeout(processMessages, 500);
-      
-      return () => clearTimeout(timer);
+    const observer = new MutationObserver(scrollToBottom)
+    const msgBox = container.querySelector('.react-chatbot-kit-chat-message-container')
+    if (msgBox) {
+      observer.observe(msgBox, { childList: true, subtree: true })
+      scrollToBottom()
     }
-  }, [showChat]);
+    return () => observer.disconnect()
+  }, [showChat, key])
 
   return (
-    <div className="fixed bottom-3 sm:bottom-5 right-3 sm:right-5 z-50">
+    <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end">
+
+      {/* ── Chat window ──────────────────────────────────────────────────── */}
       {showChat && (
-        <div 
+        <div
           ref={chatContainerRef}
-          className={`mb-4 rounded-lg shadow-xl overflow-hidden w-[calc(100vw-24px)] sm:w-96 md:w-[450px] max-h-[85vh] bg-dark-800 border border-gray-700 ${isClosing ? 'animate-fade-out' : 'animate-fade-in'}`}
-          style={{ 
-            bottom: '60px', 
-            position: 'absolute', 
-            right: '0',
-            animation: isClosing ? 'fadeOut 0.3s ease-in forwards' : 'fadeIn 0.3s ease-out forwards',
-          }}
+          className={`cb-window mb-4 ${isClosing ? 'cb-exit' : 'cb-enter'}`}
         >
-          <div className="chatbot-header">
-            <h3 className="text-white font-medium text-base sm:text-lg">
-              <FaRobot /> Maxime's Assistant
-            </h3>
-            <div className="flex items-center">
-              <button 
+          {/* Header */}
+          <div className="cb-header">
+            <div className="cb-header-left">
+              <div className="cb-header-icon">
+                <HiSparkles size={16} />
+              </div>
+              <div>
+                <p className="cb-header-title">Maxime's Assistant</p>
+                <p className="cb-header-status">
+                  <span className="cb-status-dot" />
+                  Online · Responds instantly
+                </p>
+              </div>
+            </div>
+            <div className="cb-header-actions">
+              <button
                 onClick={clearChat}
-                className="clear-chat-button mr-2"
+                className="cb-action-btn"
                 aria-label="Clear chat"
-                title="Clear chat"
+                title="Clear conversation"
               >
-                <FaTrash size={14} /> <span className="hidden sm:inline">Clear</span>
+                <FaTrash size={12} />
+                <span>Clear</span>
               </button>
-              <button 
+              <button
                 onClick={toggleChat}
-                className="text-white hover:text-gray-200 transition-colors p-1"
+                className="cb-action-btn cb-close-btn"
                 aria-label="Close chat"
               >
-                <FaTimes />
+                <FaTimes size={14} />
               </button>
             </div>
           </div>
-          <div 
-            className="chatbot-container" 
-            style={{ 
-              maxHeight: 'calc(85vh - 50px)', 
-              overflowY: 'auto',
-              height: isMobile ? '400px' : '500px'
-            }}
-          >
+
+          {/* Message area */}
+          <div className="cb-messages">
             <ReactChatbot
-              key={key} // This forces a re-render when clearing the chat
+              key={key}
               config={config}
               messageParser={MessageParser}
               actionProvider={ActionProvider}
             />
-            
-            {isTyping && (
-              <div className="typing-indicator ml-12 mb-4">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            )}
           </div>
         </div>
       )}
-      
+
+      {/* ── FAB button ───────────────────────────────────────────────────── */}
       <button
         onClick={toggleChat}
-        className="text-white rounded-full p-3 sm:p-4 shadow-lg transition-all duration-300 flex items-center justify-center hover:scale-105 hover:shadow-xl"
-        aria-label={showChat ? "Close chat" : "Open chat"}
-        style={{
-          background:  'var(--accent)',
-          boxShadow:   '0 4px 14px rgba(59, 130, 246, 0.35)',
-        }}
+        className={`cb-fab ${showChat ? 'cb-fab-active' : ''}`}
+        aria-label={showChat ? 'Close chat' : 'Open chat'}
       >
-        <FaComments size={20} className="sm:text-2xl" />
+        <div className="cb-fab-icon">
+          {showChat
+            ? <FaTimes size={18} />
+            : <FaComments size={20} />}
+        </div>
+        {!showChat && <span className="cb-fab-pulse" />}
       </button>
     </div>
-  );
+  )
 }
-
-// Add these animations to globals.css
-// @keyframes fadeIn {
-//   from { opacity: 0; transform: translateY(20px); }
-//   to { opacity: 1; transform: translateY(0); }
-// }
-
-// @keyframes fadeOut {
-//   from { opacity: 1; transform: translateY(0); }
-//   to { opacity: 0; transform: translateY(20px); }
-// } 

@@ -1,68 +1,91 @@
 'use client'
 
-import React from 'react';
-import { FaGraduationCap, FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
+import React from 'react'
+import { FaGraduationCap, FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa'
 
 interface EducationWidgetProps {
-  actionProvider?: any;
-  setState?: any;
-  [key: string]: any;
+  actionProvider?: unknown
+  setState?: unknown
+  [key: string]: unknown
 }
 
-export const EducationWidget: React.FC<EducationWidgetProps> = (props) => {
-  const education = [
-    {
-      degree: "MSc – Strategy, Consulting and Organization",
-      institution: "ESCP Business School",
-      location: "Paris, France",
-      period: "Sep 2025 – Dec 2026",
-      description: "Master's program focused on strategy, consulting, and organizational transformation."
-    },
-    {
-      degree: "BBA - Specialization in Business Analytics",
-      institution: "Dublin City University",
-      location: "Dublin, Ireland",
-      period: "Sep 2022 - May 2024",
-      description: "Specialized in Business Analytics, developed skills in data analysis, visualization, and business intelligence."
-    },
-    {
-      degree: "BBA - CESEM",
-      institution: "NEOMA Business School",
-      location: "Reims, France",
-      period: "Sep 2019 - Jul 2021",
-      description: "Focused on international business and management fundamentals."
-    }
-  ];
+const education = [
+  {
+    degree: 'MSc – Strategy, Consulting and Organization',
+    institution: 'ESCP Business School',
+    location: 'Paris, France',
+    period: 'Sep 2025 – Dec 2026',
+    description: "Master's program focused on strategy, consulting, and organisational transformation.",
+    color: 'var(--accent)',
+  },
+  {
+    degree: 'BBA – Specialization in Business Analytics',
+    institution: 'Dublin City University',
+    location: 'Dublin, Ireland',
+    period: 'Sep 2022 – May 2024',
+    description: 'Specialised in Business Analytics — data analysis, visualization, and business intelligence.',
+    color: 'var(--secondary)',
+  },
+  {
+    degree: 'BBA – CESEM',
+    institution: 'NEOMA Business School',
+    location: 'Reims, France',
+    period: 'Sep 2019 – Jul 2021',
+    description: 'International business and management fundamentals.',
+    color: 'var(--accent)',
+  },
+]
 
+export const EducationWidget: React.FC<EducationWidgetProps> = () => {
   return (
-    <div className="education-widget p-4 bg-dark-800 rounded-lg mt-2 mb-4">
-      <h3 className="text-lg font-semibold mb-3 text-purple-400 flex items-center">
-        <FaGraduationCap className="mr-2" />
-        Education
-      </h3>
-      <div className="space-y-4">
-        {education.map((edu, index) => (
-          <div key={index} className="p-3 bg-dark-700 rounded-lg border border-gray-700 hover:border-purple-500 transition-colors duration-300">
-            <div className="flex justify-between items-start mb-2">
-              <div>
-                <h4 className="font-medium text-white">{edu.degree}</h4>
-                <p className="text-sm text-purple-300 flex items-center mt-1">
+    <div
+      className="mt-2 mb-4 rounded-2xl overflow-hidden"
+      style={{ border: '1px solid var(--border)', background: 'var(--surface)' }}
+    >
+      {/* Header */}
+      <div
+        className="flex items-center gap-2 px-4 py-3"
+        style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}
+      >
+        <FaGraduationCap style={{ color: 'var(--accent)' }} />
+        <span className="font-semibold text-sm" style={{ color: 'var(--accent)' }}>
+          Education
+        </span>
+      </div>
+
+      {/* Items */}
+      <div className="divide-y" style={{ borderColor: 'var(--border)' }}>
+        {education.map((edu, i) => (
+          <div key={i} className="px-4 py-3" style={{ borderColor: 'var(--border)' }}>
+            <div className="flex gap-3">
+              {/* Accent dot */}
+              <div
+                className="mt-1.5 w-2 h-2 rounded-full shrink-0"
+                style={{ background: edu.color }}
+              />
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm leading-snug" style={{ color: 'var(--text)' }}>
+                  {edu.degree}
+                </p>
+                <p className="text-xs font-medium mt-0.5" style={{ color: edu.color }}>
                   {edu.institution}
                 </p>
-                <p className="text-xs text-gray-400 flex items-center mt-1">
-                  <FaMapMarkerAlt className="mr-1 text-purple-400" size={12} />
-                  {edu.location}
+                <div className="flex flex-wrap gap-x-3 mt-1">
+                  <span className="flex items-center gap-1 text-xs" style={{ color: 'var(--text-muted, #64748b)' }}>
+                    <FaMapMarkerAlt size={10} /> {edu.location}
+                  </span>
+                  <span className="flex items-center gap-1 text-xs" style={{ color: 'var(--text-muted, #64748b)' }}>
+                    <FaCalendarAlt size={10} /> {edu.period}
+                  </span>
+                </div>
+                <p className="text-xs mt-1.5 leading-relaxed" style={{ color: 'var(--text-muted, #64748b)' }}>
+                  {edu.description}
                 </p>
               </div>
-              <span className="text-xs text-gray-400 flex items-center whitespace-nowrap">
-                <FaCalendarAlt className="mr-1 text-purple-400" size={12} />
-                {edu.period}
-              </span>
             </div>
-            <p className="text-sm text-gray-300 mt-2 border-t border-gray-700 pt-2">{edu.description}</p>
           </div>
         ))}
       </div>
     </div>
-  );
-}; 
+  )
+}

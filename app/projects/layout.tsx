@@ -8,7 +8,7 @@ import { FaArrowLeft } from 'react-icons/fa'
 export default function ProjectLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen py-10 sm:py-14" style={{ background: 'var(--bg)' }}>
-      <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
 
         {/* Back link */}
         <motion.div

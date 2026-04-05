@@ -3,6 +3,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { FaExternalLinkAlt, FaCheckCircle } from 'react-icons/fa'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations'
 
 interface Certification {
   title:    string
@@ -44,6 +46,8 @@ const certifications: Certification[] = [
 ]
 
 export default function Certifications() {
+  const { lang } = useLanguage()
+  const t        = translations[lang].certifications
   if (certifications.length === 0) return null
 
   return (
@@ -57,8 +61,8 @@ export default function Certifications() {
           viewport={{ once: true }}
           className="mb-12 text-center"
         >
-          <span className="section-label">Credentials</span>
-          <h2 className="section-heading">Certifications</h2>
+          <span className="section-label">{t.label}</span>
+          <h2 className="section-heading">{t.heading}</h2>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 max-w-5xl mx-auto">
@@ -110,7 +114,7 @@ export default function Certifications() {
                   }}
                 >
                   <FaCheckCircle className="text-[9px]" />
-                  Verified
+                  {t.verified}
                 </span>
               </div>
 
@@ -148,7 +152,7 @@ export default function Certifications() {
                   className="flex items-center gap-1.5 text-xs font-semibold transition-colors duration-200"
                   style={{ color: 'var(--accent)' }}
                 >
-                  View Certificate
+                  {t.view}
                   <FaExternalLinkAlt className="text-[9px] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
                 </div>
               </div>

@@ -5,6 +5,8 @@ import { motion } from 'framer-motion'
 import { FaArrowDown, FaChevronRight } from 'react-icons/fa'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations'
 
 /* ─── Animated counter ───────────────────────────────────── */
 function AnimatedStat({
@@ -85,14 +87,17 @@ function TypeWriter({ text, delay = 600 }: { text: string; delay?: number }) {
   )
 }
 
-/* ─── Stats data ─────────────────────────────────────────── */
-const stats = [
-  { end: 3, suffix: '+', label: 'Years\nExperience' },
-  { end: 3, suffix: '',  label: 'Countries\nStudy & Work' },
+const statValues = [
+  { end: 3, suffix: '+' },
+  { end: 3, suffix: ''  },
 ]
 
 /* ─── Main component ─────────────────────────────────────── */
 export default function Hero() {
+  const { lang }  = useLanguage()
+  const t         = translations[lang].hero
+  const stats     = statValues.map((s, i) => ({ ...s, label: t.statLabels[i] }))
+
   return (
     <section
       className="relative min-h-screen flex items-center overflow-hidden"
@@ -150,7 +155,7 @@ export default function Hero() {
             transition={{ duration: 0.4 }}
             className="section-label flex justify-center"
           >
-            Strategy · Consulting · Project Management
+            {t.label}
           </motion.span>
 
           <motion.h1
@@ -170,7 +175,7 @@ export default function Hero() {
             className="text-lg font-medium mb-5"
             style={{ color: 'var(--accent)' }}
           >
-            <TypeWriter text="Consulting & Project Management" delay={800} />
+            <TypeWriter text={t.typewriter} delay={800} />
           </motion.p>
 
           <motion.p
@@ -180,8 +185,7 @@ export default function Hero() {
             className="text-base max-w-lg mx-auto mb-8 leading-relaxed"
             style={{ color: 'var(--text-muted)' }}
           >
-            Business professional with expertise in strategy consulting, project management and
-            operations. Passionate about leveraging data analytics to drive business innovation.
+            {t.bio}
           </motion.p>
 
           <motion.div
@@ -190,8 +194,8 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-wrap justify-center gap-3 mb-10"
           >
-            <a href="#about"    className="button">Learn More About Me</a>
-            <a href="#projects" className="button-outline">View Projects</a>
+            <a href="#about"    className="button">{t.cta1}</a>
+            <a href="#projects" className="button-outline">{t.cta2}</a>
           </motion.div>
 
           {/* Stats */}
@@ -219,7 +223,7 @@ export default function Hero() {
               transition={{ duration: 0.5 }}
               className="section-label"
             >
-              Strategy · Consulting · Project Management
+              {t.label}
             </motion.span>
 
             <motion.h1
@@ -240,7 +244,7 @@ export default function Hero() {
               className="text-xl font-medium mb-6"
               style={{ color: 'var(--text-muted)' }}
             >
-              <TypeWriter text="Consulting & Project Management" delay={900} />
+              <TypeWriter text={t.typewriter} delay={900} />
             </motion.p>
 
             <motion.p
@@ -250,8 +254,7 @@ export default function Hero() {
               className="text-base xl:text-lg max-w-lg mb-10 leading-relaxed"
               style={{ color: 'var(--text-muted)' }}
             >
-              Business professional with expertise in strategy consulting, project management and
-              operations. Passionate about leveraging data analytics to drive business innovation.
+              {t.bio}
             </motion.p>
 
             <motion.div
@@ -261,10 +264,10 @@ export default function Hero() {
               className="flex gap-4 mb-14"
             >
               <a href="#about" className="button">
-                Learn More About Me
+                {t.cta1}
                 <FaChevronRight className="text-[10px]" />
               </a>
-              <a href="#projects" className="button-outline">View Projects</a>
+              <a href="#projects" className="button-outline">{t.cta2}</a>
             </motion.div>
 
             {/* Animated stats row */}
@@ -335,9 +338,9 @@ export default function Hero() {
                 className="absolute -bottom-6 -right-10 rounded-xl p-3.5 shadow-xl z-20 border"
                 style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
               >
-                <p className="text-[10px] mb-0.5" style={{ color: 'var(--text-muted)' }}>Currently at</p>
+                <p className="text-[10px] mb-0.5" style={{ color: 'var(--text-muted)' }}>{t.badge1.prefix}</p>
                 <p className="text-sm font-bold"   style={{ color: 'var(--text)' }}>ESCP Business School</p>
-                <p className="text-xs font-medium" style={{ color: 'var(--accent)' }}>MSc Strategy & Consulting</p>
+                <p className="text-xs font-medium" style={{ color: 'var(--accent)' }}>{t.badge1.sub}</p>
               </motion.div>
 
               {/* Floating badge — Amazon */}
@@ -347,9 +350,9 @@ export default function Hero() {
                 className="absolute -top-4 -left-12 rounded-xl p-3 shadow-xl z-20 border"
                 style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
               >
-                <p className="text-[10px] mb-0.5" style={{ color: 'var(--text-muted)' }}>Previously at</p>
+                <p className="text-[10px] mb-0.5" style={{ color: 'var(--text-muted)' }}>{t.badge2.prefix}</p>
                 <p className="text-sm font-bold"   style={{ color: 'var(--text)' }}>Amazon</p>
-                <p className="text-xs font-medium" style={{ color: 'var(--secondary)' }}>PM Roles</p>
+                <p className="text-xs font-medium" style={{ color: 'var(--secondary)' }}>{t.badge2.sub}</p>
               </motion.div>
             </div>
           </motion.div>
@@ -368,7 +371,7 @@ export default function Hero() {
             className="text-[10px] font-semibold uppercase tracking-widest"
             style={{ color: 'var(--text-muted)' }}
           >
-            Scroll to Explore
+            {t.scroll}
           </span>
           <FaArrowDown className="animate-bounce text-xs" style={{ color: 'var(--accent)' }} />
         </a>

@@ -5,17 +5,21 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FaArrowRight } from 'react-icons/fa'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations'
+import CRMThumbnail from './CRMThumbnail'
 
 type Category = 'all' | 'consulting' | 'pm' | 'research'
 
 interface Project {
-  title:       string
-  description: string
-  image:       string
-  link:        string
-  tech:        string[]
-  category:    Category
-  logoStyle?:  string
+  title:             string
+  description:       string
+  image:             string
+  link:              string
+  tech:              string[]
+  category:          Category
+  logoStyle?:        string
+  customThumbnail?:  React.ReactNode
 }
 
 const projects: Project[] = [
@@ -56,6 +60,15 @@ const projects: Project[] = [
     logoStyle:   'object-contain bg-white p-4 scale-150',
   },
   {
+    title:            'Consulting Reports Monitor',
+    description:      'Fully automated pipeline that discovers new McKinsey and BCG publications, generates structured AI summaries in French via Gemini or Groq, and delivers one HTML email per report. Runs bi-weekly on GitHub Actions at zero cost.',
+    image:            '/assets/projects/consulting-reports-monitor.svg',
+    link:             '/projects/consulting-reports-monitor',
+    tech:             ['TypeScript', 'GitHub Actions', 'Gemini AI', 'Groq', 'Prisma', 'Nodemailer'],
+    category:         'consulting',
+    customThumbnail:  <CRMThumbnail />,
+  },
+  {
     title:       'TalentGrid',
     description: 'An exploratory project addressing the disconnect between education and employment. Led as project manager to develop a three-sided platform connecting universities, students, and employers through rich ePortfolios and AI-powered engagement, replacing traditional CV-based hiring.',
     image:       '/assets/projects/Logo_black.png',
@@ -66,12 +79,7 @@ const projects: Project[] = [
   },
 ]
 
-const filters: { key: Category; label: string }[] = [
-  { key: 'all',        label: 'All'               },
-  { key: 'consulting', label: 'Consulting'         },
-  { key: 'pm',         label: 'Project Management' },
-  { key: 'research',   label: 'Research'           },
-]
+const filterKeys: Category[] = ['all', 'consulting', 'pm', 'research']
 
 const categoryMeta: Record<Category, { color: string; bg: string; border: string }> = {
   all:        { color: 'var(--accent)',     bg: 'rgba(59,130,246,0.08)',  border: 'rgba(59,130,246,0.18)'  },
@@ -82,6 +90,9 @@ const categoryMeta: Record<Category, { color: string; bg: string; border: string
 
 export default function Projects() {
   const [active, setActive] = useState<Category>('all')
+  const { lang } = useLanguage()
+  const t        = translations[lang].projects
+  const filters  = filterKeys.map((key, i) => ({ key, label: t.filters[i] }))
 
   const visible = projects.filter(p => active === 'all' || p.category === active)
 
@@ -96,8 +107,8 @@ export default function Projects() {
           viewport={{ once: true }}
           className="mb-10 text-center"
         >
-          <span className="section-label">Portfolio</span>
-          <h2 className="section-heading mb-8">Projects</h2>
+          <span className="section-label">{t.label}</span>
+          <h2 className="section-heading mb-8">{t.heading}</h2>
 
           {/* Underline tab filter — centered */}
           <div className="flex items-end justify-center border-b" style={{ borderColor: 'var(--border)' }}>
@@ -163,13 +174,22 @@ export default function Projects() {
                       />
 
                       {/* Image with overlay */}
-                      <div className="relative h-40 sm:h-44 overflow-hidden bg-white shrink-0">
-                        <Image
-                          src={project.image}
-                          alt={project.title}
-                          fill
-                          className={`transition-transform duration-500 group-hover:scale-105 ${project.logoStyle ?? 'object-cover'}`}
-                        />
+                      <div
+                        className="relative h-40 sm:h-44 overflow-hidden shrink-0"
+                        style={{ background: project.customThumbnail ? 'transparent' : 'white' }}
+                      >
+                        {project.customThumbnail ? (
+                          <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105">
+                            {project.customThumbnail}
+                          </div>
+                        ) : (
+                          <Image
+                            src={project.image}
+                            alt={project.title}
+                            fill
+                            className={`transition-transform duration-500 group-hover:scale-105 ${project.logoStyle ?? 'object-cover'}`}
+                          />
+                        )}
                         <div
                           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                           style={{
@@ -229,7 +249,7 @@ export default function Projects() {
                           className="flex items-center gap-1.5 text-xs font-semibold mt-auto"
                           style={{ color: meta.color }}
                         >
-                          View Project
+                          {t.viewProject}
                           <FaArrowRight className="text-[10px] group-hover:translate-x-1 transition-transform duration-200" />
                         </div>
                       </div>

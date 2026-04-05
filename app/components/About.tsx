@@ -3,28 +3,21 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { FaFilePdf, FaGraduationCap, FaArrowDown, FaDatabase, FaChartLine } from 'react-icons/fa'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations'
 
-const skillGroups = [
-  {
-    icon: FaChartLine,
-    label: 'Strategy & Management',
-    color: 'var(--accent)',
-    skills: ['Project Management', 'Strategic Planning', 'Operations', 'Problem Solving', 'Consulting'],
-  },
-  {
-    icon: FaDatabase,
-    label: 'Data & Technology',
-    color: 'var(--secondary)',
-    skills: ['SQL', 'Python', 'Data Analysis', 'Power BI', 'Machine Learning'],
-  },
-]
-
-const highlights = [
-  { value: '3+', label: 'Years Experience'         },
-  { value: '3',  label: 'Countries (Study & Work)' },
-]
+const skillGroupColors = ['var(--accent)', 'var(--secondary)']
+const skillGroupIcons  = [FaChartLine, FaDatabase]
+const highlightValues  = ['3+', '3']
 
 export default function About() {
+  const { lang } = useLanguage()
+  const t        = translations[lang].about
+  const skillGroups = t.skillGroups.map((g: { label: string; skills: string[] }, i: number) => ({
+    ...g, icon: skillGroupIcons[i], color: skillGroupColors[i],
+  }))
+  const highlights = highlightValues.map((v: string, i: number) => ({ value: v, label: t.highlights[i] }))
+
   return (
     <section id="about" className="py-16 sm:py-24" style={{ background: 'var(--bg-alt)' }}>
       <div className="container mx-auto px-4 sm:px-6">
@@ -37,8 +30,8 @@ export default function About() {
         >
           {/* Section header */}
           <div className="mb-12">
-            <span className="section-label">Background</span>
-            <h2 className="section-title">About Me</h2>
+            <span className="section-label">{t.label}</span>
+            <h2 className="section-title">{t.heading}</h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -88,23 +81,7 @@ export default function About() {
                   className="space-y-3.5 text-sm sm:text-base leading-relaxed"
                   style={{ color: 'var(--text-muted)' }}
                 >
-                  <p>
-                    Hello! I&apos;m Maxime Junca-Quintero, a project manager based in France, focused on innovation,
-                    strategy consulting, and strategic data analysis.
-                  </p>
-                  <p>
-                    I am currently pursuing an MSc in Strategy, Consulting and Organization at ESCP Business School
-                    (2025–2026), building on a business analytics background from Dublin City University, where I honed
-                    my skills in Python, SQL, and Machine Learning. This academic foundation complements my hands-on
-                    experience managing key projects and leading strategic initiatives.
-                  </p>
-                  <p>
-                    My professional journey is driven by a consulting mindset—problem structuring, hypothesis-driven
-                    analysis, and stakeholder-ready recommendations—combined with advanced analytics to drive business
-                    decisions and innovation. With skills in project management, data analytics, operations management,
-                    and strategic problem-solving, I am dedicated to transforming complex data into actionable,
-                    business-ready insights.
-                  </p>
+                  {t.bio.map((para: string, i: number) => <p key={i}>{para}</p>)}
                 </div>
 
                 {/* CV download — file card style */}
@@ -134,9 +111,9 @@ export default function About() {
                       <FaFilePdf style={{ color: 'var(--accent)' }} className="text-base" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold" style={{ color: 'var(--text)' }}>Download CV</p>
+                      <p className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{t.cv.label}</p>
                       <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>
-                        CV_Maxime_Junca_Quintero.pdf
+                        {t.cv.filename}
                       </p>
                     </div>
                     <FaArrowDown
@@ -166,8 +143,8 @@ export default function About() {
                     className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest mb-5"
                     style={{ color: 'var(--text-muted)' }}
                   >
-                    <FaGraduationCap style={{ color: 'var(--accent)' }} />
-                    Education
+                  <FaGraduationCap style={{ color: 'var(--accent)' }} />
+                  {t.education.heading}
                   </h4>
 
                   <div className="space-y-4">
@@ -227,7 +204,7 @@ export default function About() {
                   style={{ background: 'linear-gradient(90deg, var(--secondary) 0%, var(--accent) 100%)' }}
                 />
                 <div className="p-5 sm:p-6 space-y-5">
-                  {skillGroups.map((group, gi) => (
+                  {skillGroups.map((group: { label: string; skills: string[]; icon: React.ElementType; color: string }, gi: number) => (
                     <div key={gi}>
                       <div className="flex items-center gap-1.5 mb-2.5">
                         <group.icon className="text-[10px]" style={{ color: group.color }} />
@@ -239,7 +216,7 @@ export default function About() {
                         </span>
                       </div>
                       <div className="flex flex-wrap gap-1.5">
-                        {group.skills.map((skill, i) => (
+                        {group.skills.map((skill: string, i: number) => (
                           <span
                             key={i}
                             className="px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-colors duration-150"

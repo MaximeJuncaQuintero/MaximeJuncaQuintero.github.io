@@ -5,6 +5,7 @@ import ChatbotWrapper from './components/chatbot/ChatbotWrapper'
 import SectionNav from './components/SectionNav'
 import GoogleAnalytics from './components/GoogleAnalytics'
 import { ThemeProvider } from './context/ThemeContext'
+import { LanguageProvider } from './context/LanguageContext'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -40,6 +41,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <ThemeProvider>
+          <LanguageProvider>
           <GoogleAnalytics />
           <noscript>
             <iframe
@@ -55,6 +57,7 @@ export default function RootLayout({
             {children}
             <ChatbotWrapper />
           </div>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

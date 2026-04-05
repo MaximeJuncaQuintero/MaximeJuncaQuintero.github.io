@@ -6,9 +6,10 @@ import { motion } from 'framer-motion'
 import { FaDownload, FaExternalLinkAlt, FaUser, FaCalendarAlt, FaClock } from 'react-icons/fa'
 
 interface ProjectDetailProps {
-  title:             string
-  image:             string
-  logoStyle?:        string
+  title:              string
+  image:              string
+  logoStyle?:         string
+  customThumbnail?:   React.ReactNode
   poc?:              string
   meetingFrequency?: string
   projectLength?:    string
@@ -36,7 +37,7 @@ function SectionBlock({ label, children }: { label: string; children: React.Reac
         className="px-5 py-3 border-b flex items-center gap-2"
         style={{ background: 'var(--surface-2)', borderColor: 'var(--border)' }}
       >
-        <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--accent)' }} />
+        <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: 'var(--accent)' }} />
         <h2 className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
           {label}
         </h2>
@@ -46,10 +47,25 @@ function SectionBlock({ label, children }: { label: string; children: React.Reac
   )
 }
 
+function SideCard({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="rounded-2xl border overflow-hidden" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+      <div
+        className="px-4 py-2.5 border-b"
+        style={{ background: 'var(--surface-2)', borderColor: 'var(--border)' }}
+      >
+        <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>{label}</p>
+      </div>
+      <div className="p-4">{children}</div>
+    </div>
+  )
+}
+
 export default function ProjectDetail({
   title,
   image,
   logoStyle,
+  customThumbnail,
   poc,
   meetingFrequency,
   projectLength,
@@ -63,34 +79,60 @@ export default function ProjectDetail({
   screenshots,
 }: ProjectDetailProps) {
   const meta = [
-    poc              && { icon: FaUser,        label: 'Point of Contact',   value: poc              },
-    meetingFrequency && { icon: FaCalendarAlt, label: 'Meeting Frequency',  value: meetingFrequency },
-    projectLength    && { icon: FaClock,       label: 'Project Length',     value: projectLength    },
+    poc              && { icon: FaUser,        label: 'Point of Contact',  value: poc              },
+    meetingFrequency && { icon: FaCalendarAlt, label: 'Meeting Frequency', value: meetingFrequency },
+    projectLength    && { icon: FaClock,       label: 'Project Length',    value: projectLength    },
   ].filter(Boolean) as { icon: React.ElementType; label: string; value: string }[]
 
   return (
-    <div className="space-y-6 p-4 sm:p-6 md:p-8">
+    <div className="space-y-0">
 
-      {/* Hero image */}
+      {/* Hero image — full bleed when a custom thumbnail is provided */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
+        className={
+          customThumbnail
+            ? 'relative w-full overflow-hidden'
+            : 'relative h-52 sm:h-64 md:h-72 w-full rounded-2xl overflow-hidden border'
+        }
+        style={
+          customThumbnail
+            ? { aspectRatio: '1200/500' }
+            : { borderColor: 'var(--border)', background: 'var(--surface-2)' }
+        }
       >
-        <div className="relative h-56 sm:h-72 md:h-80 w-full rounded-2xl overflow-hidden border" style={{ borderColor: 'var(--border)' }}>
-          <Image
+        {customThumbnail ? (
+          <div className="absolute inset-0">{customThumbnail}</div>
+        ) : image.endsWith('.svg') ? (
+          <img
             src={image}
             alt={title}
-            fill
-            className={logoStyle ?? 'object-cover'}
-            priority
+            className="w-full h-full object-contain"
+            style={{ background: 'white' }}
           />
-          {/* Gradient overlay for text legibility */}
-          {!logoStyle && (
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 60%)' }} />
-          )}
-        </div>
+        ) : (
+          <>
+            <Image
+              src={image}
+              alt={title}
+              fill
+              className={logoStyle ?? 'object-cover'}
+              priority
+            />
+            {!logoStyle && (
+              <div
+                className="absolute inset-0"
+                style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 55%)' }}
+              />
+            )}
+          </>
+        )}
       </motion.div>
+
+      {/* Content — padded below the hero */}
+      <div className="p-4 sm:p-6 md:p-8 space-y-6">
 
       {/* Title */}
       <motion.h1
@@ -103,149 +145,177 @@ export default function ProjectDetail({
         {title}
       </motion.h1>
 
-      {/* Meta chips */}
-      {meta.length > 0 && (
+      {/* ── Two-column layout (lg+) ─────────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+        {/* Left: main narrative content */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.15 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="lg:col-span-2 space-y-4"
         >
-          {meta.map(({ icon: Icon, label, value }, i) => (
-            <div
-              key={i}
-              className="flex items-start gap-3 p-4 rounded-xl border"
-              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-            >
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
-                style={{ background: 'rgba(29,78,216,0.1)' }}
-              >
-                <Icon className="text-xs" style={{ color: 'var(--accent)' }} />
+          <SectionBlock label="Context">
+            <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>{context}</p>
+          </SectionBlock>
+
+          <SectionBlock label="Objective">
+            <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>{objective}</p>
+          </SectionBlock>
+
+          <SectionBlock label="Implementation">
+            <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>{implementation}</p>
+          </SectionBlock>
+
+          <SectionBlock label="Method">
+            <p className="text-sm sm:text-base leading-relaxed whitespace-pre-line" style={{ color: 'var(--text-muted)' }}>{method}</p>
+          </SectionBlock>
+
+          {result && (
+            <SectionBlock label="Result">
+              <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>{result}</p>
+            </SectionBlock>
+          )}
+        </motion.div>
+
+        {/* Right: sticky sidebar */}
+        <motion.div
+          initial={{ opacity: 0, x: 12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="space-y-4 lg:sticky lg:top-20 lg:self-start"
+        >
+          {/* Meta */}
+          {meta.length > 0 && (
+            <SideCard label="Project Info">
+              <div className="space-y-3">
+                {meta.map(({ icon: Icon, label, value }, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div
+                      className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                      style={{ background: 'rgba(29,78,216,0.1)' }}
+                    >
+                      <Icon className="text-[10px]" style={{ color: 'var(--accent)' }} />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>{label}</p>
+                      <p className="text-sm font-semibold mt-0.5" style={{ color: 'var(--text)' }}>{value}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: 'var(--text-muted)' }}>
-                  {label}
-                </p>
-                <p className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{value}</p>
+            </SideCard>
+          )}
+
+          {/* Tools */}
+          <SideCard label="Tools & Technologies">
+            <div className="flex flex-wrap gap-1.5">
+              {tools.map((tool, i) => (
+                <span
+                  key={i}
+                  className="px-2.5 py-1 text-xs font-medium rounded-lg border"
+                  style={{
+                    background:  'var(--surface-2)',
+                    borderColor: 'var(--border)',
+                    color:       'var(--text-muted)',
+                  }}
+                >
+                  {tool}
+                </span>
+              ))}
+            </div>
+          </SideCard>
+
+          {/* Documentation */}
+          {documentation && documentation.length > 0 && (
+            <SideCard label="Documentation">
+              <div className="space-y-2">
+                {documentation.map((doc, i) => (
+                  <a
+                    key={i}
+                    href={doc.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                    style={{ background: 'var(--bg-alt)', borderColor: 'var(--border)' }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--accent)'
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--border)'
+                    }}
+                  >
+                    <div
+                      className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ background: 'rgba(29,78,216,0.1)' }}
+                    >
+                      <FaDownload className="text-[10px]" style={{ color: 'var(--accent)' }} />
+                    </div>
+                    <span className="text-xs font-medium flex-1" style={{ color: 'var(--text)' }}>{doc.title}</span>
+                    <FaExternalLinkAlt
+                      className="text-[9px] opacity-40 group-hover:opacity-100 transition-opacity"
+                      style={{ color: 'var(--accent)' }}
+                    />
+                  </a>
+                ))}
+              </div>
+            </SideCard>
+          )}
+        </motion.div>
+      </div>
+
+      {/* Screenshots — full width below both columns */}
+      {screenshots && screenshots.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.25 }}
+        >
+          <div
+            className="rounded-2xl border overflow-hidden"
+            style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
+          >
+            <div
+              className="px-5 py-3 border-b flex items-center gap-2"
+              style={{ background: 'var(--surface-2)', borderColor: 'var(--border)' }}
+            >
+              <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: 'var(--accent)' }} />
+              <h2 className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
+                Project Screenshots
+              </h2>
+            </div>
+            <div className="p-5 sm:p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                {screenshots.map((s, i) => (
+                  <div
+                    key={i}
+                    className="rounded-xl overflow-hidden border"
+                    style={{ borderColor: 'var(--border)', background: 'var(--surface-2)' }}
+                  >
+                    <div className="relative aspect-[16/10] w-full">
+                      <Image
+                        src={s.image}
+                        alt={s.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      />
+                    </div>
+                    <div className="p-3 border-t" style={{ borderColor: 'var(--border)' }}>
+                      <h3 className="text-xs font-semibold mb-0.5" style={{ color: 'var(--text)' }}>{s.title}</h3>
+                      {s.description && (
+                        <p className="text-[11px] leading-relaxed" style={{ color: 'var(--text-muted)' }}>{s.description}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+          </div>
         </motion.div>
       )}
 
-      {/* Content sections */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="space-y-4"
-      >
-        <SectionBlock label="Context">
-          <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>{context}</p>
-        </SectionBlock>
-
-        <SectionBlock label="Objective">
-          <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>{objective}</p>
-        </SectionBlock>
-
-        <SectionBlock label="Implementation">
-          <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>{implementation}</p>
-        </SectionBlock>
-
-        <SectionBlock label="Method">
-          <p className="text-sm sm:text-base leading-relaxed whitespace-pre-line" style={{ color: 'var(--text-muted)' }}>{method}</p>
-        </SectionBlock>
-
-        {result && (
-          <SectionBlock label="Result">
-            <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>{result}</p>
-          </SectionBlock>
-        )}
-
-        {/* Tools */}
-        <SectionBlock label="Tools &amp; Technologies">
-          <div className="flex flex-wrap gap-2">
-            {tools.map((tool, i) => (
-              <span
-                key={i}
-                className="px-3 py-1.5 text-xs font-medium rounded-lg border"
-                style={{
-                  background:  'var(--surface-2)',
-                  borderColor: 'var(--border)',
-                  color:       'var(--text-muted)',
-                }}
-              >
-                {tool}
-              </span>
-            ))}
-          </div>
-        </SectionBlock>
-
-        {/* Documentation */}
-        {documentation && documentation.length > 0 && (
-          <SectionBlock label="Documentation">
-            <div className="space-y-2">
-              {documentation.map((doc, i) => (
-                <a
-                  key={i}
-                  href={doc.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center gap-3 px-4 py-3 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-                  style={{ background: 'var(--bg-alt)', borderColor: 'var(--border)' }}
-                  onMouseEnter={e => {
-                    (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--accent)'
-                  }}
-                  onMouseLeave={e => {
-                    (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--border)'
-                  }}
-                >
-                  <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                    style={{ background: 'rgba(29,78,216,0.1)' }}
-                  >
-                    <FaDownload className="text-xs" style={{ color: 'var(--accent)' }} />
-                  </div>
-                  <span className="text-sm font-medium flex-1" style={{ color: 'var(--text)' }}>{doc.title}</span>
-                  <FaExternalLinkAlt className="text-[10px] opacity-40 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--accent)' }} />
-                </a>
-              ))}
-            </div>
-          </SectionBlock>
-        )}
-
-        {/* Screenshots */}
-        {screenshots && screenshots.length > 0 && (
-          <SectionBlock label="Project Screenshots">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-              {screenshots.map((s, i) => (
-                <div
-                  key={i}
-                  className="rounded-xl overflow-hidden border"
-                  style={{ borderColor: 'var(--border)', background: 'var(--surface-2)' }}
-                >
-                  <div className="relative aspect-[16/10] w-full">
-                    <Image
-                      src={s.image}
-                      alt={s.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                  </div>
-                  <div className="p-4 border-t" style={{ borderColor: 'var(--border)' }}>
-                    <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--text)' }}>{s.title}</h3>
-                    {s.description && (
-                      <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>{s.description}</p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </SectionBlock>
-        )}
-      </motion.div>
+      </div>{/* end padded content wrapper */}
     </div>
   )
 }

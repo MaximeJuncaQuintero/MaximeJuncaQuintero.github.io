@@ -1,765 +1,393 @@
 'use client'
 
-import React from 'react';
-import { createClientMessage } from 'react-chatbot-kit';
-import { FaBriefcase, FaCode, FaGraduationCap, FaTrophy, FaChartLine, FaEnvelope, FaLightbulb, FaQuestion } from 'react-icons/fa';
+import React from 'react'
+import {
+  FaBriefcase, FaCode, FaGraduationCap, FaTrophy,
+  FaChartLine, FaEnvelope, FaLightbulb, FaQuestion,
+  FaMapMarkerAlt, FaGlobe,
+} from 'react-icons/fa'
 
-interface ActionProviderProps {
-  createChatBotMessage: any;
-  setState: any;
-  children: any;
-}
-
-// Define interface for role suitability data
-interface RoleSuitabilityInfo {
-  relevantSkills: string[];
-  relevantExperience: string[];
-  suitabilityRating: string;
-  explanation: string;
-}
-
-// Define type for role suitability data mapping
-type RoleSuitabilityMap = {
-  [key: string]: RoleSuitabilityInfo;
-}
-
-// Define interface for suggested questions
 interface SuggestedQuestion {
-  text: string;
-  handler: () => void;
-  icon: React.ReactNode;
+  text: string
+  handler: () => void
+  icon: React.ReactNode
 }
 
 class ActionProvider {
-  createChatBotMessage: any;
-  setState: any;
-  createClientMessage: any;
-
-  // Experience data for more accurate responses
-  experienceData = [
-    {
-      title: "Operations Manager",
-      company: "Amazon Hub",
-      location: "Paris, France",
-      period: "June – Oct 2024",
-      duration: "5 months",
-      description: "Oversaw Lockers fleet maintenance, optimized supplier coordination, gained in-depth operational knowledge."
-    },
-    {
-      title: "Project Manager - Intern",
-      company: "Amazon Transportation Services (ATS)",
-      location: "London, UK",
-      period: "Jan – Jun 2023",
-      duration: "6 months",
-      description: "Enhanced metric visibility with a consolidated reporting solution, managed change for internal reporting tools, developed SQL skills."
-    },
-    {
-      title: "Founder",
-      company: "Tenoris Analytics",
-      location: "Toulouse, France",
-      period: "Nov 2021 – Jan 2023",
-      duration: "1 year 3 months",
-      description: "Led strategy and team management for alternative financial data project, monitored technical progress, developed solutions to challenges."
-    }
-  ];
-
-  // Education data with corrected information
-  educationData = [
-    {
-      degree: "MSc – Strategy, Consulting and Organization",
-      institution: "ESCP Business School",
-      location: "Paris, France",
-      period: "2025 – 2026",
-      description: "Master's program focused on strategy, consulting, and organizational transformation."
-    },
-    {
-      degree: "BBA - Specialization in Business Analytics",
-      institution: "Dublin City University",
-      location: "Dublin, Ireland",
-      period: "Sep 2022 - May 2024",
-      description: "Specialized in Business Analytics, developed skills in data analysis, visualization, and business intelligence."
-    },
-    {
-      degree: "BBA - CESEM",
-      institution: "NEOMA Business School",
-      location: "Reims, France",
-      period: "Sep 2019 - Jul 2021",
-      description: "Focused on international business and management fundamentals."
-    }
-  ];
-
-  // Skills data for more accurate responses - ONLY include verified skills
-  skillsData = {
-    technical: ["Python", "SQL", "Data Analysis", "Excel Macros"],
-    management: ["Project Management", "Operations", "Strategic Planning", "Problem Solving"],
-    tools: ["Kubernetes", "GraphQL", "AWS", "MongoDB", "React", "Node.js"]
-  };
-
-  // Programming languages with proficiency levels - ONLY include verified languages
-  programmingLanguages = [
-    { name: "Python", level: "Advanced", context: "Used for data analysis and automation in projects" },
-    { name: "SQL", level: "Advanced", context: "Employed for database queries and reporting at Amazon" },
-    { name: "JavaScript", level: "Intermediate", context: "Used for web development in personal projects" },
-    { name: "TypeScript", level: "Intermediate", context: "Used in React projects" }
-  ];
-
-  // Updated role suitability data for various roles
-  roleSuitabilityData: RoleSuitabilityMap = {
-    "program management": {
-      relevantSkills: ["Project management", "Stakeholder management", "Process improvement", "Data analysis", "SQL", "Communication"],
-      relevantExperience: [
-        "Project Manager at Amazon Transportation Services",
-        "Operations Manager at Amazon Hub"
-      ],
-      suitabilityRating: "Strong fit",
-      explanation: "Maxime has direct experience in project management at Amazon, where he managed complex projects involving multiple stakeholders. His experience in operations management also demonstrates his ability to coordinate resources and deliver results."
-    },
-    "operations": {
-      relevantSkills: ["Operations management", "Process improvement", "Data analysis", "Problem-solving", "Team leadership"],
-      relevantExperience: [
-        "Operations Manager at Amazon Hub",
-        "Project Manager at Amazon Transportation Services"
-      ],
-      suitabilityRating: "Excellent fit",
-      explanation: "Maxime has direct experience as an Operations Manager at Amazon Hub, where he oversaw fleet maintenance and optimized supplier coordination. His project management experience also involved operational improvements and process optimization."
-    },
-    "consultant": {
-      relevantSkills: ["Data analysis", "Problem-solving", "Communication", "Stakeholder management", "Business acumen"],
-      relevantExperience: [
-        "Project Manager at Amazon Transportation Services",
-        "Operations Manager at Amazon Hub",
-        "Founder of Tenoris Analytics"
-      ],
-      suitabilityRating: "Strong fit",
-      explanation: "Maxime's experience in project management, operations, and analytics demonstrates his ability to analyze complex problems, develop solutions, and communicate effectively with stakeholders - all essential skills for consulting roles."
-    },
-    "data analyst": {
-      relevantSkills: ["Data Analysis", "SQL", "Python", "Excel"],
-      relevantExperience: ["Project Manager - Intern at Amazon Transportation Services", "Innovation Report project"],
-      suitabilityRating: "High",
-      explanation: "Maxime has strong technical skills in data analysis, SQL, and Python, which he applied in his role at Amazon and in his Innovation Report project. His Business Analytics specialization provides a solid foundation for data analyst roles."
-    },
-    "product management": {
-      relevantSkills: ["Project Management", "Strategic Planning", "Problem Solving", "Business Analysis"],
-      relevantExperience: ["Project Manager - Intern at Amazon Transportation Services", "Founder at Tenoris Analytics"],
-      suitabilityRating: "Medium-High",
-      explanation: "Maxime's project management experience and entrepreneurial background provide relevant skills for product management, though he may benefit from gaining more direct product-focused experience."
-    },
-    "software development": {
-      relevantSkills: ["Python", "JavaScript", "TypeScript"],
-      relevantExperience: ["Personal projects in web development"],
-      suitabilityRating: "Low-Medium",
-      explanation: "While Maxime has some programming skills, his experience is more focused on business and management roles rather than dedicated software development."
-    }
-  };
-
-  // List of all verified skills for quick checking
-  allVerifiedSkills: string[] = [];
+  createChatBotMessage: any
+  setState: any
+  createClientMessage: any
 
   constructor(createChatBotMessage: any, setStateFunc: any, createClientMessage: any) {
-    this.createChatBotMessage = createChatBotMessage;
-    this.setState = setStateFunc;
-    this.createClientMessage = createClientMessage;
-    
-    // Build the list of all verified skills for quick checking
-    this.allVerifiedSkills = [
-      ...this.skillsData.technical,
-      ...this.skillsData.management,
-      ...this.skillsData.tools,
-      ...this.programmingLanguages.map(lang => lang.name)
-    ].map(skill => skill.toLowerCase());
-
-    // Bind all methods
-    this.handleExperienceRequest = this.handleExperienceRequest.bind(this);
-    this.handleEducationRequest = this.handleEducationRequest.bind(this);
-    this.handleSkillsRequest = this.handleSkillsRequest.bind(this);
-    this.handleProjectsRequest = this.handleProjectsRequest.bind(this);
-    this.handleContactRequest = this.handleContactRequest.bind(this);
-    this.handleAchievementsRequest = this.handleAchievementsRequest.bind(this);
-    this.handleStrengthsRequest = this.handleStrengthsRequest.bind(this);
-    this.handleWhyHireRequest = this.handleWhyHireRequest.bind(this);
-    this.handleRoleSuitability = this.handleRoleSuitability.bind(this);
-    this.handleDefault = this.handleDefault.bind(this);
+    this.createChatBotMessage = createChatBotMessage
+    this.setState = setStateFunc
+    this.createClientMessage = createClientMessage
   }
 
-  // Helper method to add suggested questions after responses
-  addSuggestedQuestions(message: any, questions: SuggestedQuestion[]) {
-    const suggestedQuestionsMessage = this.createChatBotMessage(
-      "You might also want to know:",
-      {
-        widget: "suggestedQuestions",
-        payload: { questions }
-      }
-    );
-    
-    this.updateChatbotState(message);
-    this.updateChatbotState(suggestedQuestionsMessage);
+  /* ── Core state updater ──────────────────────────────────────────────────── */
+  updateChatbotState = (message: any) => {
+    this.setState((prev: any) => ({ ...prev, messages: [...prev.messages, message] }))
   }
+
+  /* ── Reply helper ────────────────────────────────────────────────────────── */
+  reply = (text: string, widget?: string, suggestions?: SuggestedQuestion[]) => {
+    const msg = this.createChatBotMessage(text, widget ? { widget } : {})
+    this.updateChatbotState(msg)
+    if (suggestions?.length) {
+      const follow = this.createChatBotMessage('Explore more:', {
+        widget: 'suggestedQuestions',
+        payload: { questions: suggestions },
+      })
+      this.updateChatbotState(follow)
+    }
+  }
+
+  /* ── Shared suggestion sets ──────────────────────────────────────────────── */
+  get expSuggestions(): SuggestedQuestion[] {
+    return [
+      { text: 'What skills does he have?',      handler: this.handleSkillsRequest,      icon: <FaChartLine /> },
+      { text: 'What projects has he done?',      handler: this.handleProjectsRequest,    icon: <FaCode /> },
+      { text: "What are his achievements?",      handler: this.handleAchievementsRequest,icon: <FaTrophy /> },
+    ]
+  }
+
+  get eduSuggestions(): SuggestedQuestion[] {
+    return [
+      { text: 'What is his work experience?',   handler: this.handleExperienceRequest,  icon: <FaBriefcase /> },
+      { text: 'What skills does he have?',      handler: this.handleSkillsRequest,      icon: <FaChartLine /> },
+      { text: 'How can I contact Maxime?',      handler: this.handleContactRequest,     icon: <FaEnvelope /> },
+    ]
+  }
+
+  /* ════════════════════════════════════════════════════════════════════════
+     SPECIFIC FACT HANDLERS
+  ════════════════════════════════════════════════════════════════════════ */
+
+  handleYearsExperience = () => {
+    this.reply(
+      "Maxime has ~3 years of professional experience across two Amazon roles and his time as a co-founder:\n\n• Operations Manager — Amazon Hub (5 months, 2024)\n• PM Intern — Amazon Transportation Services (6 months, 2023)\n• Founder — Tenoris Analytics (~14 months, 2021–2023)\n\nHe is currently completing his MSc at ESCP Business School (2025–2026).",
+      undefined,
+      this.expSuggestions
+    )
+  }
+
+  handleCountries = () => {
+    this.reply(
+      "Maxime has studied or worked in 3 countries:\n\n• 🇫🇷 France — NEOMA Business School, ESCP, Amazon Hub (Paris)\n• 🇮🇪 Ireland — Dublin City University (Business Analytics)\n• 🇬🇧 UK — Amazon Transportation Services (London)",
+      undefined,
+      this.expSuggestions
+    )
+  }
+
+  handleNationality = () => {
+    this.reply(
+      "Maxime is French. He grew up in France, studied in France, Ireland, and worked in the UK. He is a native French speaker, fluent in English, and has an intermediate level in Spanish.",
+      undefined,
+      [
+        { text: 'Where is he based now?',        handler: this.handleLocation,           icon: <FaMapMarkerAlt /> },
+        { text: 'What languages does he speak?', handler: this.handleLanguages,          icon: <FaGlobe /> },
+        { text: 'What is his work experience?',  handler: this.handleExperienceRequest,  icon: <FaBriefcase /> },
+      ]
+    )
+  }
+
+  handleLocation = () => {
+    this.reply(
+      "Maxime is currently based in Paris, France, where he is completing his MSc in Strategy, Consulting & Organisation at ESCP Business School (graduating Dec 2026).",
+      undefined,
+      [
+        { text: 'How can I contact him?',         handler: this.handleContactRequest,     icon: <FaEnvelope /> },
+        { text: 'Professional outreach?',       handler: this.handleProfessionalOutreach, icon: <FaQuestion /> },
+        { text: 'What is his background?',        handler: this.handleExperienceRequest,  icon: <FaBriefcase /> },
+      ]
+    )
+  }
+
+  /** Neutral: not a job-search channel; still welcomes substantive professional contact */
+  handleProfessionalOutreach = () => {
+    this.reply(
+      "This portfolio is not where Maxime advertises an active job search. If you have a professional reason to connect—speaking, collaboration, a substantive question about his work, or similar—LinkedIn and email are the right channels.",
+      undefined,
+      [
+        { text: 'How can I contact him?',  handler: this.handleContactRequest,    icon: <FaEnvelope /> },
+        { text: 'What is his experience?', handler: this.handleExperienceRequest, icon: <FaBriefcase /> },
+      ]
+    )
+  }
+
+  handleLanguages = () => {
+    this.reply(
+      "Maxime speaks 3 languages:\n\n• French — Native\n• English — Fluent (studied and worked in Ireland & UK)\n• Spanish — Intermediate",
+      undefined,
+      [
+        { text: 'Where has he lived/worked?', handler: this.handleCountries,       icon: <FaGlobe /> },
+        { text: 'What is his education?',     handler: this.handleEducationRequest, icon: <FaGraduationCap /> },
+      ]
+    )
+  }
+
+  handleAge = () => {
+    this.reply(
+      "Maxime was born in 1998. He began his BBA at NEOMA in 2019 and is currently pursuing his MSc at ESCP (2025–2026).",
+      undefined,
+      this.eduSuggestions
+    )
+  }
+
+  handleSalary = () => {
+    this.reply(
+      "That is not covered here. If it is relevant to a direct professional conversation with Maxime, use LinkedIn or email.",
+      undefined,
+      [{ text: 'How can I contact him?', handler: this.handleContactRequest, icon: <FaEnvelope /> }]
+    )
+  }
+
+  handleCV = () => {
+    this.reply(
+      "You can download Maxime's CV directly from the About section of this portfolio (click the CV card), or reach out via LinkedIn / email to request it.",
+      undefined,
+      [{ text: 'How can I contact him?', handler: this.handleContactRequest, icon: <FaEnvelope /> }]
+    )
+  }
+
+  /* ════════════════════════════════════════════════════════════════════════
+     SPECIFIC PROJECT HANDLERS
+  ════════════════════════════════════════════════════════════════════════ */
+
+  handleProjectCRM = () => {
+    this.reply(
+      "Consulting Reports Monitor is Maxime's latest personal project:\n\n• Fully automated pipeline monitoring McKinsey (8 sectors) & BCG (13 themes) publications\n• Generates structured ~1,200-word French AI summaries per new report (Gemini / Groq)\n• Delivers one HTML email per report via GitHub Actions cron — 0 €/month cost\n• Stack: TypeScript · Prisma/SQLite · Nodemailer · GitHub Actions\n\nView it on the Projects page of this portfolio.",
+      undefined,
+      [
+        { text: 'See all projects',          handler: this.handleProjectsRequest,   icon: <FaCode /> },
+        { text: 'What else can he build?',   handler: this.handleSkillsRequest,     icon: <FaChartLine /> },
+      ]
+    )
+  }
+
+  handleProjectTenoris = () => {
+    this.reply(
+      "Tenoris Analytics (Nov 2021 – Jan 2023):\n\nMaxime co-founded Tenoris to democratise alternative financial data for individual investors. As co-founder & PM he led strategy, managed the team, monitored technical progress, and built investor relations. Stack: web scraping, Kubernetes, GraphQL, data architecture.",
+      undefined,
+      [{ text: 'See all projects', handler: this.handleProjectsRequest, icon: <FaCode /> }]
+    )
+  }
+
+  handleProjectTalentGrid = () => {
+    this.reply(
+      "TalentGrid:\n\nA three-sided platform connecting universities, students, and employers through rich ePortfolios and AI-powered engagement. Maxime led this as PM — replacing traditional CV-based hiring with verified skills profiles. Built on a no-code stack with an integrated AI chatbot.",
+      undefined,
+      [{ text: 'See all projects', handler: this.handleProjectsRequest, icon: <FaCode /> }]
+    )
+  }
+
+  handleProjectFlowmap = () => {
+    this.reply(
+      "Flowmap (3 months, ongoing):\n\nAn AI-powered SaaS that automates project progress tracking by analysing GitHub repositories in real time. Provides feature-level insights without requiring manual updates from dev teams. Stack: AI/ML, GitHub integration, SaaS architecture.",
+      undefined,
+      [{ text: 'See all projects', handler: this.handleProjectsRequest, icon: <FaCode /> }]
+    )
+  }
+
+  handleProjectKITS = () => {
+    this.reply(
+      "KITS (Keep in the Sync):\n\nA knowledge-management platform that keeps distributed teams aligned by centralising decisions, action items, and institutional knowledge. Maxime contributed as PM and strategist to the product definition and roadmap.",
+      undefined,
+      [{ text: 'See all projects', handler: this.handleProjectsRequest, icon: <FaCode /> }]
+    )
+  }
+
+  handleProjectInnovation = () => {
+    this.reply(
+      "Innovation Report:\n\nAcademic research project analysing how patents contribute to market valuation in R&D-intensive sectors. Used Python (Pandas, Scikit-learn) for data analysis and visualisation across large patent and market-cap datasets.",
+      undefined,
+      [{ text: 'See all projects', handler: this.handleProjectsRequest, icon: <FaCode /> }]
+    )
+  }
+
+  handleProjectHouseDec = () => {
+    this.reply(
+      "HouseDec:\n\nA minimalist furniture e-commerce platform built with a clean UI, Stripe payment integration, and an admin dashboard for catalogue and order management.",
+      undefined,
+      [{ text: 'See all projects', handler: this.handleProjectsRequest, icon: <FaCode /> }]
+    )
+  }
+
+  /* ════════════════════════════════════════════════════════════════════════
+     SPECIFIC EDUCATION HANDLERS
+  ════════════════════════════════════════════════════════════════════════ */
+
+  handleMSC = () => {
+    this.reply(
+      "MSc — Strategy, Consulting & Organisation @ ESCP Business School (Paris):\n\nSep 2025 – Dec 2026. Focused on strategy, management consulting frameworks, organisational transformation, and decision-making. ESCP is a leading European business school consistently ranked in the FT Global Masters rankings.",
+      undefined, this.eduSuggestions
+    )
+  }
+
+  handleDCU = () => {
+    this.reply(
+      "BBA — Business Analytics @ Dublin City University (Ireland):\n\nSep 2022 – May 2024. Specialisation in data analysis, business intelligence, visualisation, and statistical modelling. Completed alongside his internship at Amazon Transportation Services in London.",
+      undefined, this.eduSuggestions
+    )
+  }
+
+  handleNEOMA = () => {
+    this.reply(
+      "BBA — CESEM @ NEOMA Business School (Reims, France):\n\nSep 2019 – Jul 2021. Focused on international business and management fundamentals. CESEM is a double-degree programme designed for internationally-minded students.",
+      undefined, this.eduSuggestions
+    )
+  }
+
+  /* ════════════════════════════════════════════════════════════════════════
+     EXISTING HANDLERS (kept & cleaned up)
+  ════════════════════════════════════════════════════════════════════════ */
 
   handleExperienceRequest = () => {
-    const message = this.createChatBotMessage(
-      "Maxime has experience in operations management, project management, and analytics. His most recent roles include:",
-      {
-        widget: "experience",
-      }
-    );
-
-    const suggestedQuestions: SuggestedQuestion[] = [
-      { 
-        text: "What skills does Maxime have?", 
-        handler: this.handleSkillsRequest,
-        icon: <FaChartLine />
-      },
-      { 
-        text: "What projects has he worked on?", 
-        handler: this.handleProjectsRequest,
-        icon: <FaCode />
-      },
-      { 
-        text: "What are his key achievements?", 
-        handler: this.handleAchievementsRequest,
-        icon: <FaTrophy />
-      }
-    ];
-
-    this.addSuggestedQuestions(message, suggestedQuestions);
-  };
-
-  handleAchievementsRequest = () => {
-    const message = this.createChatBotMessage(
-      "Maxime's key achievements include developing a consolidated reporting solution at Amazon that enhanced metric visibility, optimizing supplier coordination for Amazon Hub's locker fleet, and founding Tenoris Analytics where he developed custom data solutions for clients."
-    );
-
-    const suggestedQuestions: SuggestedQuestion[] = [
-      { 
-        text: "What are Maxime's strengths?", 
-        handler: this.handleStrengthsRequest,
-        icon: <FaLightbulb />
-      },
-      { 
-        text: "What skills does he have?", 
-        handler: this.handleSkillsRequest,
-        icon: <FaChartLine />
-      },
-      { 
-        text: "What projects has he worked on?", 
-        handler: this.handleProjectsRequest,
-        icon: <FaCode />
-      }
-    ];
-
-    this.addSuggestedQuestions(message, suggestedQuestions);
-  };
-
-  handleStrengthsRequest = () => {
-    const message = this.createChatBotMessage(
-      "Maxime's key strengths include data-driven problem solving, effective stakeholder management, adaptability to new environments, strong analytical skills, and the ability to bridge technical and business perspectives."
-    );
-
-    const suggestedQuestions: SuggestedQuestion[] = [
-      { 
-        text: "What is Maxime's work experience?", 
-        handler: this.handleExperienceRequest,
-        icon: <FaBriefcase />
-      },
-      { 
-        text: "What are his key achievements?", 
-        handler: this.handleAchievementsRequest,
-        icon: <FaTrophy />
-      },
-      { 
-        text: "Is he a good fit for consulting roles?", 
-        handler: () => this.handleRoleSuitability("consultant"),
-        icon: <FaQuestion />
-      }
-    ];
-
-    this.addSuggestedQuestions(message, suggestedQuestions);
-  };
-
-  handleWhyHireRequest = () => {
-    const message = this.createChatBotMessage(
-      "Maxime would be a valuable addition to your team because of his experience in operations and project management, strong analytical skills, and ability to drive results. His background at Amazon demonstrates his capability to work in fast-paced environments and deliver impactful solutions."
-    );
-
-    const suggestedQuestions: SuggestedQuestion[] = [
-      { 
-        text: "What are Maxime's skills?", 
-        handler: this.handleSkillsRequest,
-        icon: <FaChartLine />
-      },
-      { 
-        text: "What is his educational background?", 
-        handler: this.handleEducationRequest,
-        icon: <FaGraduationCap />
-      },
-      { 
-        text: "How can I contact Maxime?", 
-        handler: this.handleContactRequest,
-        icon: <FaEnvelope />
-      }
-    ];
-
-    this.addSuggestedQuestions(message, suggestedQuestions);
-  };
-
-  handleRoleSuitability = (role?: string) => {
-    if (!role) {
-      const message = this.createChatBotMessage(
-        "I can help assess Maxime's fit for various roles. Please specify a role such as 'program management', 'operations', 'data analyst', or 'consultant'."
-      );
-      
-      const suggestedQuestions: SuggestedQuestion[] = [
-        { 
-          text: "Tell me about Maxime's experience", 
-          handler: this.handleExperienceRequest,
-          icon: <FaBriefcase />
-        },
-        { 
-          text: "What are his key skills?", 
-          handler: this.handleSkillsRequest,
-          icon: <FaChartLine />
-        },
-        { 
-          text: "What are his strengths?", 
-          handler: this.handleStrengthsRequest,
-          icon: <FaLightbulb />
-        }
-      ];
-
-      this.addSuggestedQuestions(message, suggestedQuestions);
-      return;
-    }
-    
-    // Normalize the role name
-    const normalizedRole = role.toLowerCase();
-    
-    // Find the closest matching role
-    let matchedRole = "";
-    let bestMatch = 0;
-    
-    for (const key in this.roleSuitabilityData) {
-      if (normalizedRole.includes(key) || key.includes(normalizedRole)) {
-        if (key.length > bestMatch) {
-          matchedRole = key;
-          bestMatch = key.length;
-        }
-      }
-    }
-    
-    if (matchedRole && this.roleSuitabilityData[matchedRole]) {
-      const roleData = this.roleSuitabilityData[matchedRole];
-      
-      // Create a more concise, card-based format that's easier to read
-      const message = this.createChatBotMessage(
-        `<div class="role-card">
-          <div class="role-card-header">
-            <h3>${matchedRole.charAt(0).toUpperCase() + matchedRole.slice(1)}</h3>
-            <span class="role-fit-badge ${roleData.suitabilityRating.toLowerCase().replace(/\s+/g, '-')}">${roleData.suitabilityRating}</span>
-          </div>
-          <p>${roleData.explanation}</p>
-          <div class="role-card-section">
-            <h4>Key Experience</h4>
-            <ul class="role-card-list">
-              ${roleData.relevantExperience.map(exp => `<li>${exp}</li>`).join('')}
-            </ul>
-          </div>
-          <div class="role-card-section">
-            <h4>Key Skills</h4>
-            <div class="skill-tags">
-              ${roleData.relevantSkills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
-            </div>
-          </div>
-        </div>`
-      );
-      
-      const suggestedQuestions: SuggestedQuestion[] = [
-        { 
-          text: "What is Maxime's work experience?", 
-          handler: this.handleExperienceRequest,
-          icon: <FaBriefcase />
-        },
-        { 
-          text: "What are his key skills?", 
-          handler: this.handleSkillsRequest,
-          icon: <FaChartLine />
-        },
-        { 
-          text: "What are his strengths?", 
-          handler: this.handleStrengthsRequest,
-          icon: <FaLightbulb />
-        }
-      ];
-
-      this.addSuggestedQuestions(message, suggestedQuestions);
-    } else {
-      const message = this.createChatBotMessage(
-        `I don't have specific information about Maxime's fit for "${role}" roles. However, he has experience in operations management, project management, and data analytics. Would you like to know more about his skills or experience?`
-      );
-      
-      const suggestedQuestions: SuggestedQuestion[] = [
-        { 
-          text: "What is Maxime's work experience?", 
-          handler: this.handleExperienceRequest,
-          icon: <FaBriefcase />
-        },
-        { 
-          text: "What are his key skills?", 
-          handler: this.handleSkillsRequest,
-          icon: <FaChartLine />
-        },
-        { 
-          text: "What are his strengths?", 
-          handler: this.handleStrengthsRequest,
-          icon: <FaLightbulb />
-        }
-      ];
-
-      this.addSuggestedQuestions(message, suggestedQuestions);
-    }
-  };
-
-  handleProjectsRequest = () => {
-    const message = this.createChatBotMessage(
-      "Here are some of Maxime's notable projects:",
-      {
-        widget: "projects",
-      }
-    );
-    
-    const suggestedQuestions: SuggestedQuestion[] = [
-      { 
-        text: "What skills does Maxime have?", 
-        handler: this.handleSkillsRequest,
-        icon: <FaChartLine />
-      },
-      { 
-        text: "What is his work experience?", 
-        handler: this.handleExperienceRequest,
-        icon: <FaBriefcase />
-      },
-      { 
-        text: "What is his educational background?", 
-        handler: this.handleEducationRequest,
-        icon: <FaGraduationCap />
-      }
-    ];
-
-    this.addSuggestedQuestions(message, suggestedQuestions);
-  };
-
-  handleSkillsRequest = () => {
-    const message = this.createChatBotMessage(
-      "Here are Maxime's key skills:",
-      {
-        widget: "skills",
-      }
-    );
-    
-    const suggestedQuestions: SuggestedQuestion[] = [
-      { 
-        text: "What is Maxime's work experience?", 
-        handler: this.handleExperienceRequest,
-        icon: <FaBriefcase />
-      },
-      { 
-        text: "What projects has he worked on?", 
-        handler: this.handleProjectsRequest,
-        icon: <FaCode />
-      },
-      { 
-        text: "What are his key achievements?", 
-        handler: this.handleAchievementsRequest,
-        icon: <FaTrophy />
-      }
-    ];
-
-    this.addSuggestedQuestions(message, suggestedQuestions);
-  };
-
-  handleContactRequest = () => {
-    const message = this.createChatBotMessage(
-      "You can contact Maxime via email at maximequintero@gmail.com or connect with him on LinkedIn at https://www.linkedin.com/in/maxime-junca-quintero/."
-    );
-    
-    const suggestedQuestions: SuggestedQuestion[] = [
-      { 
-        text: "What is Maxime's work experience?", 
-        handler: this.handleExperienceRequest,
-        icon: <FaBriefcase />
-      },
-      { 
-        text: "What are his key skills?", 
-        handler: this.handleSkillsRequest,
-        icon: <FaChartLine />
-      },
-      { 
-        text: "Why should I hire Maxime?", 
-        handler: this.handleWhyHireRequest,
-        icon: <FaQuestion />
-      }
-    ];
-
-    this.addSuggestedQuestions(message, suggestedQuestions);
-  };
+    this.reply(
+      "Maxime has ~3 years of professional experience across project management, operations, and entrepreneurship:",
+      'experience',
+      this.expSuggestions
+    )
+  }
 
   handleEducationRequest = () => {
-    const message = this.createChatBotMessage(
-      "Here's Maxime's educational background:",
-      {
-        widget: "education",
-      }
-    );
-    
-    const suggestedQuestions: SuggestedQuestion[] = [
-      { 
-        text: "What skills does Maxime have?", 
-        handler: this.handleSkillsRequest,
-        icon: <FaChartLine />
-      },
-      { 
-        text: "What is his work experience?", 
-        handler: this.handleExperienceRequest,
-        icon: <FaBriefcase />
-      },
-      { 
-        text: "What projects has he worked on?", 
-        handler: this.handleProjectsRequest,
-        icon: <FaCode />
-      }
-    ];
+    this.reply("Here's Maxime's educational background:", 'education', this.eduSuggestions)
+  }
 
-    this.addSuggestedQuestions(message, suggestedQuestions);
-  };
+  handleSkillsRequest = () => {
+    this.reply(
+      "Here are Maxime's key skills across strategy, data, and technology:",
+      'skills',
+      [
+        { text: 'What is his work experience?', handler: this.handleExperienceRequest, icon: <FaBriefcase /> },
+        { text: 'What projects has he done?',   handler: this.handleProjectsRequest,   icon: <FaCode /> },
+      ]
+    )
+  }
 
-  // Handle multiple questions in one message
-  handleMultipleQuestions = (message: string) => {
-    const lowerCaseMessage = message.toLowerCase();
-    
-    // Check for common combinations
-    if ((lowerCaseMessage.includes('skill') && lowerCaseMessage.includes('education')) ||
-        (lowerCaseMessage.includes('skill') && lowerCaseMessage.includes('background'))) {
-      
-      // First handle skills
-      const skillsMessage = this.createChatBotMessage(
-        "Here are Maxime's key skills:",
-        {
-          widget: "skills",
-        }
-      );
-      
-      // Then handle education
-      const educationMessage = this.createChatBotMessage(
-        "And here's his educational background:",
-        {
-          widget: "education",
-        }
-      );
-      
-      const suggestedQuestions: SuggestedQuestion[] = [
-        { 
-          text: "What is Maxime's work experience?", 
-          handler: this.handleExperienceRequest,
-          icon: <FaBriefcase />
-        },
-        { 
-          text: "What projects has he worked on?", 
-          handler: this.handleProjectsRequest,
-          icon: <FaCode />
-        },
-        { 
-          text: "Is he a good fit for operations roles?", 
-          handler: () => this.handleRoleSuitability("operations"),
-          icon: <FaQuestion />
-        }
-      ];
-      
-      this.updateChatbotState(skillsMessage);
-      this.updateChatbotState(educationMessage);
-      
-      const followUpMessage = this.createChatBotMessage(
-        "You might also want to know:",
-        {
-          widget: "suggestedQuestions",
-          payload: { questions: suggestedQuestions }
-        }
-      );
-      
-      this.updateChatbotState(followUpMessage);
-      return true;
+  handleProjectsRequest = () => {
+    this.reply(
+      "Here are Maxime's notable projects across consulting, PM, and research:",
+      'projects',
+      [
+        { text: 'What skills does he have?',    handler: this.handleSkillsRequest,     icon: <FaChartLine /> },
+        { text: 'What is his work experience?', handler: this.handleExperienceRequest, icon: <FaBriefcase /> },
+      ]
+    )
+  }
+
+  handleContactRequest = () => {
+    this.reply(
+      "You can reach Maxime at:\n\n• Email: maximequintero@gmail.com\n• LinkedIn: linkedin.com/in/maxime-junca-quintero\n• GitHub: github.com/MaximeJuncaQuintero\n\nProfessional or project-related messages are welcome; this site is not used for open job applications.",
+      undefined,
+      [{ text: 'More on his background', handler: this.handleExperienceRequest, icon: <FaBriefcase /> }]
+    )
+  }
+
+  handleAchievementsRequest = () => {
+    this.reply(
+      "Key achievements:\n\n• Built a KPI reporting solution at Amazon ATS adopted across the EU transport team\n• Led Tenoris Analytics from idea to MVP as co-founder & PM (alt-data platform)\n• Automated consulting intelligence pipeline (McKinsey + BCG) at 0 €/month cost\n• Accepted into ESCP MSc Strategy & Consulting (top European business school)",
+      undefined,
+      [
+        { text: 'What makes him unique?',    handler: this.handleUniqueQualitiesQuestion, icon: <FaLightbulb /> },
+        { text: 'How can I contact him?',    handler: this.handleContactRequest,          icon: <FaEnvelope /> },
+      ]
+    )
+  }
+
+  handleStrengthsRequest = () => {
+    this.reply(
+      "Maxime's key strengths:\n\n• Bridges technical teams and business stakeholders\n• Data-driven decision making (SQL, Python, Excel)\n• Structured thinking — consulting & PM frameworks\n• International adaptability (3 countries, 3 languages)\n• Entrepreneurial mindset (founded Tenoris Analytics)",
+      undefined,
+      [
+        { text: 'What is his experience?', handler: this.handleExperienceRequest,       icon: <FaBriefcase /> },
+        { text: 'What projects has he done?', handler: this.handleProjectsRequest,      icon: <FaCode /> },
+      ]
+    )
+  }
+
+  /** Profile highlights without hiring framing */
+  handleProfileHighlights = () => {
+    this.reply(
+      "Profile highlights:\n\n• Two Amazon roles — high-bar execution in fast-paced environments\n• PM + operations + data — bridges delivery and analytics\n• Co-founder experience — strategic and product-oriented\n• ESCP MSc — consulting and strategy depth\n• International path across France, Ireland, and the UK",
+      undefined,
+      [
+        { text: 'How can I contact him?', handler: this.handleContactRequest, icon: <FaEnvelope /> },
+        { text: 'What skills does he have?', handler: this.handleSkillsRequest, icon: <FaChartLine /> },
+      ]
+    )
+  }
+
+  handleAmazonRoleQuestion = () => {
+    this.reply(
+      "Maxime has held 2 roles at Amazon:\n\n• Operations Manager — Amazon Hub, Paris (Jun–Oct 2024)\n  Fleet maintenance oversight, supplier coordination, Locker network operations.\n\n• PM Intern — Amazon Transportation Services, London (Jan–Jun 2023)\n  Built a consolidated KPI reporting solution, managed tool-change adoption, developed SQL skills.",
+      undefined,
+      this.expSuggestions
+    )
+  }
+
+  handleProgrammingLanguagesQuestion = () => {
+    this.reply(
+      "Maxime's technical stack:\n\n• Python — data analysis & automation (Advanced)\n• SQL — database queries & reporting, used at Amazon (Advanced)\n• TypeScript / JavaScript — personal projects & web dev (Intermediate)\n• VBA / Excel — macros & dashboards (Intermediate)\n• Tools: Prisma, GitHub Actions, Nodemailer, Kubernetes, GraphQL",
+      undefined,
+      [
+        { text: 'What projects has he built?', handler: this.handleProjectsRequest,   icon: <FaCode /> },
+        { text: 'What is his work experience?', handler: this.handleExperienceRequest, icon: <FaBriefcase /> },
+      ]
+    )
+  }
+
+  handleUniqueQualitiesQuestion = () => {
+    this.reply(
+      "What makes Maxime unique:\n\n• Cross-functional profile — PM, operations, data, and strategy\n• Early-career Amazon experience — strong execution and ownership\n• Co-founder — entrepreneurial drive and full-cycle product thinking\n• 3 countries, 3 languages — internationally mobile and culturally adaptable\n• Side projects — builds tools independently (Consulting Reports Monitor, Flowmap)",
+      undefined,
+      [
+        { text: 'What is his work experience?', handler: this.handleExperienceRequest, icon: <FaBriefcase /> },
+        { text: 'How can I contact him?',       handler: this.handleContactRequest,   icon: <FaEnvelope /> },
+      ]
+    )
+  }
+
+  handleRoleSuitability = (role?: string) => {
+    const data: Record<string, { rating: string; text: string }> = {
+      'program management':  { rating: '★★★★☆ Strong fit',    text: 'Direct PM experience at Amazon ATS (reporting solution, stakeholder management, tool adoption) plus ESCP strategy grounding.' },
+      'operations':          { rating: '★★★★★ Excellent fit', text: 'Operations Manager at Amazon Hub — fleet maintenance, supplier coordination, KPI ownership.' },
+      'consultant':          { rating: '★★★★☆ Strong fit',    text: 'ESCP MSc Strategy & Consulting, data-driven problem-solving, multi-stakeholder communication, Consulting Reports Monitor project.' },
+      'data analyst':        { rating: '★★★☆☆ Good fit',      text: 'SQL & Python applied at Amazon and in academic projects. Business Analytics BBA from DCU.' },
+      'product management':  { rating: '★★★☆☆ Good fit',      text: 'PM internship + co-founder experience. Strong product thinking, lighter on pure roadmap / discovery track record.' },
+      'software development':{ rating: '★★☆☆☆ Partial fit',   text: 'TypeScript & Python skills for personal projects, but primary focus is PM / strategy rather than engineering.' },
     }
-    
-    // Add more combinations as needed
-    
-    return false; // No multiple questions detected
-  };
+
+    if (!role || !data[role]) {
+      this.reply(
+        "I can summarise how Maxime's background maps to areas such as program management, operations, consulting, data analysis, product management, or software engineering. Pick a theme below.",
+        undefined,
+        [
+          { text: 'Consulting angle',           handler: () => this.handleRoleSuitability('consultant'),         icon: <FaBriefcase /> },
+          { text: 'Operations angle',           handler: () => this.handleRoleSuitability('operations'),         icon: <FaBriefcase /> },
+          { text: 'Program management angle',   handler: () => this.handleRoleSuitability('program management'), icon: <FaBriefcase /> },
+        ]
+      )
+      return
+    }
+
+    const d = data[role]
+    this.reply(
+      `${role.charAt(0).toUpperCase() + role.slice(1)} — ${d.rating}\n\n${d.text}`,
+      undefined,
+      [
+        { text: 'What is his experience?', handler: this.handleExperienceRequest, icon: <FaBriefcase /> },
+        { text: 'How can I contact him?',  handler: this.handleContactRequest,    icon: <FaEnvelope /> },
+      ]
+    )
+  }
 
   handleDefault = () => {
-    const message = this.createChatBotMessage(
-      "I can tell you about Maxime's experience, projects, skills, education, or how to contact him. I can also help assess his fit for specific roles like program management, operations, or consulting."
-    );
-    
-    const suggestedQuestions: SuggestedQuestion[] = [
-      { 
-        text: "What is Maxime's work experience?", 
-        handler: this.handleExperienceRequest,
-        icon: <FaBriefcase />
-      },
-      { 
-        text: "What skills does he have?", 
-        handler: this.handleSkillsRequest,
-        icon: <FaChartLine />
-      },
-      { 
-        text: "What is his educational background?", 
-        handler: this.handleEducationRequest,
-        icon: <FaGraduationCap />
-      }
-    ];
-
-    this.addSuggestedQuestions(message, suggestedQuestions);
-  };
-
-  // Add specific handlers for common questions
-
-  // Handler for Amazon role questions
-  handleAmazonRoleQuestion = () => {
-    const amazonExperience = this.experienceData.filter(exp => exp.company.includes('Amazon'));
-    
-    let message;
-    if (amazonExperience.length > 0) {
-      const amazonRoles = amazonExperience.map(exp => 
-        `<div class="amazon-role-card">
-          <div class="amazon-role-header">
-            <h4>${exp.title}</h4>
-            <span class="amazon-role-period">${exp.period}</span>
-          </div>
-          <div class="amazon-role-company">${exp.company}, ${exp.location}</div>
-          <p>${exp.description}</p>
-        </div>`
-      ).join('');
-      
-      message = this.createChatBotMessage(
-        `<div class="amazon-roles-container">
-          ${amazonRoles}
-        </div>`
-      );
-    } else {
-      message = this.createChatBotMessage(
-        "I don't have specific information about Maxime's roles at Amazon."
-      );
-    }
-    
-    const suggestedQuestions: SuggestedQuestion[] = [
-      { 
-        text: "What skills did he develop there?", 
-        handler: this.handleSkillsRequest,
-        icon: <FaChartLine />
-      },
-      { 
-        text: "What are his key achievements?", 
-        handler: this.handleAchievementsRequest,
-        icon: <FaTrophy />
-      },
-      { 
-        text: "What is his educational background?", 
-        handler: this.handleEducationRequest,
-        icon: <FaGraduationCap />
-      }
-    ];
-    
-    this.addSuggestedQuestions(message, suggestedQuestions);
-  };
-
-  // Handler for programming languages questions
-  handleProgrammingLanguagesQuestion = () => {
-    const message = this.createChatBotMessage(
-      `<div class="programming-container">
-        ${this.programmingLanguages.map(lang => 
-          `<div class="programming-card">
-            <div class="programming-header">
-              <h4>${lang.name}</h4>
-              <span class="programming-level ${lang.level.toLowerCase()}">${lang.level}</span>
-            </div>
-            <p>${lang.context}</p>
-          </div>`
-        ).join('')}
-        <p class="programming-summary">Strongest skills: Python (data analysis) and SQL (database)</p>
-      </div>`
-    );
-    
-    const suggestedQuestions: SuggestedQuestion[] = [
-      { 
-        text: "What projects has he worked on?", 
-        handler: this.handleProjectsRequest,
-        icon: <FaCode />
-      },
-      { 
-        text: "What are his other technical skills?", 
-        handler: this.handleSkillsRequest,
-        icon: <FaChartLine />
-      },
-      { 
-        text: "What is his work experience?", 
-        handler: this.handleExperienceRequest,
-        icon: <FaBriefcase />
-      }
-    ];
-    
-    this.addSuggestedQuestions(message, suggestedQuestions);
-  };
-
-  // Handler for "what makes Maxime unique" questions
-  handleUniqueQualitiesQuestion = () => {
-    const uniqueQualities = [
-      { title: "Diverse experience", description: "Operations, project management, entrepreneurship" },
-      { title: "Technical & business", description: "Bridges technical teams and business stakeholders" },
-      { title: "International", description: "Education and work across multiple countries" },
-      { title: "Data-driven", description: "Problem-solving based on data analysis" },
-      { title: "Adaptable", description: "Quick to adapt to new challenges" }
-    ];
-    
-    const message = this.createChatBotMessage(
-      `<div class="unique-container">
-        <h3>What makes Maxime unique:</h3>
-        <div class="unique-qualities-grid">
-          ${uniqueQualities.map(quality => 
-            `<div class="unique-quality-card">
-              <h4>${quality.title}</h4>
-              <p>${quality.description}</p>
-            </div>`
-          ).join('')}
-        </div>
-      </div>`
-    );
-    
-    const suggestedQuestions: SuggestedQuestion[] = [
-      { 
-        text: "What are his key strengths?", 
-        handler: this.handleStrengthsRequest,
-        icon: <FaLightbulb />
-      },
-      { 
-        text: "What is his work experience?", 
-        handler: this.handleExperienceRequest,
-        icon: <FaBriefcase />
-      },
-      { 
-        text: "How can I contact Maxime?", 
-        handler: this.handleContactRequest,
-        icon: <FaEnvelope />
-      }
-    ];
-    
-    this.addSuggestedQuestions(message, suggestedQuestions);
-  };
-
-  updateChatbotState = (message: any) => {
-    this.setState((prevState: any) => ({
-      ...prevState,
-      messages: [...prevState.messages, message],
-    }));
-  };
+    this.reply(
+      "Hi — I'm Maxime's assistant. Ask me anything about his background, projects, or experience.",
+      'options'
+    )
+  }
 }
 
-export default ActionProvider; 
+export default ActionProvider

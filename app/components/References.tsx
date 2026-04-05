@@ -3,6 +3,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { FaDownload, FaExternalLinkAlt } from 'react-icons/fa'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../translations'
 
 interface Reference {
   name:        string
@@ -36,6 +38,8 @@ const references: Reference[] = [
 ]
 
 export default function References() {
+  const { lang } = useLanguage()
+  const t        = translations[lang].references
   if (references.length === 0) return null
 
   return (
@@ -49,8 +53,8 @@ export default function References() {
           viewport={{ once: true }}
           className="mb-12 text-center"
         >
-          <span className="section-label">Endorsements</span>
-          <h2 className="section-heading">References</h2>
+          <span className="section-label">{t.label}</span>
+          <h2 className="section-heading">{t.heading}</h2>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl mx-auto">
@@ -120,7 +124,7 @@ export default function References() {
                       {ref.title}
                     </p>
                     <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>
-                      Issued {ref.date}
+                      {t.issued} {ref.date}
                     </p>
                   </div>
                   <FaExternalLinkAlt
