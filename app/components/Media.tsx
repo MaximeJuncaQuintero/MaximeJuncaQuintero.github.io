@@ -1,65 +1,151 @@
 'use client'
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { FaFilePdf } from 'react-icons/fa';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { FaExternalLinkAlt, FaUsers } from 'react-icons/fa'
 
 interface MediaItem {
-  title: string;
-  description: string;
-  file: string;
-  date: string;
+  title:       string
+  description: string
+  file:        string
+  date:        string
+  authors:     string
+  type:        string
+  tags:        string[]
 }
 
 const mediaItems: MediaItem[] = [
   {
-    title: "NXU Think Tank Report",
-    description: "This think tank report, co-written by myself, explores the societal, economic, and employment impacts of AI tools like Chat GPT. It delves into the nuances between AI and human intelligence, the expert use of Chat GPT, and its transformative potential across various sectors. The report also discusses the broader implications of AI on education, the labor market, and the concept of work in the context of a potential new era of economic growth and social transformation similar to the Industrial Revolution.",
-    file: "/assets/docs/NXUTHINKTANK.pdf",
-    date: "2024"
-  }
-];
+    title:       'NXU Think Tank Report',
+    description: 'This think tank report, co-written by myself, explores the societal, economic, and employment impacts of AI tools like Chat GPT. It delves into the nuances between AI and human intelligence, the expert use of Chat GPT, and its transformative potential across various sectors. The report also discusses the broader implications of AI on education, the labor market, and the concept of work in the context of a potential new era of economic growth and social transformation similar to the Industrial Revolution.',
+    file:        '/assets/docs/NXUTHINKTANK.pdf',
+    date:        '2024',
+    authors:     'Co-authored · NXU Think Tank',
+    type:        'Think Tank Report',
+    tags:        ['AI', 'Future of Work', 'Labor Market', 'Education', 'ChatGPT'],
+  },
+]
 
 export default function Media() {
-  if (mediaItems.length === 0) return null;
-  
+  if (mediaItems.length === 0) return null
+
   return (
-    <section id="media" className="py-12 sm:py-20 bg-dark-800">
+    <section id="media" className="py-16 sm:py-24" style={{ background: 'var(--bg)' }}>
       <div className="container mx-auto px-4 sm:px-6">
-        <motion.h2 
+
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 text-center section-heading"
+          viewport={{ once: true }}
+          className="mb-12 text-center"
         >
-          Media & Publications
-        </motion.h2>
-        
-        <div className="max-w-4xl mx-auto">
+          <span className="section-label">Thought Leadership</span>
+          <h2 className="section-heading">Media &amp; Publications</h2>
+        </motion.div>
+
+        <div className="max-w-4xl mx-auto space-y-5">
           {mediaItems.map((item, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="media-card mb-6 sm:mb-8"
+              viewport={{ once: true }}
+              className="group rounded-2xl overflow-hidden border transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--accent)'
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--border)'
+              }}
             >
-              <div className="p-4 sm:p-6">
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 sm:mb-4">
-                  <h3 className="text-xl sm:text-2xl font-semibold mb-1 sm:mb-0">{item.title}</h3>
-                  <span className="text-purple-300 text-xs sm:text-sm">{item.date}</span>
+              {/* Gradient top */}
+              <div
+                className="h-[3px]"
+                style={{ background: 'linear-gradient(90deg, var(--accent), var(--secondary))' }}
+              />
+
+              <div className="p-6 sm:p-8">
+                {/* Type + date row */}
+                <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
+                  <span
+                    className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border"
+                    style={{
+                      background:  'rgba(29,78,216,0.08)',
+                      color:       'var(--accent)',
+                      borderColor: 'rgba(29,78,216,0.18)',
+                    }}
+                  >
+                    {item.type}
+                  </span>
+                  <span
+                    className="text-[11px] font-medium px-2.5 py-1 rounded-full border"
+                    style={{
+                      background:  'var(--surface-2)',
+                      borderColor: 'var(--border)',
+                      color:       'var(--text-muted)',
+                    }}
+                  >
+                    {item.date}
+                  </span>
                 </div>
-                
-                <p className="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">{item.description}</p>
-                
-                <a 
-                  href={item.file} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-purple-900 bg-opacity-30 text-purple-300 rounded-full text-xs sm:text-sm hover:bg-opacity-50 transition-all"
+
+                {/* Title */}
+                <h3
+                  className="text-lg sm:text-2xl font-bold leading-snug mb-2"
+                  style={{ color: 'var(--text)' }}
                 >
-                  <FaFilePdf className="mr-1.5 sm:mr-2" />
-                  View Publication
+                  {item.title}
+                </h3>
+
+                {/* Authors */}
+                <p
+                  className="flex items-center gap-1.5 text-xs font-medium mb-4"
+                  style={{ color: 'var(--text-muted)' }}
+                >
+                  <FaUsers className="text-[10px]" style={{ color: 'var(--secondary)' }} />
+                  {item.authors}
+                </p>
+
+                {/* Abstract */}
+                <p
+                  className="text-sm sm:text-base leading-relaxed mb-5"
+                  style={{ color: 'var(--text-muted)' }}
+                >
+                  {item.description}
+                </p>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-1.5 mb-6">
+                  {item.tags.map((tag, ti) => (
+                    <span
+                      key={ti}
+                      className="text-[11px] font-medium px-2.5 py-0.5 rounded-lg border"
+                      style={{
+                        background:  'var(--surface-2)',
+                        borderColor: 'var(--border)',
+                        color:       'var(--text-muted)',
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Divider + CTA */}
+                <div className="h-px mb-5" style={{ background: 'var(--border)' }} />
+
+                <a
+                  href={item.file}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-200"
+                  style={{ color: 'var(--accent)' }}
+                >
+                  Read Full Report
+                  <FaExternalLinkAlt className="text-[10px] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
                 </a>
               </div>
             </motion.div>
@@ -67,5 +153,5 @@ export default function Media() {
         </div>
       </div>
     </section>
-  );
-} 
+  )
+}

@@ -4,8 +4,9 @@ import { Inter } from 'next/font/google'
 import ChatbotWrapper from './components/chatbot/ChatbotWrapper'
 import SectionNav from './components/SectionNav'
 import GoogleAnalytics from './components/GoogleAnalytics'
+import { ThemeProvider } from './context/ThemeContext'
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   display: 'swap',
@@ -28,25 +29,34 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth dark">
+      <head>
+        {/* Anti-flash: apply stored theme before first paint */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('portfolio-theme');if(t==='light'){document.documentElement.classList.remove('dark')}else{document.documentElement.classList.add('dark')}}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body className={inter.className}>
-        <GoogleAnalytics />
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe 
-            src="https://www.googletagmanager.com/ns.html?id=GTM-TBT7CJ4Q"
-            height="0" 
-            width="0" 
-            style={{ display: 'none', visibility: 'hidden' }}
-            title="GTM"
-          />
-        </noscript>
-        <main className="min-h-screen bg-dark-900 text-white">
-          <SectionNav />
-          {children}
-          <ChatbotWrapper />
-        </main>
+        <ThemeProvider>
+          <GoogleAnalytics />
+          <noscript>
+            <iframe
+              src="https://www.googletagmanager.com/ns.html?id=GTM-TBT7CJ4Q"
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+              title="GTM"
+            />
+          </noscript>
+          <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
+            <SectionNav />
+            {children}
+            <ChatbotWrapper />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   )
-} 
+}

@@ -194,10 +194,11 @@ export default function Chatbot() {
       
       <button
         onClick={toggleChat}
-        className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white rounded-full p-3 sm:p-4 shadow-lg transition-all duration-300 flex items-center justify-center hover:scale-105 hover:shadow-xl"
+        className="text-white rounded-full p-3 sm:p-4 shadow-lg transition-all duration-300 flex items-center justify-center hover:scale-105 hover:shadow-xl"
         aria-label={showChat ? "Close chat" : "Open chat"}
         style={{
-          boxShadow: '0 4px 14px rgba(139, 92, 246, 0.3)'
+          background:  'var(--accent)',
+          boxShadow:   '0 4px 14px rgba(59, 130, 246, 0.35)',
         }}
       >
         <FaComments size={20} className="sm:text-2xl" />
