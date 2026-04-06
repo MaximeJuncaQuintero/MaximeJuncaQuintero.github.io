@@ -4,6 +4,8 @@ import React from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { FaDownload, FaExternalLinkAlt, FaUser, FaCalendarAlt, FaClock } from 'react-icons/fa'
+import { useLanguage } from '@/app/context/LanguageContext'
+import { translations } from '@/app/translations'
 
 interface ProjectDetailProps {
   title:              string
@@ -78,10 +80,13 @@ export default function ProjectDetail({
   documentation,
   screenshots,
 }: ProjectDetailProps) {
+  const { lang } = useLanguage()
+  const t = translations[lang].projectDetail
+
   const meta = [
-    poc              && { icon: FaUser,        label: 'Point of Contact',  value: poc              },
-    meetingFrequency && { icon: FaCalendarAlt, label: 'Meeting Frequency', value: meetingFrequency },
-    projectLength    && { icon: FaClock,       label: 'Project Length',    value: projectLength    },
+    poc              && { icon: FaUser,        label: t.pointOfContact,  value: poc              },
+    meetingFrequency && { icon: FaCalendarAlt, label: t.meetingFrequency, value: meetingFrequency },
+    projectLength    && { icon: FaClock,       label: t.projectLength,    value: projectLength    },
   ].filter(Boolean) as { icon: React.ElementType; label: string; value: string }[]
 
   return (
@@ -155,24 +160,24 @@ export default function ProjectDetail({
           transition={{ duration: 0.5, delay: 0.15 }}
           className="lg:col-span-2 space-y-4"
         >
-          <SectionBlock label="Context">
+          <SectionBlock label={t.context}>
             <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>{context}</p>
           </SectionBlock>
 
-          <SectionBlock label="Objective">
+          <SectionBlock label={t.objective}>
             <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>{objective}</p>
           </SectionBlock>
 
-          <SectionBlock label="Implementation">
+          <SectionBlock label={t.implementation}>
             <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>{implementation}</p>
           </SectionBlock>
 
-          <SectionBlock label="Method">
+          <SectionBlock label={t.method}>
             <p className="text-sm sm:text-base leading-relaxed whitespace-pre-line" style={{ color: 'var(--text-muted)' }}>{method}</p>
           </SectionBlock>
 
           {result && (
-            <SectionBlock label="Result">
+            <SectionBlock label={t.result}>
               <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>{result}</p>
             </SectionBlock>
           )}
@@ -187,7 +192,7 @@ export default function ProjectDetail({
         >
           {/* Meta */}
           {meta.length > 0 && (
-            <SideCard label="Project Info">
+            <SideCard label={t.projectInfo}>
               <div className="space-y-3">
                 {meta.map(({ icon: Icon, label, value }, i) => (
                   <div key={i} className="flex items-start gap-3">
@@ -208,7 +213,7 @@ export default function ProjectDetail({
           )}
 
           {/* Tools */}
-          <SideCard label="Tools & Technologies">
+          <SideCard label={t.tools}>
             <div className="flex flex-wrap gap-1.5">
               {tools.map((tool, i) => (
                 <span
@@ -228,7 +233,7 @@ export default function ProjectDetail({
 
           {/* Documentation */}
           {documentation && documentation.length > 0 && (
-            <SideCard label="Documentation">
+            <SideCard label={t.documentation}>
               <div className="space-y-2">
                 {documentation.map((doc, i) => (
                   <a
@@ -281,7 +286,7 @@ export default function ProjectDetail({
             >
               <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: 'var(--accent)' }} />
               <h2 className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
-                Project Screenshots
+                {t.screenshots}
               </h2>
             </div>
             <div className="p-5 sm:p-6">

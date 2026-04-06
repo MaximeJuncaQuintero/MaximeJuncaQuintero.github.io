@@ -4,8 +4,13 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { FaArrowLeft } from 'react-icons/fa'
+import { useLanguage } from '@/app/context/LanguageContext'
+import { translations } from '@/app/translations'
 
 export default function ProjectLayout({ children }: { children: React.ReactNode }) {
+  const { lang } = useLanguage()
+  const t = translations[lang].projectLayout
+
   return (
     <div className="min-h-screen py-10 sm:py-14" style={{ background: 'var(--bg)' }}>
         <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
@@ -25,7 +30,7 @@ export default function ProjectLayout({ children }: { children: React.ReactNode 
             onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-muted)'}
           >
             <FaArrowLeft className="text-xs" />
-            Back to Projects
+            {t.backToProjects}
           </Link>
         </motion.div>
 

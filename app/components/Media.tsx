@@ -9,10 +9,12 @@ import { translations } from '../translations'
 interface MediaItem {
   title:       string
   description: string
+  descriptionFr?: string
   file:        string
   date:        string
   authors:     string
   type:        string
+  typeFr?:     string
   tags:        string[]
 }
 
@@ -20,10 +22,12 @@ const mediaItems: MediaItem[] = [
   {
     title:       'NXU Think Tank Report',
     description: 'This think tank report, co-written by myself, explores the societal, economic, and employment impacts of AI tools like Chat GPT. It delves into the nuances between AI and human intelligence, the expert use of Chat GPT, and its transformative potential across various sectors. The report also discusses the broader implications of AI on education, the labor market, and the concept of work in the context of a potential new era of economic growth and social transformation similar to the Industrial Revolution.',
+    descriptionFr: "Ce rapport de think tank, co-rédigé, analyse les impacts sociétaux, économiques et sur l'emploi des outils d'IA comme ChatGPT. Il détaille les nuances entre intelligence humaine et IA, les usages experts de ChatGPT, et son potentiel de transformation dans différents secteurs. Le rapport traite aussi des implications sur l'éducation, le marché du travail et l'évolution du travail dans un contexte de transformation comparable à une nouvelle révolution industrielle.",
     file:        '/assets/docs/NXUTHINKTANK.pdf',
     date:        '2024',
     authors:     'Co-authored · NXU Think Tank',
     type:        'Think Tank Report',
+    typeFr:      'Rapport de think tank',
     tags:        ['AI', 'Future of Work', 'Labor Market', 'Education', 'ChatGPT'],
   },
 ]
@@ -82,7 +86,7 @@ export default function Media() {
                       borderColor: 'rgba(29,78,216,0.18)',
                     }}
                   >
-                    {item.type}
+                    {lang === 'fr' ? (item.typeFr ?? item.type) : item.type}
                   </span>
                   <span
                     className="text-[11px] font-medium px-2.5 py-1 rounded-full border"
@@ -118,7 +122,7 @@ export default function Media() {
                   className="text-sm sm:text-base leading-relaxed mb-5"
                   style={{ color: 'var(--text-muted)' }}
                 >
-                  {item.description}
+                  {lang === 'fr' ? (item.descriptionFr ?? item.description) : item.description}
                 </p>
 
                 {/* Tags */}

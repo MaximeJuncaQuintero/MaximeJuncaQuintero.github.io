@@ -51,6 +51,23 @@ export const translations = {
       filters:     ['All', 'Consulting', 'Project Management', 'Research'],
       viewProject: 'View Project',
     },
+    projectDetail: {
+      context:          'Context',
+      objective:        'Objective',
+      implementation:   'Implementation',
+      method:           'Method',
+      result:           'Result',
+      projectInfo:      'Project Info',
+      pointOfContact:   'Point of Contact',
+      meetingFrequency: 'Meeting Frequency',
+      projectLength:    'Project Length',
+      tools:            'Tools & Technologies',
+      documentation:    'Documentation',
+      screenshots:      'Project Screenshots',
+    },
+    projectLayout: {
+      backToProjects: 'Back to Projects',
+    },
 
     certifications: {
       label:    'Credentials',
@@ -136,6 +153,23 @@ export const translations = {
       heading:     'Projets',
       filters:     ['Tous', 'Conseil', 'Gestion de Projet', 'Recherche'],
       viewProject: 'Voir le projet',
+    },
+    projectDetail: {
+      context:          'Contexte',
+      objective:        'Objectif',
+      implementation:   'Mise en œuvre',
+      method:           'Méthode',
+      result:           'Résultat',
+      projectInfo:      'Infos projet',
+      pointOfContact:   'Contact principal',
+      meetingFrequency: 'Fréquence des réunions',
+      projectLength:    'Durée du projet',
+      tools:            'Outils & technologies',
+      documentation:    'Documentation',
+      screenshots:      'Captures du projet',
+    },
+    projectLayout: {
+      backToProjects: 'Retour aux projets',
     },
 
     certifications: {

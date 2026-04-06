@@ -149,14 +149,29 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          <motion.span
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
-            className="section-label flex justify-center"
+            className="flex justify-center mb-4"
           >
-            {t.label}
-          </motion.span>
+            <div
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border text-[11px] sm:text-xs font-semibold tracking-[0.14em] uppercase"
+              style={{
+                color: 'var(--accent)',
+                borderColor: 'rgba(59,130,246,0.35)',
+                background:
+                  'linear-gradient(135deg, rgba(37,99,235,0.16) 0%, rgba(99,102,241,0.12) 100%)',
+                boxShadow: '0 0 0 1px rgba(59,130,246,0.08), 0 8px 24px rgba(29,78,216,0.18)',
+              }}
+            >
+              <span>Strategy</span>
+              <span className="opacity-60">•</span>
+              <span>Consulting</span>
+              <span className="opacity-60">•</span>
+              <span>Project Management</span>
+            </div>
+          </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
@@ -217,14 +232,29 @@ export default function Hero() {
 
           {/* Left: Text */}
           <div>
-            <motion.span
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="section-label"
+              className="mb-4"
             >
-              {t.label}
-            </motion.span>
+              <div
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-xs font-semibold tracking-[0.16em] uppercase"
+                style={{
+                  color: 'var(--accent)',
+                  borderColor: 'rgba(59,130,246,0.35)',
+                  background:
+                    'linear-gradient(135deg, rgba(37,99,235,0.16) 0%, rgba(99,102,241,0.12) 100%)',
+                  boxShadow: '0 0 0 1px rgba(59,130,246,0.08), 0 10px 28px rgba(29,78,216,0.18)',
+                }}
+              >
+                <span>Strategy</span>
+                <span className="opacity-60">•</span>
+                <span>Consulting</span>
+                <span className="opacity-60">•</span>
+                <span>Project Management</span>
+              </div>
+            </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}

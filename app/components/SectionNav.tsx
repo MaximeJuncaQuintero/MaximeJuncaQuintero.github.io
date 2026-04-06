@@ -89,7 +89,7 @@ export default function SectionNav() {
     if (isProjectPage) return
 
     const handleScroll = () => {
-      setScrolled(window.scrollY > window.innerHeight * 0.5)
+      setScrolled(window.scrollY > 8)
 
       let currentSection = ''
       let maxVisibility  = 0

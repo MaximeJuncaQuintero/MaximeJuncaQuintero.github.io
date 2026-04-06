@@ -39,6 +39,13 @@ const projects = [
     tag: 'Research',
     color: 'var(--secondary)',
   },
+  {
+    title: 'ESCP Innovation Network Transformation',
+    description: 'An anonymized ESCP consulting case on innovation network transformation.',
+    link: '/projects/escp-innovation-network',
+    tag: 'Consulting',
+    color: 'var(--accent)',
+  },
 ]
 
 export const ProjectsWidget: React.FC<ProjectsWidgetProps> = () => {

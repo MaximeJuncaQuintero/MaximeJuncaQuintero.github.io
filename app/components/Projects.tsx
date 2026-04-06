@@ -13,7 +13,9 @@ type Category = 'all' | 'consulting' | 'pm' | 'research'
 
 interface Project {
   title:             string
+  titleFr?:          string
   description:       string
+  descriptionFr?:    string
   image:             string
   link:              string
   tech:              string[]
@@ -26,6 +28,7 @@ const projects: Project[] = [
   {
     title:       'Amazon EU ATS KPI Library',
     description: 'A project focused on enhancing internal reporting tools and consolidating metrics visibility for Amazon Transportation Services. Utilized Excel macros and SQL queries.',
+    descriptionFr: 'Projet focalisé sur l\'amélioration des outils de reporting internes et la consolidation de la visibilité des indicateurs pour Amazon Transportation Services. Utilisation de macros Excel et de requêtes SQL.',
     image:       '/assets/projects/amazon-kpi.jpg',
     link:        '/projects/amazon-kpi',
     tech:        ['Excel Macros', 'SQL', 'PerfectMile'],
@@ -35,6 +38,7 @@ const projects: Project[] = [
   {
     title:       'Tenoris Analytics',
     description: 'Led the development of an MVP platform to democratize alternative financial data for individual investors across Europe. Built a web scraping infrastructure to collect financial data, with a Kubernetes-based architecture and GraphQL API for efficient data access and analysis.',
+    descriptionFr: "Pilotage du développement d'une plateforme MVP pour démocratiser la data financière alternative à destination des investisseurs particuliers en Europe. Mise en place d'une infrastructure de web scraping avec architecture Kubernetes et API GraphQL.",
     image:       '/assets/projects/TA_Logo.png',
     link:        '/projects/tenoris-analytics',
     tech:        ['Web Scraping', 'Kubernetes', 'GraphQL', 'Data Architecture'],
@@ -44,6 +48,7 @@ const projects: Project[] = [
   {
     title:       'Innovation Report',
     description: 'Conducted research analyzing how patents contribute to market valuation of innovative companies. Leveraged comprehensive datasets to examine the relationship between patent activity and market capitalization across R&D-intensive sectors.',
+    descriptionFr: "Recherche sur la contribution des brevets à la valorisation boursière des entreprises innovantes. Exploitation de jeux de données complets pour analyser le lien entre activité brevets et capitalisation sur des secteurs intensifs en R&D.",
     image:       '/assets/projects/innovation-report.jpg',
     link:        '/projects/innovation-report',
     tech:        ['Python', 'Pandas', 'Data Analysis', 'Scikit-Learn', 'Visualization'],
@@ -51,8 +56,20 @@ const projects: Project[] = [
     logoStyle:   'object-contain bg-white p-4',
   },
   {
+    title:       'ESCP Innovation Network Transformation',
+    titleFr:     'Transformation du réseau innovation ESCP',
+    description: 'Anonymized consulting case developed in the ESCP context: diagnosed structural blockers in an innovation network and built a capacity-aware, prioritized transformation roadmap.',
+    descriptionFr: "Cas de conseil anonymisé dans le contexte ESCP : diagnostic des freins structurels d'un réseau innovation et conception d'une feuille de route priorisée et adaptée à la capacité de déploiement.",
+    image:       '/assets/projects/escp-logo-clean.png',
+    link:        '/projects/escp-innovation-network',
+    tech:        ['Problem Structuring', 'Facilitation', 'Prioritization', 'Roadmapping'],
+    category:    'consulting',
+    logoStyle:   'object-contain bg-white p-4',
+  },
+  {
     title:       'Flowmap',
     description: 'Developing an innovative SaaS platform that fully automates project progress tracking through AI-powered code analysis. The system integrates with GitHub repositories to provide real-time insights into feature development progress without requiring manual updates from development teams.',
+    descriptionFr: "Développement d'une plateforme SaaS innovante qui automatise le suivi d'avancement projet via une analyse de code alimentée par l'IA. Le système s'intègre à GitHub pour fournir des insights temps réel sans mise à jour manuelle des équipes.",
     image:       '/assets/projects/TA_Logo.png',
     link:        '/projects/flowmap',
     tech:        ['AI/ML', 'GitHub Integration', 'SaaS Architecture', 'Automated Reporting'],
@@ -62,6 +79,7 @@ const projects: Project[] = [
   {
     title:            'Consulting Reports Monitor',
     description:      'Fully automated pipeline that discovers new McKinsey and BCG publications, generates structured AI summaries in French via Gemini or Groq, and delivers one HTML email per report. Runs bi-weekly on GitHub Actions at zero cost.',
+    descriptionFr:    'Pipeline 100% automatisé qui détecte les nouvelles publications McKinsey et BCG, génère des synthèses IA structurées en français (Gemini ou Groq) et envoie un email HTML par rapport. Exécution bi-hebdomadaire via GitHub Actions à coût nul.',
     image:            '/assets/projects/consulting-reports-monitor.svg',
     link:             '/projects/consulting-reports-monitor',
     tech:             ['TypeScript', 'GitHub Actions', 'Gemini AI', 'Groq', 'Prisma', 'Nodemailer'],
@@ -71,6 +89,7 @@ const projects: Project[] = [
   {
     title:       'TalentGrid',
     description: 'An exploratory project addressing the disconnect between education and employment. Led as project manager to develop a three-sided platform connecting universities, students, and employers through rich ePortfolios and AI-powered engagement, replacing traditional CV-based hiring.',
+    descriptionFr: "Projet exploratoire sur le décalage entre formation et emploi. Pilotage en tant que chef de projet d'une plateforme tripartite reliant universités, étudiants et recruteurs via des ePortfolios enrichis et des interactions alimentées par l'IA.",
     image:       '/assets/projects/Logo_black.png',
     link:        '/projects/talentgrid',
     tech:        ['No-Code Platform', 'AI Chatbot', 'ePortfolio System', 'Three-Sided Marketplace'],
@@ -140,9 +159,11 @@ export default function Projects() {
           <AnimatePresence mode="popLayout">
             {visible.map((project) => {
               const meta = categoryMeta[project.category]
+              const displayTitle = lang === 'fr' ? (project.titleFr ?? project.title) : project.title
+              const displayDescription = lang === 'fr' ? (project.descriptionFr ?? project.description) : project.description
               return (
                 <motion.div
-                  key={project.title}
+                  key={project.link}
                   layout
                   initial={{ opacity: 0, scale: 0.97, y: 10 }}
                   animate={{ opacity: 1, scale: 1,    y: 0  }}
@@ -185,7 +206,7 @@ export default function Projects() {
                         ) : (
                           <Image
                             src={project.image}
-                            alt={project.title}
+                            alt={displayTitle}
                             fill
                             className={`transition-transform duration-500 group-hover:scale-105 ${project.logoStyle ?? 'object-cover'}`}
                           />
@@ -220,13 +241,13 @@ export default function Projects() {
                           className="text-sm sm:text-base font-semibold mb-2 leading-snug"
                           style={{ color: 'var(--text)' }}
                         >
-                          {project.title}
+                          {displayTitle}
                         </h3>
                         <p
                           className="text-xs sm:text-sm leading-relaxed mb-4 flex-1"
                           style={{ color: 'var(--text-muted)' }}
                         >
-                          {project.description}
+                          {displayDescription}
                         </p>
 
                         <div className="flex flex-wrap gap-1.5 mb-4">

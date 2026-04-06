@@ -15,7 +15,7 @@ interface ExperienceItem {
   type:        'work' | 'education'
 }
 
-const experiences: ExperienceItem[] = [
+const experiencesEn: ExperienceItem[] = [
   {
     title:       'MSc – Strategy, Consulting and Organization',
     company:     'ESCP Business School',
@@ -88,6 +88,79 @@ const experiences: ExperienceItem[] = [
   },
 ]
 
+const experiencesFr: ExperienceItem[] = [
+  {
+    title:       'MSc – Strategy, Consulting and Organization',
+    company:     'ESCP Business School',
+    location:    'Paris, France',
+    period:      'Sep 2025 – Dec 2026',
+    description: [
+      'Programme de master axé sur la stratégie, le conseil et la transformation des organisations',
+      'Renforcement de la résolution de problèmes structurée et de la communication orientée clients',
+    ],
+    type: 'education',
+  },
+  {
+    title:       'Operations Manager',
+    company:     'Amazon Hub',
+    location:    'Paris, France',
+    period:      'Juin – Oct. 2024',
+    description: [
+      'Supervision de la maintenance de la flotte de Lockers',
+      'Optimisation de la coordination fournisseurs',
+      'Développement d\'une expertise opérationnelle approfondie',
+    ],
+    type: 'work',
+  },
+  {
+    title:       'Project Manager - Intern',
+    company:     'Amazon Transportation Services (ATS)',
+    location:    'Londres, Royaume-Uni',
+    period:      'Janv. – Juin 2023',
+    description: [
+      'Amélioration de la visibilité des indicateurs via une solution de reporting consolidée',
+      "Pilotage du change management autour de l'outil de reporting interne",
+      'Développement des compétences SQL via la formation "Data at Amazon"',
+    ],
+    type: 'work',
+  },
+  {
+    title:       'Founder',
+    company:     'Tenoris Analytics',
+    location:    'Toulouse, France',
+    period:      'Nov 2021 – Present',
+    description: [
+      'Création et pilotage d\'une structure de développement de projets digitaux',
+      'Management des équipes techniques sur des solutions SaaS innovantes',
+      "Supervision de la direction stratégique et de l'exécution projet",
+    ],
+    type: 'work',
+  },
+  {
+    title:       'BBA – Specialization in Business Analytics',
+    company:     'Dublin City University',
+    location:    'Dublin, Irlande',
+    period:      'Sept. 2022 – Mai 2024',
+    description: [
+      'Acquisition de compétences en Python, SQL, Power BI',
+      'Mémoire sur la contribution des brevets à la valorisation de marché via des modèles de régression',
+    ],
+    type: 'education',
+  },
+  {
+    title:       'BBA – CESEM',
+    company:     'NEOMA Business School',
+    location:    'Reims, France',
+    period:      'Sept. 2019 – Juil. 2021',
+    description: [
+      'Méthodes quantitatives (15/20)',
+      'Analyse financière (18.3/20)',
+      'Comptabilité de gestion (18.2/20)',
+    ],
+    type: 'education',
+  },
+]
+
 type Filter = 'all' | 'work' | 'education'
 const filterKeys: Filter[] = ['all', 'work', 'education']
 const filterIcons = [FaLayerGroup, FaBriefcase, FaGraduationCap]
@@ -98,6 +171,7 @@ export default function Experience() {
   const t         = translations[lang].experience
   const filters   = filterKeys.map((key, i) => ({ key, label: t.filters[i], Icon: filterIcons[i] }))
 
+  const experiences = lang === 'fr' ? experiencesFr : experiencesEn
   const visible = experiences.filter(e => active === 'all' || e.type === active)
 
   const accentFor = (type: 'work' | 'education') =>
@@ -236,7 +310,7 @@ export default function Experience() {
 
             {visible.length === 0 && (
               <p className="text-sm text-center py-10" style={{ color: 'var(--text-muted)' }}>
-                No entries for this filter.
+                {lang === 'fr' ? 'Aucune entrée pour ce filtre.' : 'No entries for this filter.'}
               </p>
             )}
           </div>
