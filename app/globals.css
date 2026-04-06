@@ -78,6 +78,57 @@ body {
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
+/* Subtle interaction baseline for modern/minimal UI */
+a,
+button,
+input,
+textarea,
+select {
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+
+button:active,
+a:active {
+  transform: translateY(0.5px) scale(0.995);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  outline-offset: 2px;
+}
+
+/* Pulse for selected chips */
+@keyframes chipPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(29, 78, 216, 0); }
+  50%      { box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.08); }
+}
+
+.chip-selected {
+  animation: chipPulse 2.2s ease-in-out infinite;
+}
+
+/* Respect user accessibility preferences */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 @layer base {
   h1, h2, h3, h4, h5, h6 {
     color: var(--text);

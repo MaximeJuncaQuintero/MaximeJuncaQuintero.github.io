@@ -49,6 +49,8 @@ export const translations = {
       label:       'Portfolio',
       heading:     'Projects',
       filters:     ['All', 'Consulting', 'Project Management', 'Research'],
+      tagFilterLabel: 'Filter by tags',
+      clearTags:      'Clear',
       viewProject: 'View Project',
     },
     projectDetail: {
@@ -73,6 +75,8 @@ export const translations = {
       label:    'Credentials',
       heading:  'Certifications',
       verified: 'Verified',
+      tagFilterLabel: 'Filter by tags',
+      clearTags:      'Clear',
       view:     'View Certificate',
     },
 
@@ -152,6 +156,8 @@ export const translations = {
       label:       'Portfolio',
       heading:     'Projets',
       filters:     ['Tous', 'Conseil', 'Gestion de Projet', 'Recherche'],
+      tagFilterLabel: 'Filtrer par tags',
+      clearTags:      'Réinitialiser',
       viewProject: 'Voir le projet',
     },
     projectDetail: {
@@ -176,6 +182,8 @@ export const translations = {
       label:    'Certifications',
       heading:  'Certifications',
       verified: 'Vérifié',
+      tagFilterLabel: 'Filtrer par tags',
+      clearTags:      'Réinitialiser',
       view:     'Voir le certificat',
     },
 

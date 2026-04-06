@@ -81,7 +81,7 @@ class ActionProvider {
 
   handleNationality = () => {
     this.reply(
-      "Maxime is French. He grew up in France, studied in France, Ireland, and worked in the UK. He is a native French speaker, fluent in English, and has an intermediate level in Spanish.",
+      "Maxime is French. He grew up in France, studied in France and Ireland, and worked in the UK. He is a native French speaker and fluent in English.",
       undefined,
       [
         { text: 'Where is he based now?',        handler: this.handleLocation,           icon: <FaMapMarkerAlt /> },
@@ -117,7 +117,7 @@ class ActionProvider {
 
   handleLanguages = () => {
     this.reply(
-      "Maxime speaks 3 languages:\n\n• French — Native\n• English — Fluent (studied and worked in Ireland & UK)\n• Spanish — Intermediate",
+      "Maxime speaks 2 languages:\n\n• French — Native\n• English — Fluent (studied and worked in Ireland & the UK)",
       undefined,
       [
         { text: 'Where has he lived/worked?', handler: this.handleCountries,       icon: <FaGlobe /> },
@@ -297,7 +297,7 @@ class ActionProvider {
 
   handleStrengthsRequest = () => {
     this.reply(
-      "Maxime's key strengths:\n\n• Bridges technical teams and business stakeholders\n• Data-driven decision making (SQL, Python, Excel)\n• Structured thinking — consulting & PM frameworks\n• International adaptability (3 countries, 3 languages)\n• Entrepreneurial mindset (founded Tenoris Analytics)",
+      "Maxime's key strengths:\n\n• Bridges technical teams and business stakeholders\n• Data-driven decision making (SQL, Python, Excel)\n• Structured thinking — consulting & PM frameworks\n• International adaptability (studied/worked across 3 countries)\n• Entrepreneurial mindset (founded Tenoris Analytics)",
       undefined,
       [
         { text: 'What is his experience?', handler: this.handleExperienceRequest,       icon: <FaBriefcase /> },
@@ -339,7 +339,7 @@ class ActionProvider {
 
   handleUniqueQualitiesQuestion = () => {
     this.reply(
-      "What makes Maxime unique:\n\n• Cross-functional profile — PM, operations, data, and strategy\n• Early-career Amazon experience — strong execution and ownership\n• Co-founder — entrepreneurial drive and full-cycle product thinking\n• 3 countries, 3 languages — internationally mobile and culturally adaptable\n• Side projects — builds tools independently (Consulting Reports Monitor, Flowmap)",
+      "What makes Maxime unique:\n\n• Cross-functional profile — PM, operations, data, and strategy\n• Early-career Amazon experience — strong execution and ownership\n• Co-founder — entrepreneurial drive and full-cycle product thinking\n• International path across 3 countries — culturally adaptable\n• Side projects — builds tools independently (Consulting Reports Monitor, Flowmap)",
       undefined,
       [
         { text: 'What is his work experience?', handler: this.handleExperienceRequest, icon: <FaBriefcase /> },
