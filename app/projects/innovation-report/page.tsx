@@ -23,14 +23,16 @@ export default function InnovationReportPage() {
       implementation={isFr
         ? "Mes missions ont couvert l'ensemble du cycle, de la conceptualisation à l'analyse : collecte structurée des données brevets (PatentsView), récupération des données de market cap (Yahoo Finance), et intégration manuelle des dépenses R&D."
         : 'My tasks spanned the spectrum from conceptualization to data analysis, involving the meticulous collection of patents data from patentsview, market cap information from Yahoo Finance libraries, and manual registration of R&D expenditures.'}
-      method={isFr ? `Collecte et préparation :
+      method={isFr
+        ? `Collecte et préparation :
 - Construction d'un dataset de 29 entreprises issues de secteurs intensifs en R&D, avec données brevets et market cap sur 2013-2023.
 Techniques analytiques :
 - Analyses graphiques, clustering, régressions linéaires et analyses sectorielles pour étudier le lien entre activité brevets et valorisation.
 Lecture sectorielle :
-- Analyse spécifique des différences entre technologies, pharmacie et biotech.` : "Data Collection and Preparation: Compiled a dataset encompassing 29 companies across R&D-intensive sectors, ensuring the inclusion of comprehensive patent portfolios and market cap data spanning from 2013 to 2023.
+- Analyse spécifique des différences entre technologies, pharmacie et biotech.`
+        : `Data Collection and Preparation: Compiled a dataset encompassing 29 companies across R&D-intensive sectors, ensuring the inclusion of comprehensive patent portfolios and market cap data spanning from 2013 to 2023.
 Analytical Techniques: Employed a multi-pronged analysis strategy, incorporating graphical analyses to elucidate the relationship between patent activity and market capitalization. Techniques included clustering companies based on innovation and market cap, regression analysis to assess the linear relationship between patent counts and market valuation, and sector-wise examination of patent trends over time.
-Sector-Specific Insights: Delved into the distinct innovation patterns within the technology, pharmaceutical, and biotechnology sectors, highlighting the variable impact of patents across different market segments."}
+Sector-Specific Insights: Delved into the distinct innovation patterns within the technology, pharmaceutical, and biotechnology sectors, highlighting the variable impact of patents across different market segments.`}
       result={isFr
         ? "L'étude met en évidence une relation globalement positive mais complexe entre brevets et valorisation, influencée par les dynamiques sectorielles et la qualité des portefeuilles. Les résultats ouvrent des pistes d'approfondissement autour des dépenses R&D et de la diversité des brevets."
         : 'The study on the impact of patents on market valuation revealed a generally positive but complex relationship, influenced by sector-specific dynamics and the qualitative aspects of patents, suggesting areas for further research including R&D spending and patent diversity. These findings provide empirical evidence on the nuanced interplay between innovation and market capitalization, opening paths for future exploration to deepen our understanding of how innovation impacts company valuation.'}
