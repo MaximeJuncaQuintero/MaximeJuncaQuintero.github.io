@@ -102,7 +102,7 @@ export default function Media() {
 
                 {/* Title */}
                 <h3
-                  className="text-lg sm:text-2xl font-bold leading-snug mb-2"
+                  className="mobile-content-fix text-lg sm:text-2xl font-bold leading-snug mb-2"
                   style={{ color: 'var(--text)' }}
                 >
                   {item.title}
@@ -119,7 +119,7 @@ export default function Media() {
 
                 {/* Abstract */}
                 <p
-                  className="text-sm sm:text-base leading-relaxed mb-5"
+                  className="mobile-content-fix text-sm sm:text-base leading-relaxed mb-5"
                   style={{ color: 'var(--text-muted)' }}
                 >
                   {lang === 'fr' ? (item.descriptionFr ?? item.description) : item.description}

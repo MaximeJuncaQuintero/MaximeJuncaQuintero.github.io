@@ -147,7 +147,7 @@ a, button, input, textarea, select {
 .portfolio-main {
   max-width: 980px;
   margin: 0 auto;
-  padding: 4.5rem 1.25rem 4rem;
+  padding: 4.1rem 0.8rem 2.8rem;
 }
 
 .portfolio-content {
@@ -298,14 +298,22 @@ html:not(.dark) .portfolio-popover {
 }
 
 .map-hint-popover {
-  position: fixed;
-  left: 50%;
-  /* Viewport bottom; toast is portaled under 1320px so this is not clipped by .site-nav (backdrop-filter). */
-  bottom: calc(0.45rem + env(safe-area-inset-bottom, 0px));
-  transform: translateX(-50%);
-  width: min(calc(100vw - 2rem), 300px);
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.45rem);
+  transform: none;
+  width: min(280px, calc(100vw - 1rem));
   z-index: 95;
-  animation: mapHintIn 0.35s ease-out both;
+  animation: mapHintInDocked 0.3s ease-out both;
+}
+
+.map-hint-popover::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  bottom: 100%;
+  border: 7px solid transparent;
+  border-bottom-color: color-mix(in srgb, var(--border) 75%, transparent);
 }
 
 .map-hint-kicker {
@@ -355,11 +363,11 @@ html:not(.dark) .portfolio-popover {
 @keyframes mapHintIn {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(10px) scale(0.97);
+    transform: translateY(10px) scale(0.97);
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -375,6 +383,17 @@ html:not(.dark) .portfolio-popover {
 }
 
 .site-controls { display: flex; align-items: center; gap: 0.45rem; }
+.site-menu-btn {
+  display: none;
+  width: 31px;
+  height: 31px;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.02);
+}
 
 .nav-pill {
   display: flex;
@@ -409,7 +428,7 @@ html:not(.dark) .portfolio-popover {
   border-radius: 1.2rem;
   background: color-mix(in srgb, var(--surface) 88%, transparent);
   backdrop-filter: blur(4px);
-  padding: 2rem 1.25rem;
+  padding: 1.3rem 0.9rem;
   margin-bottom: 1.2rem;
   position: relative;
   overflow: hidden;
@@ -456,7 +475,7 @@ html:not(.dark) .portfolio-popover {
 }
 .hero-subtitle {
   margin-top: 0.65rem;
-  font-size: 1.04rem;
+  font-size: 0.95rem;
   color: var(--text);
   font-weight: 600;
 }
@@ -464,7 +483,8 @@ html:not(.dark) .portfolio-popover {
   margin-top: 0.72rem;
   max-width: 64ch;
   color: var(--text-muted);
-  line-height: 1.7;
+  line-height: 1.6;
+  font-size: 0.92rem;
 }
 .hero-actions { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.55rem; }
 .hero-links { margin-top: 1rem; display: flex; gap: 0.7rem; }
@@ -485,8 +505,8 @@ html:not(.dark) .portfolio-popover {
 }
 .hero-metrics-panel {
   align-self: stretch;
-  border-left: 1px solid rgba(144, 160, 187, 0.22);
-  padding-left: 0.62rem;
+  border-top: 1px solid rgba(144, 160, 187, 0.22);
+  padding-top: 0.65rem;
   position: relative;
 }
 .hero-metrics-title {
@@ -499,7 +519,7 @@ html:not(.dark) .portfolio-popover {
 }
 .hero-metric {
   min-height: 72px;
-  padding: 0.45rem 0.56rem;
+  padding: 0.5rem 0.6rem;
   border: 1px solid rgba(165, 181, 208, 0.24);
   border-radius: 0.72rem;
   background: linear-gradient(160deg, color-mix(in srgb, var(--surface) 90%, transparent), color-mix(in srgb, var(--surface-2) 78%, transparent));
@@ -585,7 +605,23 @@ html:not(.dark) .portfolio-popover {
   border-radius: 1.2rem;
   background: color-mix(in srgb, var(--surface) 92%, transparent) !important;
   backdrop-filter: blur(3px);
-  padding: 1.9rem 1.25rem !important;
+  padding: 1.25rem 0.85rem !important;
+}
+
+.mobile-tabs-row {
+  justify-content: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+
+.mobile-tabs-row::-webkit-scrollbar { display: none; }
+.mobile-tabs-row > * { flex: 0 0 auto; }
+.mobile-content-fix {
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .moc-shell {
@@ -1009,7 +1045,68 @@ html:not(.dark) .portfolio-popover {
   .hero-grid { grid-template-columns: minmax(0, 1fr) 188px; gap: 0.85rem; }
   .portfolio-content section { padding: 2.4rem !important; }
   .hero-metrics { max-width: none; }
-  .hero-metrics-panel { margin-top: 0.72rem; }
+  .hero-metrics-panel {
+    margin-top: 0.72rem;
+    border-top: none;
+    border-left: 1px solid rgba(144, 160, 187, 0.22);
+    padding-top: 0;
+    padding-left: 0.62rem;
+  }
+}
+
+@media (max-width: 1319px) {
+  .site-nav-inner {
+    min-height: auto;
+    padding-top: 0.55rem;
+    padding-bottom: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 0.5rem;
+  }
+  .site-links-stack {
+    display: block;
+    order: 3;
+    width: 100%;
+  }
+  .site-links {
+    display: flex;
+    gap: 0.3rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.15rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .site-links::-webkit-scrollbar {
+    display: none;
+  }
+  .site-link {
+    white-space: nowrap;
+    border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
+    background: color-mix(in srgb, var(--surface) 50%, transparent);
+    font-size: 0.68rem;
+    padding: 0.34rem 0.52rem;
+    border-radius: 0.55rem;
+  }
+  .site-divider {
+    display: none;
+  }
+  .site-controls {
+    margin-left: auto;
+  }
+  .site-nav-map-item .map-hint-popover {
+    left: auto;
+    right: 0;
+    width: min(320px, calc(100vw - 1rem));
+  }
+  .site-nav-map-item .map-hint-popover::before {
+    left: auto;
+    right: 18px;
+  }
+  .portfolio-main {
+    padding-top: 8rem;
+  }
 }
 
 @media (min-width: 1320px) {
@@ -1056,25 +1153,6 @@ html:not(.dark) .portfolio-popover {
     width: 100%;
     justify-content: space-between;
   }
-  .map-hint-popover {
-    position: absolute;
-    left: calc(100% + 14px);
-    right: auto;
-    bottom: auto;
-    top: 50%;
-    transform: translateY(-50%);
-    width: min(268px, calc(100vw - 200px));
-    animation: mapHintInDocked 0.35s ease-out both;
-  }
-  .map-hint-popover::before {
-    content: '';
-    position: absolute;
-    right: 100%;
-    top: 50%;
-    margin-top: -7px;
-    border: 7px solid transparent;
-    border-right-color: color-mix(in srgb, var(--border) 75%, transparent);
-  }
   .portfolio-main {
     max-width: 1040px;
     margin-left: calc(160px + 2rem);
@@ -1088,6 +1166,104 @@ html:not(.dark) .portfolio-popover {
 }
 
 @media (max-width: 900px) {
+  .site-nav-inner {
+    position: relative;
+    min-height: 56px;
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    flex-wrap: nowrap;
+    row-gap: 0;
+  }
+  .site-controls {
+    margin-left: auto;
+    gap: 0.35rem;
+  }
+  .site-menu-btn {
+    display: inline-flex;
+  }
+  .site-links-stack {
+    display: none;
+    order: initial;
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    right: 0.5rem;
+    width: min(calc(100vw - 1rem), 330px);
+    padding: 0.5rem;
+    border-radius: 0.9rem;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+    z-index: 90;
+  }
+  .site-links-stack.is-open {
+    display: block;
+  }
+  .site-links {
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    gap: 0.2rem;
+    padding-bottom: 0;
+  }
+  .site-divider {
+    display: block;
+    margin: 0.3rem 0.2rem;
+  }
+  .site-link {
+    width: 100%;
+    font-size: 0.72rem;
+    padding: 0.42rem 0.55rem;
+    border-radius: 0.52rem;
+  }
+  .site-nav-map-item .map-hint-popover {
+    top: calc(100% + 0.25rem);
+    right: 0;
+    left: auto;
+    width: min(220px, calc(100vw - 2rem));
+    z-index: 96;
+  }
+  .site-nav-map-item .map-hint-popover::before {
+    right: 14px;
+    left: auto;
+    border-width: 6px;
+  }
+  .site-nav-map-item .portfolio-popover {
+    padding: 10px 10px 9px;
+    border-radius: 12px;
+  }
+  .site-nav-map-item .map-hint-kicker {
+    font-size: 0.52rem;
+    margin-bottom: 0.25rem;
+  }
+  .site-nav-map-item .map-hint-title {
+    font-size: 0.78rem;
+    margin-bottom: 0.25rem;
+    gap: 0.35rem;
+  }
+  .site-nav-map-item .map-hint-body {
+    font-size: 0.64rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+  .site-nav-map-item .map-hint-cta {
+    min-height: 32px;
+    font-size: 0.66rem;
+    letter-spacing: 0.05em;
+  }
+  .site-links-stack:not(.is-open) .map-hint-popover {
+    display: none;
+  }
+  .hero-links a {
+    width: 38px;
+    height: 38px;
+  }
+  .cv-download-btn {
+    width: 100%;
+    justify-content: center;
+  }
   .moc-graph-wrap {
     height: calc(100vh - 13.5rem);
     min-height: 460px;
@@ -1105,6 +1281,22 @@ html:not(.dark) .portfolio-popover {
     width: 100%;
     margin-left: 0;
   }
+}
+
+@media (max-width: 640px) {
+  .portfolio-main { padding-top: 8.6rem; }
+  .hero-kicker { font-size: 0.64rem; }
+  .hero-actions .button,
+  .hero-actions .button-outline {
+    width: 100%;
+    justify-content: center;
+  }
+  .section-title,
+  .section-heading {
+    line-height: 1.2;
+  }
+  .moc-shell { padding: 1rem; }
+  .moc-reader-guide { padding: 0.85rem; }
 }
 
 ::-webkit-scrollbar { width: 5px; }

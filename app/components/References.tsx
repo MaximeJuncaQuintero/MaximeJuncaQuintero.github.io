@@ -80,7 +80,7 @@ export default function References() {
                   style={{ color: 'var(--text-muted)', borderColor: 'var(--border)' }}>{ref.date}</span>
               </div>
 
-              <p className="text-sm font-bold leading-snug" style={{ color: 'var(--text)' }}>{ref.name}</p>
+              <p className="mobile-content-fix text-sm font-bold leading-snug" style={{ color: 'var(--text)' }}>{ref.name}</p>
               <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{ref.role}</p>
               <p className="text-xs mt-0.5 mb-3" style={{ color: 'var(--accent)' }}>{ref.institution}</p>
               <p className="text-xs font-semibold leading-tight mb-4" style={{ color: 'var(--text)' }}>{ref.title}</p>

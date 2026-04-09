@@ -214,7 +214,7 @@ export default function Certifications() {
                   {cert.issuer}
                 </p>
                 <h3
-                  className="text-sm font-semibold leading-snug mb-3 flex-1"
+                  className="mobile-content-fix text-sm font-semibold leading-snug mb-3 flex-1"
                   style={{ color: 'var(--text)' }}
                 >
                   {cert.title}

@@ -173,12 +173,12 @@ export default function Projects() {
           <h2 className="section-heading mb-8">{t.heading}</h2>
 
           {/* Underline tab filter — centered */}
-          <div className="flex items-end justify-center border-b" style={{ borderColor: 'var(--border)' }}>
+          <div className="mobile-tabs-row flex items-end justify-center border-b" style={{ borderColor: 'var(--border)' }}>
             {filters.map(f => (
               <button
                 key={f.key}
                 onClick={() => setActive(f.key)}
-                className="relative px-4 sm:px-6 py-2.5 text-sm font-medium transition-colors duration-200 focus:outline-none whitespace-nowrap inline-flex items-center gap-2"
+                className="relative px-3 sm:px-6 py-2.5 text-xs sm:text-sm font-medium transition-colors duration-200 focus:outline-none whitespace-nowrap inline-flex items-center gap-2"
                 style={{
                   color: active === f.key ? 'var(--accent)' : 'var(--text-muted)',
                 }}
@@ -352,13 +352,13 @@ export default function Projects() {
                       {/* Content */}
                       <div className="p-5 flex flex-col flex-1">
                         <h3
-                          className="text-sm sm:text-base font-semibold mb-2 leading-snug"
+                          className="mobile-content-fix text-sm sm:text-base font-semibold mb-2 leading-snug"
                           style={{ color: 'var(--text)' }}
                         >
                           {displayTitle}
                         </h3>
                         <p
-                          className="text-xs sm:text-sm leading-relaxed mb-4 flex-1"
+                          className="mobile-content-fix text-xs sm:text-sm leading-relaxed mb-4 flex-1"
                           style={{ color: 'var(--text-muted)' }}
                         >
                           {displayDescription}

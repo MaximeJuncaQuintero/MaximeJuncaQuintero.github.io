@@ -193,12 +193,12 @@ export default function Experience() {
             <h2 className="section-heading mb-8">{t.heading}</h2>
 
             {/* Underline tab filter — centered */}
-            <div className="flex items-end justify-center border-b" style={{ borderColor: 'var(--border)' }}>
+            <div className="mobile-tabs-row flex items-end justify-center border-b" style={{ borderColor: 'var(--border)' }}>
               {filters.map(({ key, label, Icon }) => (
                 <button
                   key={key}
                   onClick={() => setActive(key)}
-                  className="relative flex items-center gap-1.5 px-5 sm:px-7 py-2.5 text-sm font-medium transition-colors duration-200 focus:outline-none"
+                  className="relative flex items-center gap-1.5 px-4 sm:px-7 py-2.5 text-xs sm:text-sm font-medium transition-colors duration-200 focus:outline-none whitespace-nowrap"
                   style={{
                     color: active === key ? 'var(--accent)' : 'var(--text-muted)',
                   }}
@@ -265,7 +265,7 @@ export default function Experience() {
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-3">
                           <div>
                             <h3
-                              className="text-sm sm:text-base font-semibold leading-snug"
+                              className="mobile-content-fix text-sm sm:text-base font-semibold leading-snug"
                               style={{ color: 'var(--text)' }}
                             >
                               {exp.title}
@@ -290,7 +290,7 @@ export default function Experience() {
                           {exp.description.map((item, i) => (
                             <li
                               key={i}
-                              className="flex items-start gap-2.5 text-xs sm:text-sm leading-relaxed"
+                              className="mobile-content-fix flex items-start gap-2.5 text-xs sm:text-sm leading-relaxed"
                               style={{ color: 'var(--text-muted)' }}
                             >
                               <span
