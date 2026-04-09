@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { FaFilePdf, FaGraduationCap, FaArrowDown, FaDatabase, FaChartLine } from 'react-icons/fa'
+import { FaFilePdf, FaGraduationCap, FaDatabase, FaChartLine } from 'react-icons/fa'
 import { useLanguage } from '../context/LanguageContext'
 import { translations } from '../translations'
 
@@ -84,42 +84,18 @@ export default function About() {
                   {t.bio.map((para: string, i: number) => <p key={i}>{para}</p>)}
                 </div>
 
-                {/* CV download — file card style */}
+                {/* CV icon */}
                 <div className="mt-7 pt-6 border-t" style={{ borderColor: 'var(--border)' }}>
                   <a
                     href="/assets/docs/CV Maxime Junca ANG24 v4.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-                    style={{
-                      background:   'var(--bg-alt)',
-                      borderColor:  'var(--border)',
-                    }}
-                    onMouseEnter={e => {
-                      const el = e.currentTarget as HTMLAnchorElement
-                      el.style.borderColor = 'var(--accent)'
-                    }}
-                    onMouseLeave={e => {
-                      const el = e.currentTarget as HTMLAnchorElement
-                      el.style.borderColor = 'var(--border)'
-                    }}
+                    className="cv-download-btn"
+                    aria-label={t.cv.label}
+                    title={t.cv.label}
                   >
-                    <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
-                      style={{ background: 'rgba(29,78,216,0.1)' }}
-                    >
-                      <FaFilePdf style={{ color: 'var(--accent)' }} className="text-base" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{t.cv.label}</p>
-                      <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>
-                        {t.cv.filename}
-                      </p>
-                    </div>
-                    <FaArrowDown
-                      className="text-xs shrink-0 group-hover:translate-y-0.5 transition-transform duration-200"
-                      style={{ color: 'var(--accent)' }}
-                    />
+                    <FaFilePdf className="text-base shrink-0" />
+                    <span>{t.cv.label}</span>
                   </a>
                 </div>
               </div>
@@ -159,12 +135,7 @@ export default function About() {
                             MSc in Strategy, Consulting &amp; Organization
                           </p>
                           <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>ESCP Business School</p>
-                          <p
-                            className="text-[11px] mt-1 font-medium px-2 py-0.5 rounded-full inline-block"
-                            style={{ background: 'rgba(29,78,216,0.08)', color: 'var(--accent)' }}
-                          >
-                            2025 – 2026
-                          </p>
+                          <p className="text-[11px] mt-1" style={{ color: 'var(--text-muted)' }}>2025 – 2026</p>
                         </div>
                       </div>
                     </div>

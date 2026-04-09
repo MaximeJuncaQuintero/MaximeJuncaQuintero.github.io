@@ -10,15 +10,17 @@ import Contact from './components/Contact'
 
 export default function Home() {
   return (
-    <main>
+    <main className="portfolio-main">
       <Hero />
-      <About />
-      <Experience />
-      <Projects />
-      <Certifications />
-      <References />
-      <Media />
-      <Contact />
+      <div className="portfolio-content">
+        <About />
+        <Experience />
+        <Projects />
+        <Certifications />
+        <References />
+        <Media />
+        <Contact />
+      </div>
     </main>
   )
 } 

@@ -8,6 +8,14 @@ export const translations = {
       references:     'References',
       media:          'Media',
       contact:        'Contact',
+      mapOfContent:   'Map of Content',
+      mapHint: {
+        kicker:  'New',
+        title:   'Knowledge map',
+        body:    'See how sections, projects, and documents connect—interactive graph, pan & zoom.',
+        cta:     'Open map',
+        dismiss: 'Dismiss',
+      },
     },
 
     hero: {
@@ -104,6 +112,45 @@ export const translations = {
       channels:  'Contact Channels',
       response:  'Typically responds within 24 hours.',
     },
+
+    mapOfContentPage: {
+      back: 'Back to portfolio',
+      label: 'Knowledge Graph',
+      title: 'Map of Content',
+      filters: { all: 'All', maps: 'Maps', contains: 'Contains', related: 'Themes' },
+      tip: 'Drag to pan · Ctrl/Cmd + wheel to zoom · Hover a line to see the relation name',
+      footnoteMaps: 'maps',
+      footnoteMapsDesc: '— profile → each homepage section.',
+      footnoteContains: 'contains',
+      footnoteContainsDesc: '— section → concrete page or file (PDF, project, or section hub).',
+      footnoteRelated: 'themes',
+      footnoteRelatedDesc: '— dotted links on the right only: shared tags / sectors between artefacts (data, PM, consulting, AI, product).',
+      readerTitle: 'How to read this map',
+      readerIntro:
+        'Same idea as Obsidian’s Graph view: each box is a place you can open; each line is an explicit link, not decoration. See Obsidian’s graph plugin docs for the reference pattern.',
+      readerObserveTitle: 'What you are looking at',
+      readerObserve: [
+        'Centre: entry point (profile) — where navigation starts.',
+        'Left column: the seven main sections of the site (same anchors as on the homepage).',
+        'Right column: artefacts — PDFs, individual project pages, or “hub” nodes that jump to a list (certs, references, media, contact).',
+      ],
+      readerSectionsTitle: 'Which sections are linked',
+      readerSections: [
+        'About · Experience · Projects · Certifications · References · Media · Contact — each node opens the matching section (`#about`, `#experience`, …).',
+      ],
+      readerDocsTitle: 'Which documents & pages are linked',
+      readerDocs: [
+        'PDFs: CV and NXU report (external file, new tab).',
+        'Projects: Amazon KPI Library, Tenoris, Flowmap, ESCP Innovation Network, Innovation Report — each opens its project page.',
+        'Hubs: “Certifications set”, “Letters of reference”, etc. — scroll targets inside the portfolio, not separate files.',
+      ],
+      readerGoalsTitle: 'What you probably want here',
+      readerGoals: [
+        'Orientation: see the skeleton of the site in one glance.',
+        'Traceability: know which file or page sits under which section.',
+        'Exploration: hover a node to light up its connections (like a shallow “local graph” around that note).',
+      ],
+    },
   },
 
   fr: {
@@ -115,6 +162,14 @@ export const translations = {
       references:     'Références',
       media:          'Médias',
       contact:        'Contact',
+      mapOfContent:   'Carte du contenu',
+      mapHint: {
+        kicker:  'Nouveau',
+        title:   'Carte des liens',
+        body:    'Visualisez sections, projets et documents—graphe interactif, panoramique & zoom.',
+        cta:     'Ouvrir la carte',
+        dismiss: 'Fermer',
+      },
     },
 
     hero: {
@@ -210,6 +265,45 @@ export const translations = {
       cv:        { label: 'Télécharger le CV', filename: 'CV_Maxime_Junca_Quintero.pdf' },
       channels:  'Canaux de contact',
       response:  'Répond généralement en 24 heures.',
+    },
+
+    mapOfContentPage: {
+      back: 'Retour au portfolio',
+      label: 'Graphe de contenu',
+      title: 'Carte du contenu',
+      filters: { all: 'Tout', maps: 'Relie', contains: 'Contient', related: 'Thèmes' },
+      tip: 'Glisser pour déplacer · Ctrl/Cmd + molette pour zoomer · Survoler une ligne pour voir le type de lien',
+      footnoteMaps: 'Relie',
+      footnoteMapsDesc: '— profil → chaque section d’accueil.',
+      footnoteContains: 'Contient',
+      footnoteContainsDesc: '— section → page ou fichier concret (PDF, projet, ou hub de section).',
+      footnoteRelated: 'thèmes',
+      footnoteRelatedDesc: '— liens pointillés à droite : tags / secteurs partagés entre artefacts (data, PM, conseil, IA, produit).',
+      readerTitle: 'Comment lire cette carte',
+      readerIntro:
+        'Même logique que le Graph d’Obsidian : chaque bloc est un lieu cliquable ; chaque trait est un lien explicite, pas un ornement. Référence : documentation du plugin Graph d’Obsidian.',
+      readerObserveTitle: 'Quel aspect j’observe ?',
+      readerObserve: [
+        'Au centre : le point d’entrée (profil) — le départ de la navigation.',
+        'Colonne de gauche : les sept grandes rubriques du site (mêmes ancres que la page d’accueil).',
+        'Colonne de droite : les artefacts — PDF, pages projet, ou nœuds « hub » qui mènent à une liste (certifs, références, médias, contact).',
+      ],
+      readerSectionsTitle: 'Quelles sections sont liées ?',
+      readerSections: [
+        'À propos · Expérience · Projets · Certifications · Références · Médias · Contact — chaque nœud ouvre la section correspondante (`#about`, `#experience`, …).',
+      ],
+      readerDocsTitle: 'Quels documents & pages sont liés ?',
+      readerDocs: [
+        'PDF : CV et rapport NXU (fichier externe, nouvel onglet).',
+        'Projets : Amazon KPI Library, Tenoris, Flowmap, ESCP Innovation Network, Innovation Report — chacun ouvre sa page projet.',
+        'Hubs : « Certifications », « Lettres de référence », etc. — ancres dans le portfolio, pas des fichiers isolés.',
+      ],
+      readerGoalsTitle: 'Que veux-je voir ici ?',
+      readerGoals: [
+        'Orientation : la structure du site en un coup d’œil.',
+        'Traçabilité : quel fichier ou page est rangé sous quelle rubrique.',
+        'Exploration : survoler un nœud pour voir ses connexions (comme un « graphe local » peu profond).',
+      ],
     },
   },
 }

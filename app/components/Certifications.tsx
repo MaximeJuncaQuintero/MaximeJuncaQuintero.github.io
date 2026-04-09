@@ -168,7 +168,7 @@ export default function Certifications() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 max-w-5xl mx-auto">
           {visible.map((cert, index) => (
             <motion.a
               key={index}
@@ -179,7 +179,7 @@ export default function Certifications() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: index * 0.08 }}
               viewport={{ once: true }}
-              className="group flex flex-col rounded-2xl overflow-hidden border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none"
+              className="group flex flex-col rounded-2xl overflow-hidden border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none relative"
               style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--accent)'
@@ -188,28 +188,16 @@ export default function Certifications() {
                 (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--border)'
               }}
             >
-              {/* Gradient top strip */}
-              <div
-                className="h-[3px]"
-                style={{ background: 'linear-gradient(90deg, var(--accent), var(--secondary))' }}
-              />
-
               {/* Issuer header */}
-              <div
-                className="px-5 pt-5 pb-4 flex items-center justify-between border-b"
-                style={{ borderColor: 'var(--border)' }}
-              >
-                {/* Issuer avatar */}
+              <div className="px-5 pt-5 pb-2 flex items-center justify-between">
                 <div
-                  className="w-9 h-9 rounded-lg flex items-center justify-center text-xs font-black text-white shrink-0"
-                  style={{ background: 'linear-gradient(135deg, var(--accent), var(--secondary))' }}
+                  className="w-8 h-8 rounded-md flex items-center justify-center text-[10px] font-black text-white shrink-0"
+                  style={{ background: 'linear-gradient(135deg, var(--accent), var(--secondary))', boxShadow: '0 0 0 1px rgba(255,255,255,0.08) inset' }}
                 >
                   {cert.issuer.slice(0, 2).toUpperCase()}
                 </div>
-
-                {/* Verified chip */}
                 <span
-                  className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                  className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0"
                   style={{
                     background:  'rgba(29,78,216,0.08)',
                     color:       'var(--accent)',
@@ -217,40 +205,35 @@ export default function Certifications() {
                   }}
                 >
                   <FaCheckCircle className="text-[9px]" />
-                  {t.verified}
+                  {cert.date} · {t.verified}
                 </span>
               </div>
 
-              {/* Body */}
               <div className="p-5 flex flex-col flex-1">
                 <p className="text-[11px] font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--text-muted)' }}>
-                  {cert.issuer} · {cert.date}
+                  {cert.issuer}
                 </p>
                 <h3
-                  className="text-sm font-semibold leading-snug mb-4 flex-1"
+                  className="text-sm font-semibold leading-snug mb-3 flex-1"
                   style={{ color: 'var(--text)' }}
                 >
                   {cert.title}
                 </h3>
 
-                {/* Skill chips */}
-                <div className="flex flex-wrap gap-1.5 mb-5">
-                  {cert.skills.map((s, i) => (
-                    <span
-                      key={i}
-                      className="text-[10px] font-medium px-2 py-0.5 rounded-md border"
-                      style={{
-                        background:  'var(--surface-2)',
-                        borderColor: 'var(--border)',
-                        color:       'var(--text-muted)',
-                      }}
-                    >
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {cert.skills.slice(0, 2).map((s, i) => (
+                    <span key={i} className="text-[10px] font-medium px-2 py-0.5 rounded-md border"
+                      style={{ background: 'var(--surface-2)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
                       {s}
                     </span>
                   ))}
+                  {cert.skills.length > 2 && (
+                    <span className="text-[10px] font-medium px-2 py-0.5 rounded-md border" style={{ borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
+                      +{cert.skills.length - 2}
+                    </span>
+                  )}
                 </div>
 
-                {/* CTA */}
                 <div
                   className="flex items-center gap-1.5 text-xs font-semibold transition-colors duration-200"
                   style={{ color: 'var(--accent)' }}

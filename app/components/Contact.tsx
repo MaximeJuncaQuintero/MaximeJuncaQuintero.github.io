@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { FaEnvelope, FaLinkedin, FaGithub, FaFilePdf, FaArrowDown, FaMapMarkerAlt } from 'react-icons/fa'
+import { FaEnvelope, FaLinkedin, FaGithub, FaFilePdf, FaMapMarkerAlt } from 'react-icons/fa'
 import { useLanguage } from '../context/LanguageContext'
 import { translations } from '../translations'
 
@@ -129,36 +129,17 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* CV download */}
+              {/* CV icon */}
               <a
                 href="/assets/docs/CV Maxime Junca ANG24 v4.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-                style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--accent)'
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--border)'
-                }}
+                className="cv-download-btn"
+                aria-label={t.cv.label}
+                title={t.cv.label}
               >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(29,78,216,0.1)' }}
-                >
-                  <FaFilePdf className="text-base" style={{ color: 'var(--accent)' }} />
-                </div>
-                <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{t.cv.label}</p>
-                    <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>
-                      {t.cv.filename}
-                    </p>
-                </div>
-                <FaArrowDown
-                  className="text-xs shrink-0 group-hover:translate-y-0.5 transition-transform duration-200"
-                  style={{ color: 'var(--accent)' }}
-                />
+                <FaFilePdf className="text-base shrink-0" />
+                <span>{t.cv.label}</span>
               </a>
             </motion.div>
 

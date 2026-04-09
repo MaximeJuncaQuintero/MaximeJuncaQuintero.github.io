@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { FaArrowRight, FaChevronLeft, FaChevronRight, FaLayerGroup, FaBriefcase, FaFlask, FaProjectDiagram } from 'react-icons/fa'
 import { useLanguage } from '../context/LanguageContext'
 import { translations } from '../translations'
 import CRMThumbnail from './CRMThumbnail'
@@ -114,7 +114,13 @@ export default function Projects() {
   const tagsCarouselRef = useRef<HTMLDivElement>(null)
   const { lang } = useLanguage()
   const t        = translations[lang].projects
-  const filters  = filterKeys.map((key, i) => ({ key, label: t.filters[i] }))
+  const filterIcons: Record<Category, React.ElementType> = {
+    all: FaLayerGroup,
+    consulting: FaBriefcase,
+    pm: FaProjectDiagram,
+    research: FaFlask,
+  }
+  const filters  = filterKeys.map((key, i) => ({ key, label: t.filters[i], Icon: filterIcons[key] }))
 
   const allTags = useMemo(() => {
     const set = new Set<string>()
@@ -172,11 +178,12 @@ export default function Projects() {
               <button
                 key={f.key}
                 onClick={() => setActive(f.key)}
-                className="relative px-4 sm:px-6 py-2.5 text-sm font-medium transition-colors duration-200 focus:outline-none whitespace-nowrap"
+                className="relative px-4 sm:px-6 py-2.5 text-sm font-medium transition-colors duration-200 focus:outline-none whitespace-nowrap inline-flex items-center gap-2"
                 style={{
                   color: active === f.key ? 'var(--accent)' : 'var(--text-muted)',
                 }}
               >
+                <f.Icon className="text-[11px]" />
                 <span>{f.label}</span>
                 {active === f.key && (
                   <motion.div

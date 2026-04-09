@@ -15,7 +15,20 @@ export default function Chatbot() {
   const [showChat, setShowChat]     = useState(false)
   const [key, setKey]               = useState(Date.now())
   const [isClosing, setIsClosing]   = useState(false)
+  const [showToast, setShowToast]   = useState(false)
   const chatContainerRef            = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const dismissed = sessionStorage.getItem('chatbot-toast-dismissed')
+    if (dismissed) return
+    setShowToast(true)
+    const t = window.setTimeout(() => {
+      setShowToast(false)
+      sessionStorage.setItem('chatbot-toast-dismissed', '1')
+    }, 7000)
+    return () => window.clearTimeout(t)
+  }, [])
 
   const toggleChat = () => {
     if (showChat) {
@@ -23,6 +36,10 @@ export default function Chatbot() {
       setTimeout(() => { setShowChat(false); setIsClosing(false) }, 280)
     } else {
       setShowChat(true)
+      setShowToast(false)
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('chatbot-toast-dismissed', '1')
+      }
       if (typeof window !== 'undefined' && window.gtag) {
         window.gtag('event', 'chatbot_open', { event_category: 'chatbot', event_label: 'open', value: 1 })
       }
@@ -53,6 +70,25 @@ export default function Chatbot() {
 
   return (
     <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end">
+      {!showChat && showToast && (
+        <div className="cb-popup portfolio-popover" role="status" aria-live="polite">
+          <button
+            className="cb-popup-close portfolio-popover-dismiss"
+            onClick={() => {
+              setShowToast(false)
+              if (typeof window !== 'undefined') {
+                sessionStorage.setItem('chatbot-toast-dismissed', '1')
+              }
+            }}
+            aria-label="Dismiss chatbot popup"
+          >
+            <FaTimes size={12} />
+          </button>
+          <p className="cb-popup-title">Assistant available</p>
+          <p className="cb-popup-text">Ask anything about experience, projects, and certifications.</p>
+          <button type="button" className="cb-popup-cta portfolio-popover-cta" onClick={toggleChat}>Open assistant</button>
+        </div>
+      )}
 
       {/* ── Chat window ──────────────────────────────────────────────────── */}
       {showChat && (

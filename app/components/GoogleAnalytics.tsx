@@ -47,6 +47,21 @@ const normalizePageTitle = (title: string): string => {
 
 const GA_MEASUREMENT_ID = 'G-0H68W3N8HC';
 
+/** SVG <a> exposes href as SVGAnimatedString; HTMLAnchorElement has string .href */
+function resolveLinkHref(link: Element): string {
+  if (link instanceof HTMLAnchorElement) {
+    const h = link.href || link.getAttribute('href') || ''
+    return typeof h === 'string' ? h : ''
+  }
+  const attr = link.getAttribute('href') || link.getAttribute('xlink:href')
+  if (!attr || typeof attr !== 'string') return ''
+  try {
+    return new URL(attr, window.location.href).href
+  } catch {
+    return attr
+  }
+}
+
 export default function GoogleAnalytics() {
   const pathname = usePathname();
 
@@ -82,16 +97,18 @@ export default function GoogleAnalytics() {
         const allLinks = document.querySelectorAll('a');
         console.log(`Found ${allLinks.length} links on page`);
         
-        allLinks.forEach(link => {
-          const href = (link as HTMLAnchorElement).href || '';
-          
+        allLinks.forEach((link) => {
+          const href = resolveLinkHref(link)
+          if (!href || typeof href !== 'string') return
+
           // Vérifier si c'est un lien PDF
           if (href.toLowerCase().includes('.pdf')) {
             console.log('PDF link found:', href);
             
             link.addEventListener('click', (e) => {
-              const target = e.currentTarget as HTMLAnchorElement;
-              const url = target.href;
+              const target = e.currentTarget as Element
+              const url = resolveLinkHref(target)
+              if (!url) return
               console.log('PDF link clicked:', url);
               
               // Déterminer la catégorie du PDF
@@ -151,11 +168,11 @@ export default function GoogleAnalytics() {
         });
 
         // Suivre les clics sur les liens de contact (LinkedIn, GitHub, Email)
-        document.querySelectorAll('a[href*="linkedin.com"], a[href*="github.com"], a[href^="mailto:"]').forEach(link => {
+        document.querySelectorAll('a[href*="linkedin.com"], a[href*="github.com"], a[href^="mailto:"]').forEach((link) => {
           link.addEventListener('click', (e) => {
-            const target = e.currentTarget as HTMLAnchorElement;
-            const type = target.href.includes('linkedin') ? 'linkedin' : 
-                        target.href.includes('github') ? 'github' : 'email';
+            const target = e.currentTarget as Element
+            const url = resolveLinkHref(target)
+            const type = url.includes('linkedin') ? 'linkedin' : url.includes('github') ? 'github' : 'email'
             
             const eventData = {
               'event': 'contact_click',
@@ -170,13 +187,14 @@ export default function GoogleAnalytics() {
         });
 
         // Suivre les clics sur le lien KITS sur Render
-        document.querySelectorAll('a[href*="render.com"]').forEach(link => {
+        document.querySelectorAll('a[href*="render.com"]').forEach((link) => {
           link.addEventListener('click', (e) => {
-            const target = e.currentTarget as HTMLAnchorElement;
+            const target = e.currentTarget as Element
+            const url = resolveLinkHref(target)
             window.dataLayer.push({
               'event': 'kits_prototype_click',
               'event_category': 'external_link',
-              'event_label': target.href,
+              'event_label': url,
               'Page Title': 'Prototype KITS',
               'value': 1
             });

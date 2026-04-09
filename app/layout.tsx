@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import ChatbotWrapper from './components/chatbot/ChatbotWrapper'
 import SectionNav from './components/SectionNav'
 import GoogleAnalytics from './components/GoogleAnalytics'
+import AmbientDots from './components/AmbientDots'
 import { ThemeProvider } from './context/ThemeContext'
 import { LanguageProvider } from './context/LanguageContext'
 
@@ -35,7 +36,7 @@ export default function RootLayout({
         {/* Anti-flash: apply stored theme before first paint */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('portfolio-theme');if(t==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){document.documentElement.classList.remove('dark')}})()`,
+            __html: `(function(){try{var t=localStorage.getItem('portfolio-theme');if(t==='light'){document.documentElement.classList.remove('dark')}else{document.documentElement.classList.add('dark')}}catch(e){document.documentElement.classList.add('dark')}})()`,
           }}
         />
       </head>
@@ -52,7 +53,8 @@ export default function RootLayout({
               title="GTM"
             />
           </noscript>
-          <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
+          <div className="min-h-screen relative z-10" style={{ background: 'transparent', color: 'var(--text)' }}>
+            <AmbientDots />
             <SectionNav />
             {children}
             <ChatbotWrapper />
