@@ -10,7 +10,7 @@ type NodeKind = 'core' | 'section' | 'item'
 type RelationKind = 'maps' | 'contains' | 'related'
 
 /** All geometry in SVG viewBox units — single coordinate system (fixes HTML/SVG drift). */
-const VB = { w: 1060, h: 560 }
+const VB = { w: 1280, h: 780 }
 
 interface GraphNode {
   id: string
@@ -18,6 +18,7 @@ interface GraphNode {
   kind: NodeKind
   x: number
   y: number
+  r: number
   w: number
   h: number
   href?: string
@@ -35,93 +36,365 @@ interface GraphEdge {
   tag?: string
 }
 
-function boundaryExit(cx: number, cy: number, ux: number, uy: number, hw: number, hh: number) {
-  const c: number[] = []
-  if (ux > 1e-6) c.push(hw / ux)
-  if (ux < -1e-6) c.push(-hw / ux)
-  if (uy > 1e-6) c.push(hh / uy)
-  if (uy < -1e-6) c.push(-hh / uy)
-  const t = Math.min(...c.filter((x) => x > 0))
-  return { x: cx + ux * t, y: cy + uy * t }
+type ContentNodeType = 'concept' | 'section' | 'project' | 'resource' | 'note'
+type RelationshipType = 'part_of' | 'related_to' | 'expands_on' | 'depends_on'
+
+interface ContentNodeDef {
+  id: string
+  title: string
+  type: ContentNodeType
+  tags: string[]
+  description: string
+  href?: string
+  external?: boolean
+  cluster: string
+  core?: boolean
+}
+
+interface ContentEdgeDef {
+  id: string
+  source: string
+  target: string
+  relationship_type: RelationshipType
+  weight?: number
+}
+
+interface ClusterDef {
+  id: string
+  title: string
+  theme: string
+  core_node_id: string
+  center: { x: number; y: number }
+  radius: number
+}
+
+const graphData: {
+  nodes: ContentNodeDef[]
+  edges: ContentEdgeDef[]
+  clusters: ClusterDef[]
+} = {
+  nodes: [
+    {
+      id: 'CORE-PROFILE',
+      title: 'Profile Hub',
+      type: 'concept',
+      tags: ['hub', 'portfolio'],
+      description: 'Central identity and navigation hub connecting sections, artefacts, and contact channels.',
+      href: '/#about',
+      cluster: 'core',
+      core: true,
+    },
+    {
+      id: 'SEC-ABOUT',
+      title: 'About',
+      type: 'section',
+      tags: ['bio', 'skills'],
+      description: 'Background, positioning, and core competencies.',
+      href: '/#about',
+      cluster: 'sections',
+    },
+    {
+      id: 'SEC-EXPERIENCE',
+      title: 'Experience',
+      type: 'section',
+      tags: ['career', 'timeline'],
+      description: 'Professional and academic timeline.',
+      href: '/#experience',
+      cluster: 'sections',
+    },
+    {
+      id: 'SEC-PROJECTS',
+      title: 'Projects',
+      type: 'section',
+      tags: ['portfolio', 'cases'],
+      description: 'Project portfolio with case-level deep dives.',
+      href: '/#projects',
+      cluster: 'sections',
+    },
+    {
+      id: 'SEC-CERTIFICATIONS',
+      title: 'Certifications',
+      type: 'section',
+      tags: ['credentials'],
+      description: 'Skill validations and certifications.',
+      href: '/#certifications',
+      cluster: 'sections',
+    },
+    {
+      id: 'SEC-REFERENCES',
+      title: 'References',
+      type: 'section',
+      tags: ['letters', 'trust'],
+      description: 'Reference letters and endorsements.',
+      href: '/#references',
+      cluster: 'sections',
+    },
+    {
+      id: 'SEC-MEDIA',
+      title: 'Media',
+      type: 'section',
+      tags: ['publication', 'thought-leadership'],
+      description: 'Public content and think tank publication.',
+      href: '/#media',
+      cluster: 'sections',
+    },
+    {
+      id: 'SEC-CONTACT',
+      title: 'Contact',
+      type: 'section',
+      tags: ['reachability', 'channels'],
+      description: 'Direct contact and professional channels.',
+      href: '/#contact',
+      cluster: 'sections',
+    },
+    {
+      id: 'ITEM-AMAZON-KPI',
+      title: 'Amazon KPI Library',
+      type: 'project',
+      tags: ['ops', 'analytics'],
+      description: 'Internal reporting tooling and KPI visibility.',
+      href: '/projects/amazon-kpi',
+      cluster: 'projects',
+    },
+    {
+      id: 'ITEM-TENORIS',
+      title: 'Tenoris Analytics',
+      type: 'project',
+      tags: ['product', 'data'],
+      description: 'Alternative data platform MVP.',
+      href: '/projects/tenoris-analytics',
+      cluster: 'projects',
+    },
+    {
+      id: 'ITEM-FLOWMAP',
+      title: 'Flowmap',
+      type: 'project',
+      tags: ['ai', 'saas'],
+      description: 'AI-driven project tracking platform.',
+      href: '/projects/flowmap',
+      cluster: 'projects',
+    },
+    {
+      id: 'ITEM-ESCP',
+      title: 'ESCP Innovation Network',
+      type: 'project',
+      tags: ['consulting', 'strategy'],
+      description: 'Network transformation and prioritization.',
+      href: '/projects/escp-innovation-network',
+      cluster: 'projects',
+    },
+    {
+      id: 'ITEM-INNOVATION',
+      title: 'Innovation Report',
+      type: 'project',
+      tags: ['research', 'patents'],
+      description: 'Patent-market valuation research.',
+      href: '/projects/innovation-report',
+      cluster: 'projects',
+    },
+    {
+      id: 'ITEM-INTEL',
+      title: 'Consulting Reports Monitor',
+      type: 'project',
+      tags: ['automation', 'ai'],
+      description: 'Automated consulting intelligence pipeline.',
+      href: '/projects/consulting-reports-monitor',
+      cluster: 'projects',
+    },
+    {
+      id: 'ITEM-TALENT',
+      title: 'TalentGrid',
+      type: 'project',
+      tags: ['edtech', 'portfolio'],
+      description: 'Education-employment matching platform.',
+      href: '/projects/talentgrid',
+      cluster: 'projects',
+    },
+    {
+      id: 'ITEM-KITS',
+      title: 'Kits',
+      type: 'project',
+      tags: ['marketplace', 'execution'],
+      description: 'Marketplace concept and execution case.',
+      href: '/projects/kits',
+      cluster: 'projects',
+    },
+    {
+      id: 'DOC-CV',
+      title: 'CV (PDF)',
+      type: 'resource',
+      tags: ['cv', 'document'],
+      description: 'Downloadable CV resource.',
+      href: '/assets/docs/CV Maxime Junca ANG24 v4.pdf',
+      external: true,
+      cluster: 'resources',
+    },
+    {
+      id: 'DOC-NXU',
+      title: 'NXU Think Tank Report',
+      type: 'resource',
+      tags: ['report', 'ai'],
+      description: 'Co-authored report on AI and labor dynamics.',
+      href: '/assets/docs/NXUTHINKTANK.pdf',
+      external: true,
+      cluster: 'resources',
+    },
+    {
+      id: 'ITEM-CERTS',
+      title: 'Certifications List',
+      type: 'note',
+      tags: ['credentials'],
+      description: 'Certification archive and tags.',
+      href: '/#certifications',
+      cluster: 'resources',
+    },
+    {
+      id: 'ITEM-REFERENCES',
+      title: 'Reference Letters',
+      type: 'note',
+      tags: ['recommendations'],
+      description: 'Academic and professional references.',
+      href: '/#references',
+      cluster: 'network',
+    },
+    {
+      id: 'ITEM-MEDIA',
+      title: 'Media Section',
+      type: 'note',
+      tags: ['publication'],
+      description: 'Media and think-tank content index.',
+      href: '/#media',
+      cluster: 'network',
+    },
+    {
+      id: 'ITEM-CONTACTS',
+      title: 'Contact Channels',
+      type: 'note',
+      tags: ['email', 'linkedin', 'github'],
+      description: 'Reachability endpoints and social links.',
+      href: '/#contact',
+      cluster: 'network',
+    },
+  ],
+  edges: [
+    { id: 'm1', source: 'CORE-PROFILE', target: 'SEC-ABOUT', relationship_type: 'part_of', weight: 0.95 },
+    { id: 'm2', source: 'CORE-PROFILE', target: 'SEC-EXPERIENCE', relationship_type: 'part_of', weight: 0.92 },
+    { id: 'm3', source: 'CORE-PROFILE', target: 'SEC-PROJECTS', relationship_type: 'part_of', weight: 1 },
+    { id: 'm4', source: 'CORE-PROFILE', target: 'SEC-CERTIFICATIONS', relationship_type: 'part_of', weight: 0.85 },
+    { id: 'm5', source: 'CORE-PROFILE', target: 'SEC-REFERENCES', relationship_type: 'part_of', weight: 0.82 },
+    { id: 'm6', source: 'CORE-PROFILE', target: 'SEC-MEDIA', relationship_type: 'part_of', weight: 0.8 },
+    { id: 'm7', source: 'CORE-PROFILE', target: 'SEC-CONTACT', relationship_type: 'part_of', weight: 0.9 },
+
+    { id: 'c1', source: 'SEC-ABOUT', target: 'DOC-CV', relationship_type: 'depends_on', weight: 0.7 },
+    { id: 'c2', source: 'SEC-MEDIA', target: 'DOC-NXU', relationship_type: 'expands_on', weight: 0.75 },
+    { id: 'c3', source: 'SEC-PROJECTS', target: 'ITEM-AMAZON-KPI', relationship_type: 'part_of', weight: 0.85 },
+    { id: 'c4', source: 'SEC-PROJECTS', target: 'ITEM-TENORIS', relationship_type: 'part_of', weight: 0.88 },
+    { id: 'c5', source: 'SEC-PROJECTS', target: 'ITEM-FLOWMAP', relationship_type: 'part_of', weight: 0.86 },
+    { id: 'c6', source: 'SEC-PROJECTS', target: 'ITEM-ESCP', relationship_type: 'part_of', weight: 0.84 },
+    { id: 'c7', source: 'SEC-PROJECTS', target: 'ITEM-INNOVATION', relationship_type: 'part_of', weight: 0.83 },
+    { id: 'c8', source: 'SEC-PROJECTS', target: 'ITEM-INTEL', relationship_type: 'part_of', weight: 0.88 },
+    { id: 'c9', source: 'SEC-PROJECTS', target: 'ITEM-TALENT', relationship_type: 'part_of', weight: 0.86 },
+    { id: 'c10', source: 'SEC-PROJECTS', target: 'ITEM-KITS', relationship_type: 'part_of', weight: 0.8 },
+    { id: 'c11', source: 'SEC-CERTIFICATIONS', target: 'ITEM-CERTS', relationship_type: 'part_of', weight: 0.76 },
+    { id: 'c12', source: 'SEC-REFERENCES', target: 'ITEM-REFERENCES', relationship_type: 'part_of', weight: 0.74 },
+    { id: 'c13', source: 'SEC-MEDIA', target: 'ITEM-MEDIA', relationship_type: 'part_of', weight: 0.72 },
+    { id: 'c14', source: 'SEC-CONTACT', target: 'ITEM-CONTACTS', relationship_type: 'part_of', weight: 0.84 },
+
+    { id: 'r1', source: 'DOC-CV', target: 'DOC-NXU', relationship_type: 'related_to', weight: 0.54 },
+    { id: 'r2', source: 'ITEM-AMAZON-KPI', target: 'ITEM-INNOVATION', relationship_type: 'related_to', weight: 0.62 },
+    { id: 'r3', source: 'ITEM-INNOVATION', target: 'ITEM-TENORIS', relationship_type: 'related_to', weight: 0.7 },
+    { id: 'r4', source: 'ITEM-AMAZON-KPI', target: 'ITEM-TENORIS', relationship_type: 'depends_on', weight: 0.58 },
+    { id: 'r5', source: 'ITEM-FLOWMAP', target: 'ITEM-INTEL', relationship_type: 'related_to', weight: 0.68 },
+    { id: 'r6', source: 'ITEM-FLOWMAP', target: 'ITEM-TALENT', relationship_type: 'expands_on', weight: 0.56 },
+    { id: 'r7', source: 'ITEM-INTEL', target: 'ITEM-TALENT', relationship_type: 'related_to', weight: 0.64 },
+    { id: 'r8', source: 'ITEM-ESCP', target: 'ITEM-INTEL', relationship_type: 'related_to', weight: 0.57 },
+    { id: 'r9', source: 'ITEM-KITS', target: 'ITEM-TALENT', relationship_type: 'related_to', weight: 0.52 },
+  ],
+  clusters: [
+    { id: 'core', title: 'Core hub', theme: 'identity', core_node_id: 'CORE-PROFILE', center: { x: 640, y: 390 }, radius: 0 },
+    { id: 'sections', title: 'Section constellation', theme: 'navigation', core_node_id: 'SEC-PROJECTS', center: { x: 375, y: 355 }, radius: 170 },
+    { id: 'projects', title: 'Project constellation', theme: 'portfolio', core_node_id: 'ITEM-TENORIS', center: { x: 910, y: 380 }, radius: 170 },
+    { id: 'resources', title: 'Resource cluster', theme: 'documents', core_node_id: 'DOC-NXU', center: { x: 640, y: 170 }, radius: 120 },
+    { id: 'network', title: 'Reachability cluster', theme: 'proof and contact', core_node_id: 'ITEM-CONTACTS', center: { x: 640, y: 620 }, radius: 110 },
+  ],
 }
 
 function edgeEndpoints(from: GraphNode, to: GraphNode) {
-  const fhw = from.w / 2
-  const fhh = from.h / 2
-  const thw = to.w / 2
-  const thh = to.h / 2
   const dx = to.x - from.x
   const dy = to.y - from.y
   const len = Math.max(1e-6, Math.hypot(dx, dy))
   const ux = dx / len
   const uy = dy / len
-  const start = boundaryExit(from.x, from.y, ux, uy, fhw, fhh)
-  const end = boundaryExit(to.x, to.y, -ux, -uy, thw, thh)
+  const start = { x: from.x + ux * from.r, y: from.y + uy * from.r }
+  const end = { x: to.x - ux * to.r, y: to.y - uy * to.r }
   return { start, end, ux, uy, len }
 }
 
-const nodes: GraphNode[] = [
-  { id: 'CORE-PROFILE', label: 'Profile', kind: 'core', x: 500, y: 248, w: 92, h: 34, href: '/#about' },
+function nodeKindFromType(type: ContentNodeType, core?: boolean): NodeKind {
+  if (core) return 'core'
+  if (type === 'section') return 'section'
+  return 'item'
+}
 
-  { id: 'SEC-ABOUT', label: 'Section: About', kind: 'section', x: 118, y: 48, w: 196, h: 28, href: '/#about' },
-  { id: 'SEC-EXPERIENCE', label: 'Section: Experience', kind: 'section', x: 118, y: 112, w: 196, h: 28, href: '/#experience' },
-  { id: 'SEC-PROJECTS', label: 'Section: Projects', kind: 'section', x: 118, y: 176, w: 196, h: 28, href: '/#projects' },
-  { id: 'SEC-CERTIFICATIONS', label: 'Section: Certifications', kind: 'section', x: 118, y: 240, w: 196, h: 28, href: '/#certifications' },
-  { id: 'SEC-REFERENCES', label: 'Section: References', kind: 'section', x: 118, y: 304, w: 196, h: 28, href: '/#references' },
-  { id: 'SEC-MEDIA', label: 'Section: Media', kind: 'section', x: 118, y: 368, w: 196, h: 28, href: '/#media' },
-  { id: 'SEC-CONTACT', label: 'Section: Contact', kind: 'section', x: 118, y: 432, w: 196, h: 28, href: '/#contact' },
+function relationKindFromRelationship(rt: RelationshipType): RelationKind {
+  if (rt === 'part_of') return 'contains'
+  if (rt === 'related_to' || rt === 'expands_on' || rt === 'depends_on') return 'related'
+  return 'maps'
+}
 
-  { id: 'DOC-CV', label: 'CV (PDF)', kind: 'item', x: 930, y: 36, w: 232, h: 26, href: '/assets/docs/CV Maxime Junca ANG24 v4.pdf', external: true },
-  { id: 'DOC-NXU', label: 'NXU Think Tank Report', kind: 'item', x: 930, y: 72, w: 232, h: 26, href: '/assets/docs/NXUTHINKTANK.pdf', external: true },
-  { id: 'ITEM-AMAZON-KPI', label: 'Amazon KPI Library', kind: 'item', x: 930, y: 108, w: 232, h: 26, href: '/projects/amazon-kpi' },
-  { id: 'ITEM-TENORIS', label: 'Tenoris Analytics', kind: 'item', x: 930, y: 144, w: 232, h: 26, href: '/projects/tenoris-analytics' },
-  { id: 'ITEM-FLOWMAP', label: 'Flowmap', kind: 'item', x: 930, y: 180, w: 232, h: 26, href: '/projects/flowmap' },
-  { id: 'ITEM-ESCP', label: 'ESCP Innovation Network', kind: 'item', x: 930, y: 216, w: 232, h: 26, href: '/projects/escp-innovation-network' },
-  { id: 'ITEM-INNOVATION', label: 'Innovation Report', kind: 'item', x: 930, y: 252, w: 232, h: 26, href: '/projects/innovation-report' },
-  { id: 'ITEM-INTEL', label: 'Consulting Reports Monitor', kind: 'item', x: 930, y: 288, w: 232, h: 26, href: '/projects/consulting-reports-monitor' },
-  { id: 'ITEM-TALENT', label: 'TalentGrid', kind: 'item', x: 930, y: 324, w: 232, h: 26, href: '/projects/talentgrid' },
-  { id: 'ITEM-KITS', label: 'Kits', kind: 'item', x: 930, y: 360, w: 232, h: 26, href: '/projects/kits' },
-  { id: 'ITEM-CERTS', label: 'Certifications (list)', kind: 'item', x: 930, y: 396, w: 232, h: 26, href: '/#certifications' },
-  { id: 'ITEM-REFERENCES', label: 'Reference letters', kind: 'item', x: 930, y: 432, w: 232, h: 26, href: '/#references' },
-  { id: 'ITEM-MEDIA', label: 'Media section', kind: 'item', x: 930, y: 468, w: 232, h: 26, href: '/#media' },
-  { id: 'ITEM-CONTACTS', label: 'Contact & channels', kind: 'item', x: 930, y: 504, w: 232, h: 26, href: '/#contact' },
-]
+const clusterNodeIds: Record<string, string[]> = graphData.nodes.reduce((acc, node) => {
+  acc[node.cluster] ??= []
+  acc[node.cluster].push(node.id)
+  return acc
+}, {} as Record<string, string[]>)
 
-const edges: GraphEdge[] = [
-  { id: 'm1', from: 'CORE-PROFILE', to: 'SEC-ABOUT', relation: 'maps', bend: -14, labelT: 0.52 },
-  { id: 'm2', from: 'CORE-PROFILE', to: 'SEC-EXPERIENCE', relation: 'maps', bend: -10, labelT: 0.52 },
-  { id: 'm3', from: 'CORE-PROFILE', to: 'SEC-PROJECTS', relation: 'maps', bend: -6, labelT: 0.52 },
-  { id: 'm4', from: 'CORE-PROFILE', to: 'SEC-CERTIFICATIONS', relation: 'maps', bend: 0, labelT: 0.52 },
-  { id: 'm5', from: 'CORE-PROFILE', to: 'SEC-REFERENCES', relation: 'maps', bend: 6, labelT: 0.52 },
-  { id: 'm6', from: 'CORE-PROFILE', to: 'SEC-MEDIA', relation: 'maps', bend: 10, labelT: 0.52 },
-  { id: 'm7', from: 'CORE-PROFILE', to: 'SEC-CONTACT', relation: 'maps', bend: 14, labelT: 0.52 },
+const nodes: GraphNode[] = graphData.nodes.map((node) => {
+  const cluster = graphData.clusters.find((c) => c.id === node.cluster)!
+  const list = clusterNodeIds[cluster.id] ?? []
+  const nodeIndex = list.indexOf(node.id)
+  const count = Math.max(1, list.length - 1)
+  const baseAngle = cluster.id === 'sections' ? Math.PI * 0.8 : cluster.id === 'projects' ? -Math.PI * 0.12 : -Math.PI / 2
+  const angle = baseAngle + (nodeIndex / count) * Math.PI * 1.9
+  const ring = node.core || node.id === cluster.core_node_id ? 0 : cluster.radius
+  const x = cluster.center.x + Math.cos(angle) * ring
+  const y = cluster.center.y + Math.sin(angle) * ring
+  const kind = nodeKindFromType(node.type, node.core || node.id === cluster.core_node_id)
+  const r = kind === 'core' ? 8.5 : kind === 'section' ? 6.6 : 5.4
+  const w = kind === 'core' ? 126 : kind === 'section' ? 146 : 154
+  const h = kind === 'core' ? 36 : 28
+  return {
+    id: node.id,
+    label: node.title,
+    kind,
+    x,
+    y,
+    r,
+    w,
+    h,
+    href: node.href,
+    external: node.external,
+  }
+})
 
-  { id: 'c1', from: 'SEC-ABOUT', to: 'DOC-CV', relation: 'contains', bend: -8, labelT: 0.55 },
-  { id: 'c2', from: 'SEC-MEDIA', to: 'DOC-NXU', relation: 'contains', bend: -6, labelT: 0.55 },
-  { id: 'c3', from: 'SEC-PROJECTS', to: 'ITEM-AMAZON-KPI', relation: 'contains', bend: -10, labelT: 0.52 },
-  { id: 'c4', from: 'SEC-PROJECTS', to: 'ITEM-TENORIS', relation: 'contains', bend: -6, labelT: 0.52 },
-  { id: 'c5', from: 'SEC-PROJECTS', to: 'ITEM-FLOWMAP', relation: 'contains', bend: -2, labelT: 0.52 },
-  { id: 'c6', from: 'SEC-PROJECTS', to: 'ITEM-ESCP', relation: 'contains', bend: 2, labelT: 0.52 },
-  { id: 'c7', from: 'SEC-PROJECTS', to: 'ITEM-INNOVATION', relation: 'contains', bend: 6, labelT: 0.52 },
-  { id: 'c8', from: 'SEC-PROJECTS', to: 'ITEM-INTEL', relation: 'contains', bend: 10, labelT: 0.52 },
-  { id: 'c9', from: 'SEC-PROJECTS', to: 'ITEM-TALENT', relation: 'contains', bend: 12, labelT: 0.52 },
-  { id: 'c10', from: 'SEC-PROJECTS', to: 'ITEM-KITS', relation: 'contains', bend: 14, labelT: 0.52 },
-  { id: 'c11', from: 'SEC-CERTIFICATIONS', to: 'ITEM-CERTS', relation: 'contains', bend: 0, labelT: 0.55 },
-  { id: 'c12', from: 'SEC-REFERENCES', to: 'ITEM-REFERENCES', relation: 'contains', bend: 0, labelT: 0.55 },
-  { id: 'c13', from: 'SEC-MEDIA', to: 'ITEM-MEDIA', relation: 'contains', bend: 0, labelT: 0.55 },
-  { id: 'c14', from: 'SEC-CONTACT', to: 'ITEM-CONTACTS', relation: 'contains', bend: 0, labelT: 0.55 },
-
-  /* Cross-links on the right: shared themes (data, PM, consulting, AI, product). */
-  { id: 'r1', from: 'DOC-CV', to: 'DOC-NXU', relation: 'related', tag: 'Documents', bend: 48, labelT: 0.5 },
-  { id: 'r2', from: 'ITEM-AMAZON-KPI', to: 'ITEM-INNOVATION', relation: 'related', tag: 'Data', bend: 42, labelT: 0.5 },
-  { id: 'r3', from: 'ITEM-INNOVATION', to: 'ITEM-TENORIS', relation: 'related', tag: 'Data', bend: 38, labelT: 0.5 },
-  { id: 'r4', from: 'ITEM-AMAZON-KPI', to: 'ITEM-TENORIS', relation: 'related', tag: 'PM / Ops', bend: 36, labelT: 0.48 },
-  { id: 'r5', from: 'ITEM-FLOWMAP', to: 'ITEM-INTEL', relation: 'related', tag: 'AI / Auto', bend: 34, labelT: 0.5 },
-  { id: 'r6', from: 'ITEM-FLOWMAP', to: 'ITEM-TALENT', relation: 'related', tag: 'Product', bend: 30, labelT: 0.5 },
-  { id: 'r7', from: 'ITEM-INTEL', to: 'ITEM-TALENT', relation: 'related', tag: 'AI stack', bend: 28, labelT: 0.5 },
-  { id: 'r8', from: 'ITEM-ESCP', to: 'ITEM-INTEL', relation: 'related', tag: 'Consulting', bend: 44, labelT: 0.5 },
-  { id: 'r9', from: 'ITEM-KITS', to: 'ITEM-TALENT', relation: 'related', tag: 'ePortfolio', bend: 26, labelT: 0.5 },
-]
+const edges: GraphEdge[] = graphData.edges.map((edge) => {
+  const from = nodes.find((n) => n.id === edge.source)!
+  const to = nodes.find((n) => n.id === edge.target)!
+  const dx = to.x - from.x
+  const dy = to.y - from.y
+  const len = Math.max(1, Math.hypot(dx, dy))
+  const bendSign = (from.x + from.y * 0.3 + to.x * 0.2) % 2 > 1 ? 1 : -1
+  const bend = Math.max(14, Math.min(52, len * 0.17)) * bendSign
+  const relation = edge.id.startsWith('m') ? 'maps' : relationKindFromRelationship(edge.relationship_type)
+  return {
+    id: edge.id,
+    from: edge.source,
+    to: edge.target,
+    relation,
+    bend,
+    labelT: 0.52,
+    tag: edge.relationship_type.replaceAll('_', ' '),
+  }
+})
 
 const relationColors: Record<RelationKind, string> = {
   maps: '#8aa6ff',
@@ -134,23 +407,61 @@ export default function MapOfContentPage() {
   const t = translations[lang].mapOfContentPage
   const [activeRelation, setActiveRelation] = useState<RelationKind | 'all'>('all')
   const [hoverNode, setHoverNode] = useState<string | null>(null)
+  const [selectedNode, setSelectedNode] = useState<string | null>(null)
   const [hoverEdge, setHoverEdge] = useState<string | null>(null)
   const [zoom, setZoom] = useState(1)
   const scrollerRef = useRef<HTMLDivElement>(null)
   const dragRef = useRef<{ x: number; y: number; left: number; top: number } | null>(null)
   const nodeById = useMemo(() => Object.fromEntries(nodes.map((n) => [n.id, n])), [])
+  const contentById = useMemo(() => Object.fromEntries(graphData.nodes.map((n) => [n.id, n])), [])
+  const degreeById = useMemo(() => {
+    const out: Record<string, number> = {}
+    for (const node of graphData.nodes) out[node.id] = 0
+    for (const edge of graphData.edges) {
+      out[edge.source] = (out[edge.source] ?? 0) + 1
+      out[edge.target] = (out[edge.target] ?? 0) + 1
+    }
+    return out
+  }, [])
 
   const visibleEdges = edges.filter((e) => activeRelation === 'all' || e.relation === activeRelation)
   const visibleNodeIds = new Set(visibleEdges.flatMap((e) => [e.from, e.to]))
+  const neighbourIds = useMemo(() => {
+    const set = new Set<string>()
+    const focus = hoverNode ?? selectedNode
+    if (!focus) return set
+    set.add(focus)
+    for (const edge of visibleEdges) {
+      if (edge.from === focus) set.add(edge.to)
+      if (edge.to === focus) set.add(edge.from)
+    }
+    return set
+  }, [hoverNode, selectedNode, visibleEdges])
   const hoverEdgeData = hoverEdge ? visibleEdges.find((e) => e.id === hoverEdge) ?? null : null
   const highlightedNodeIds = new Set(
-    hoverEdgeData ? [hoverEdgeData.from, hoverEdgeData.to] : hoverNode ? [hoverNode] : []
+    hoverEdgeData
+      ? [hoverEdgeData.from, hoverEdgeData.to]
+      : hoverNode
+        ? Array.from(neighbourIds)
+        : selectedNode
+          ? Array.from(neighbourIds)
+          : []
   )
   const highlightedEdges = new Set(
     visibleEdges
-      .filter((e) => (hoverEdge ? e.id === hoverEdge : hoverNode ? e.from === hoverNode || e.to === hoverNode : false))
+      .filter((e) =>
+        hoverEdge
+          ? e.id === hoverEdge
+          : hoverNode
+            ? e.from === hoverNode || e.to === hoverNode
+            : selectedNode
+              ? e.from === selectedNode || e.to === selectedNode
+              : false
+      )
       .map((e) => e.id)
   )
+  const nodeFocusId = hoverNode ?? selectedNode
+  const focusedNode = nodeFocusId ? contentById[nodeFocusId] : null
 
   const edgeHoverLabel = (edge: GraphEdge) => {
     if (edge.relation === 'related' && edge.tag) return edge.tag
@@ -214,13 +525,13 @@ export default function MapOfContentPage() {
             </button>
           ))}
           <div className="moc-zoom">
-            <button type="button" className="moc-chip" onClick={() => setZoom((z) => Math.max(0.7, z - 0.1))}>
+            <button type="button" className="moc-chip" onClick={() => setZoom((z) => Math.max(0.55, z - 0.1))}>
               <FaSearchMinus />
             </button>
             <button type="button" className="moc-chip" onClick={() => setZoom(1)}>
               <FaUndo />
             </button>
-            <button type="button" className="moc-chip" onClick={() => setZoom((z) => Math.min(1.7, z + 0.1))}>
+            <button type="button" className="moc-chip" onClick={() => setZoom((z) => Math.min(2.2, z + 0.1))}>
               <FaSearchPlus />
             </button>
           </div>
@@ -231,9 +542,21 @@ export default function MapOfContentPage() {
             ref={scrollerRef}
             className="moc-graph-scroller"
             onWheel={(e) => {
-              if (!e.ctrlKey && !e.metaKey) return
               e.preventDefault()
-              setZoom((z) => Math.max(0.7, Math.min(1.7, z + (e.deltaY > 0 ? -0.08 : 0.08))))
+              const scroller = scrollerRef.current
+              if (!scroller) return
+              const rect = scroller.getBoundingClientRect()
+              const px = e.clientX - rect.left
+              const py = e.clientY - rect.top
+              const intensity = e.ctrlKey || e.metaKey ? 0.1 : 0.065
+              setZoom((z) => {
+                const nz = Math.max(0.55, Math.min(2.2, z + (e.deltaY > 0 ? -intensity : intensity)))
+                const worldX = (scroller.scrollLeft + px) / z
+                const worldY = (scroller.scrollTop + py) / z
+                scroller.scrollLeft = worldX * nz - px
+                scroller.scrollTop = worldY * nz - py
+                return nz
+              })
             }}
             onMouseDown={(e) => {
               const scroller = scrollerRef.current
@@ -271,6 +594,10 @@ export default function MapOfContentPage() {
                 preserveAspectRatio="xMidYMid meet"
                 role="img"
                 aria-label={t.title}
+                onClick={() => {
+                  setSelectedNode(null)
+                  setHoverEdge(null)
+                }}
               >
                 <defs>
                   <filter id="moc-node-glow" x="-20%" y="-20%" width="140%" height="140%">
@@ -282,20 +609,49 @@ export default function MapOfContentPage() {
                   </filter>
                 </defs>
 
+                <g className="moc-clusters">
+                  {graphData.clusters
+                    .filter((cluster) => cluster.radius > 0)
+                    .map((cluster) => (
+                      <g key={cluster.id} className="moc-cluster">
+                        <circle
+                          cx={cluster.center.x}
+                          cy={cluster.center.y}
+                          r={cluster.radius + 34}
+                          className="moc-cluster-ring"
+                        />
+                        <text
+                          x={cluster.center.x}
+                          y={cluster.center.y - cluster.radius - 44}
+                          textAnchor="middle"
+                          className="moc-cluster-label"
+                        >
+                          {cluster.title}
+                        </text>
+                      </g>
+                    ))}
+                </g>
+
                 {/* Nodes first so edges paint on top — relations stay visible across boxes. */}
                 <g className="moc-svg-nodes">
                   {nodes.map((node) => {
                     const muted = activeRelation !== 'all' && !visibleNodeIds.has(node.id)
-                    const active = highlightedNodeIds.has(node.id)
-                    const hx = node.x - node.w / 2
-                    const hy = node.y - node.h / 2
+                    const active = highlightedNodeIds.has(node.id) || nodeFocusId === node.id
+                    const showLabel = nodeFocusId ? highlightedNodeIds.has(node.id) : false
                     const cls = `moc-svg-node moc-svg-node-${node.kind} ${muted ? 'is-muted' : ''} ${active ? 'is-active' : ''}`
                     const inner = (
                       <>
-                        <rect x={hx} y={hy} width={node.w} height={node.h} rx={8} ry={8} className="moc-svg-node-rect" />
-                        <text x={node.x} y={node.y + 4} className="moc-svg-node-text" textAnchor="middle">
-                          {node.label.length > 34 ? `${node.label.slice(0, 32)}…` : node.label}
-                        </text>
+                        <circle
+                          cx={node.x}
+                          cy={node.y}
+                          r={node.r + Math.min(4, degreeById[node.id] * 0.22)}
+                          className="moc-svg-node-dot"
+                        />
+                        {showLabel && (
+                          <text x={node.x + 11} y={node.y + 3.2} className="moc-svg-node-text" textAnchor="start">
+                            {node.label.length > 28 ? `${node.label.slice(0, 26)}...` : node.label}
+                          </text>
+                        )}
                         <title>{node.label}</title>
                       </>
                     )
@@ -308,6 +664,10 @@ export default function MapOfContentPage() {
                           setHoverNode(node.id)
                         }}
                         onMouseLeave={() => setHoverNode(null)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setSelectedNode((prev) => (prev === node.id ? null : node.id))
+                        }}
                       >
                         {node.href ? (
                           <a
@@ -342,13 +702,14 @@ export default function MapOfContentPage() {
                     const lx = (1 - tt) * (1 - tt) * s.x + 2 * (1 - tt) * tt * cx + tt * tt * ept.x
                     const ly = (1 - tt) * (1 - tt) * s.y + 2 * (1 - tt) * tt * cy + tt * tt * ept.y
                     const active = highlightedEdges.has(edge.id)
+                    const baseWeight = graphData.edges.find((e) => e.id === edge.id)?.weight ?? 0.6
                     return (
                       <g key={edge.id}>
                         <path
                           d={`M ${s.x} ${s.y} Q ${cx} ${cy} ${ept.x} ${ept.y}`}
                           stroke={relationColors[edge.relation]}
-                          strokeOpacity={active ? 0.95 : edge.relation === 'related' ? 0.58 : 0.52}
-                          strokeWidth={active ? (edge.relation === 'related' ? 2 : 2.35) : edge.relation === 'related' ? 1.35 : 1.55}
+                          strokeOpacity={active ? 0.9 : nodeFocusId ? 0.12 : edge.relation === 'related' ? 0.22 : 0.3}
+                          strokeWidth={active ? 1.8 + baseWeight * 1.6 : 0.7 + baseWeight * 0.7}
                           fill="none"
                           className={`moc-svg-edge moc-edge-${edge.relation}`}
                           onMouseEnter={() => {
@@ -371,6 +732,24 @@ export default function MapOfContentPage() {
               </svg>
             </div>
           </div>
+          {focusedNode && (
+            <div className="moc-node-panel">
+              <p className="moc-node-panel-kicker">
+                {focusedNode.type} · {focusedNode.tags.slice(0, 3).join(' · ')}
+              </p>
+              <p className="moc-node-panel-title">{focusedNode.title}</p>
+              <p className="moc-node-panel-desc">{focusedNode.description}</p>
+              {focusedNode.href && (
+                <a
+                  href={focusedNode.href}
+                  {...(focusedNode.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className="moc-node-panel-link"
+                >
+                  Open node
+                </a>
+              )}
+            </div>
+          )}
           <p className="moc-usage">{t.tip}</p>
         </div>
 
