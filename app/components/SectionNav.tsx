@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { FaSun, FaMoon, FaBars } from 'react-icons/fa'
+import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa'
 import { useTheme } from '../context/ThemeContext'
 import { useLanguage } from '../context/LanguageContext'
 import { translations } from '../translations'
