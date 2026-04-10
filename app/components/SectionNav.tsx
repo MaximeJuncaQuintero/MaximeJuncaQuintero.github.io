@@ -2,11 +2,13 @@
 
 import React, { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { FaSun, FaMoon, FaTimes, FaProjectDiagram, FaBars } from 'react-icons/fa'
-import Link from 'next/link'
+import { FaSun, FaMoon, FaBars } from 'react-icons/fa'
 import { useTheme } from '../context/ThemeContext'
 import { useLanguage } from '../context/LanguageContext'
 import { translations } from '../translations'
+
+/** Set to true to show Map of content in the nav and the onboarding toast. */
+const SHOW_MAP_OF_CONTENT = false
 
 function LangToggle() {
   const { lang, setLang } = useLanguage()
@@ -32,7 +34,6 @@ export default function SectionNav() {
   const { theme, toggleTheme } = useTheme()
   const { lang } = useLanguage()
   const t = translations[lang].nav
-  const [showMapHint, setShowMapHint] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   if (isProjectPage) return null
@@ -50,19 +51,6 @@ export default function SectionNav() {
   const secondaryNav = navItems.slice(3)
 
   useEffect(() => {
-    if (!isHomePage || typeof window === 'undefined') return
-    if (sessionStorage.getItem('map-hint-seen') === '1') return
-
-    const showTimer = window.setTimeout(() => {
-      setShowMapHint(true)
-      sessionStorage.setItem('map-hint-seen', '1')
-      window.setTimeout(() => setShowMapHint(false), 12000)
-    }, 500)
-
-    return () => window.clearTimeout(showTimer)
-  }, [isHomePage])
-
-  useEffect(() => {
     setMobileMenuOpen(false)
   }, [pathname])
 
@@ -76,31 +64,6 @@ export default function SectionNav() {
     mq.addEventListener('change', sync)
     return () => mq.removeEventListener('change', sync)
   }, [])
-
-  const mapHintPopover =
-    showMapHint && (
-      <aside className="map-hint-popover portfolio-popover" role="dialog" aria-labelledby="map-hint-title" aria-describedby="map-hint-desc">
-        <button
-          type="button"
-          className="map-hint-dismiss portfolio-popover-dismiss"
-          aria-label={t.mapHint.dismiss}
-          onClick={() => setShowMapHint(false)}
-        >
-          <FaTimes />
-        </button>
-        <span className="map-hint-kicker">{t.mapHint.kicker}</span>
-        <p id="map-hint-title" className="map-hint-title">
-          <FaProjectDiagram className="map-hint-title-icon" aria-hidden />
-          {t.mapHint.title}
-        </p>
-        <p id="map-hint-desc" className="map-hint-body">
-          {t.mapHint.body}
-        </p>
-        <Link href="/map-of-content" className="map-hint-cta portfolio-popover-cta" onClick={() => setShowMapHint(false)}>
-          {t.mapHint.cta}
-        </Link>
-      </aside>
-    )
 
   return (
     <nav className="site-nav">
@@ -135,17 +98,18 @@ export default function SectionNav() {
                 </a>
               </li>
             ))}
-            <li className="site-nav-map-item">
-              <Link
-                href="/map-of-content"
-                id="map-content-nav-btn"
-                className={`site-link ${pathname === '/map-of-content' ? 'site-link-active' : ''}`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t.mapOfContent}
-              </Link>
-              {mapHintPopover}
-            </li>
+            {SHOW_MAP_OF_CONTENT && (
+              <li className="site-nav-map-item">
+                <a
+                  href="/map-of-content"
+                  id="map-content-nav-btn"
+                  className={`site-link ${pathname === '/map-of-content' ? 'site-link-active' : ''}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t.mapOfContent}
+                </a>
+              </li>
+            )}
           </ul>
         </div>
         <div className="site-controls">
