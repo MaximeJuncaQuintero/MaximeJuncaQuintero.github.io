@@ -50,7 +50,6 @@ export default function Certifications() {
   const tagsCarouselRef = useRef<HTMLDivElement>(null)
   const { lang } = useLanguage()
   const t        = translations[lang].certifications
-  if (certifications.length === 0) return null
 
   const allTags = useMemo(() => {
     const set = new Set<string>()
@@ -65,6 +64,8 @@ export default function Certifications() {
     const segmentWidth = node.scrollWidth / 3
     node.scrollLeft = segmentWidth
   }, [allTags.length])
+
+  if (certifications.length === 0) return null
 
   const handleCarouselScroll = () => {
     const node = tagsCarouselRef.current

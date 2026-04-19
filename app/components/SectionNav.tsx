@@ -36,20 +36,6 @@ export default function SectionNav() {
   const t = translations[lang].nav
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  if (isProjectPage) return null
-
-  const navItems = [
-    { id: 'about', label: t.about },
-    { id: 'experience', label: t.experience },
-    { id: 'projects', label: t.projects },
-    { id: 'certifications', label: t.certifications },
-    { id: 'references', label: t.references },
-    { id: 'media', label: t.media },
-    { id: 'contact', label: t.contact },
-  ]
-  const primaryNav = navItems.slice(0, 3)
-  const secondaryNav = navItems.slice(3)
-
   useEffect(() => {
     setMobileMenuOpen(false)
   }, [pathname])
@@ -64,6 +50,20 @@ export default function SectionNav() {
     mq.addEventListener('change', sync)
     return () => mq.removeEventListener('change', sync)
   }, [])
+
+  if (isProjectPage) return null
+
+  const navItems = [
+    { id: 'about', label: t.about },
+    { id: 'experience', label: t.experience },
+    { id: 'projects', label: t.projects },
+    { id: 'certifications', label: t.certifications },
+    { id: 'references', label: t.references },
+    { id: 'media', label: t.media },
+    { id: 'contact', label: t.contact },
+  ]
+  const primaryNav = navItems.slice(0, 3)
+  const secondaryNav = navItems.slice(3)
 
   return (
     <nav className="site-nav">

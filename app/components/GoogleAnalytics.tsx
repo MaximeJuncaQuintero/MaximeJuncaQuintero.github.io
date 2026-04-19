@@ -47,6 +47,13 @@ const normalizePageTitle = (title: string): string => {
 
 const GA_MEASUREMENT_ID = 'G-0H68W3N8HC';
 
+const isGaDebug =
+  typeof process !== 'undefined' && process.env.NODE_ENV === 'development';
+
+function gaDebug(...args: unknown[]) {
+  if (isGaDebug) console.log(...args);
+}
+
 /** SVG <a> exposes href as SVGAnimatedString; HTMLAnchorElement has string .href */
 function resolveLinkHref(link: Element): string {
   if (link instanceof HTMLAnchorElement) {
@@ -78,7 +85,7 @@ export default function GoogleAnalytics() {
         send_page_view: false  // Désactivation du double comptage
       });
 
-      console.log('Page view tracked:', {
+      gaDebug('Page view tracked:', {
         page_title: pageTitle,
         page_path: pathname,
         page_location: window.location.href
@@ -88,14 +95,20 @@ export default function GoogleAnalytics() {
 
   // Cette fonction configure les écouteurs d'événements pour suivre les interactions
   useEffect(() => {
+    let disposed = false
+    let pdfSetupTimer: ReturnType<typeof setTimeout> | null = null
+    let chatMountObserver: MutationObserver | null = null
+    let chatMessagesObserver: MutationObserver | null = null
+
     // Attendre que le DOM soit chargé et que gtag soit disponible
     const setupEventTracking = () => {
-      if (typeof window !== 'undefined' && window.dataLayer) {
-        console.log('Setting up PDF tracking');
+      if (disposed || typeof window === 'undefined' || !window.dataLayer) return
+
+      gaDebug('Setting up PDF tracking');
         
         // Suivre les clics sur tous les liens
         const allLinks = document.querySelectorAll('a');
-        console.log(`Found ${allLinks.length} links on page`);
+        gaDebug(`Found ${allLinks.length} links on page`);
         
         allLinks.forEach((link) => {
           const href = resolveLinkHref(link)
@@ -103,13 +116,13 @@ export default function GoogleAnalytics() {
 
           // Vérifier si c'est un lien PDF
           if (href.toLowerCase().includes('.pdf')) {
-            console.log('PDF link found:', href);
+            gaDebug('PDF link found:', href);
             
             link.addEventListener('click', (e) => {
               const target = e.currentTarget as Element
               const url = resolveLinkHref(target)
               if (!url) return
-              console.log('PDF link clicked:', url);
+              gaDebug('PDF link clicked:', url);
               
               // Déterminer la catégorie du PDF
               let pdfCategory = 'Autre';
@@ -135,7 +148,7 @@ export default function GoogleAnalytics() {
               
               // Normaliser le nom du PDF pour éviter les doublons
               const pdfName = decodeURIComponent(url.split('/').pop() || 'PDF inconnu').replace(/%20/g, ' ');
-              console.log(`PDF catégorisé: "${pdfName}" -> ${pdfCategory}`);
+              gaDebug(`PDF catégorisé: "${pdfName}" -> ${pdfCategory}`);
               
               // Envoyer les paramètres cohérents avec GTM
               window.gtag('event', 'pdf_view', {
@@ -151,8 +164,7 @@ export default function GoogleAnalytics() {
                 'value': 1
               });
               
-              // Journalisation complète pour déboguer
-              console.log('Événement GA4 envoyé:', {
+              gaDebug('Événement GA4 envoyé:', {
                 'event_name': 'pdf_view',
                 'pdf_name': pdfName,
                 'pdf_category': pdfCategory,
@@ -182,7 +194,7 @@ export default function GoogleAnalytics() {
               'value': 1
             };
             window.dataLayer.push(eventData);
-            console.log('Contact click event pushed:', eventData);
+            gaDebug('Contact click event pushed:', eventData);
           });
         });
 
@@ -225,7 +237,7 @@ export default function GoogleAnalytics() {
         }
         
         // Observer les nouveaux messages dans le chat
-        const chatObserver = new MutationObserver((mutations) => {
+        chatMessagesObserver = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
               // Vérifier si c'est un message utilisateur
@@ -244,39 +256,45 @@ export default function GoogleAnalytics() {
                   'value': chatMessageCount
                 };
                 window.dataLayer.push(eventData);
-                console.log('Chatbot message event pushed:', eventData);
+                gaDebug('Chatbot message event pushed:', eventData);
               }
             }
           });
         });
         
-        // Observer le conteneur de messages du chatbot avec un délai plus long
-        const setupChatObserver = () => {
-          const chatContainer = document.querySelector('.react-chatbot-kit-chat-container');
-          if (chatContainer) {
-            chatObserver.observe(chatContainer, { 
-              childList: true, 
-              subtree: true,
-              attributes: true,
-              characterData: true
-            });
-            console.log('Chat observer setup complete');
-          } else {
-            console.log('Chat container not found, retrying...');
-            setTimeout(setupChatObserver, 1000);
-          }
-        };
-        
-        // Démarrer l'observation après un délai
-        setTimeout(setupChatObserver, 3000);
-      }
+        // Chat UI mounts only after the user opens the panel — watch the DOM instead of polling.
+        const attachChatMessageObserver = () => {
+          const chatContainer = document.querySelector('.react-chatbot-kit-chat-container')
+          if (!chatContainer || !chatMessagesObserver) return false
+          chatMessagesObserver.observe(chatContainer, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            characterData: true,
+          })
+          gaDebug('Chat observer setup complete')
+          chatMountObserver?.disconnect()
+          chatMountObserver = null
+          return true
+        }
+        if (!attachChatMessageObserver()) {
+          chatMountObserver = new MutationObserver(() => {
+            attachChatMessageObserver()
+          })
+          chatMountObserver.observe(document.body, { childList: true, subtree: true })
+        }
     };
 
     // Exécuter après un court délai pour s'assurer que gtag est chargé
-    setTimeout(setupEventTracking, 2000);
+    pdfSetupTimer = setTimeout(setupEventTracking, 2000)
 
     // Nettoyage à la déconnexion
     return () => {
+      disposed = true
+      if (pdfSetupTimer !== null) clearTimeout(pdfSetupTimer)
+      chatMountObserver?.disconnect()
+      chatMessagesObserver?.disconnect()
+
       document.querySelectorAll('a[href$=".pdf"], a[href*=".pdf"], a[href*="linkedin.com"], a[href*="github.com"], a[href^="mailto:"], a[href*="render.com"]')
         .forEach(link => {
           link.removeEventListener('click', () => {});
