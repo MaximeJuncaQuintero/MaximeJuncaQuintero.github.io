@@ -30,6 +30,7 @@ interface ProjectDetailProps {
     image:        string
     description?: string
   }[]
+  screenshotsLayout?: 'default' | 'large'
 }
 
 function SectionBlock({ label, children }: { label: string; children: React.ReactNode }) {
@@ -79,6 +80,7 @@ export default function ProjectDetail({
   tools,
   documentation,
   screenshots,
+  screenshotsLayout = 'default',
 }: ProjectDetailProps) {
   const { lang } = useLanguage()
   const t = translations[lang].projectDetail
@@ -290,22 +292,37 @@ export default function ProjectDetail({
               </h2>
             </div>
             <div className="p-5 sm:p-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div className={screenshotsLayout === 'large' ? 'grid grid-cols-1 gap-5' : 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4'}>
                 {screenshots.map((s, i) => (
                   <div
                     key={i}
                     className="rounded-xl overflow-hidden border"
                     style={{ borderColor: 'var(--border)', background: 'var(--surface-2)' }}
                   >
-                    <div className="relative aspect-[16/10] w-full">
-                      <Image
-                        src={s.image}
-                        alt={s.title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                      />
-                    </div>
+                    {screenshotsLayout === 'large' ? (
+                      <div
+                        className="w-full px-3 py-3"
+                        style={{ background: 'var(--bg)' }}
+                      >
+                        <img
+                          src={s.image}
+                          alt={s.title}
+                          className="w-full max-w-[820px] h-auto mx-auto"
+                          style={{ imageRendering: 'auto' }}
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      <div className="relative w-full aspect-[16/10]">
+                        <Image
+                          src={s.image}
+                          alt={s.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                        />
+                      </div>
+                    )}
                     <div className="p-3 border-t" style={{ borderColor: 'var(--border)' }}>
                       <h3 className="text-xs font-semibold mb-0.5" style={{ color: 'var(--text)' }}>{s.title}</h3>
                       {s.description && (

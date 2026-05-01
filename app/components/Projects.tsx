@@ -8,6 +8,7 @@ import { FaArrowRight, FaChevronLeft, FaChevronRight, FaLayerGroup, FaBriefcase,
 import { useLanguage } from '../context/LanguageContext'
 import { translations } from '../translations'
 import CRMThumbnail from './CRMThumbnail'
+import KnowLedgerThumbnail from './KnowLedgerThumbnail'
 
 type Category = 'all' | 'consulting' | 'pm' | 'research'
 
@@ -86,6 +87,17 @@ const projects: Project[] = [
     tech:             ['TypeScript', 'GitHub Actions', 'Gemini AI', 'Groq', 'Prisma', 'Nodemailer'],
     category:         'consulting',
     customThumbnail:  <CRMThumbnail />,
+  },
+  {
+    title:       'KnowLedger',
+    description: 'Personal knowledge system for strategy, projects, and decision-ready insights. Combines structured storage, workflow automation, and AI-assisted enrichment to turn scattered inputs into reusable outputs.',
+    descriptionFr: "Système personnel de knowledge management pour transformer l'information en insights actionnables. Combine stockage structuré, automatisation de workflows et enrichissement assisté par IA pour convertir des contenus dispersés en sorties réutilisables.",
+    image:       '/assets/projects/screenshots/knowledger-dashboard.png',
+    link:        '/projects/knowledger',
+    tech:        ['TypeScript', 'Node.js', 'SQLite', 'Automation', 'AI-assisted workflows'],
+    tags:        ['TypeScript', 'Node.js', 'SQLite', 'Automation', 'AI-assisted workflows', 'Knowledge Management', 'Strategy Enablement', 'Workflow Design'],
+    category:    'consulting',
+    customThumbnail: <KnowLedgerThumbnail />,
   },
   {
     title:       'TalentGrid',
