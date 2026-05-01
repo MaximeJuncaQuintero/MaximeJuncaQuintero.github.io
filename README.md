@@ -62,3 +62,11 @@ Le site intègre Google Analytics et Google Tag Manager pour le suivi des intera
    - Clics sur le lien du prototype KITS sur Render
 
 Toutes ces données sont anonymes et servent uniquement à améliorer l'expérience utilisateur et à comprendre le comportement des visiteurs.
+
+### Configuration
+
+1. Copy `.env.example` to `.env.local`
+2. Set your Google Analytics 4 measurement ID in `NEXT_PUBLIC_GA_MEASUREMENT_ID`
+3. Set your Google Tag Manager ID in `NEXT_PUBLIC_GTM_ID`
+
+Le suivi des visites utilise l'événement standard GA4 `page_view`, ce qui permet de voir correctement les visiteurs/pages dans les rapports GA4.

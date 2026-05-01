@@ -36,16 +36,8 @@ const getPageTitle = (pathname: string): string => {
   return 'Page d\'accueil';
 };
 
-// Nouveau: Fonction pour normaliser le titre de la page pour Looker Studio
-const normalizePageTitle = (title: string): string => {
-  // Tronquer les titres trop longs pour Looker Studio
-  if (title.length > 30) {
-    return title.substring(0, 27) + '...';
-  }
-  return title;
-};
-
-const GA_MEASUREMENT_ID = 'G-0H68W3N8HC';
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-0H68W3N8HC';
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-TBT7CJ4Q';
 
 const isGaDebug =
   typeof process !== 'undefined' && process.env.NODE_ENV === 'development';
@@ -77,12 +69,11 @@ export default function GoogleAnalytics() {
     if (typeof window !== 'undefined' && window.gtag) {
       const pageTitle = getPageTitle(pathname);
       
-      window.gtag('event', 'view_page', {  // Changement du nom de l'événement pour éviter le conflit avec GA4
+      window.gtag('event', 'page_view', {
         page_title: pageTitle,
         page_path: pathname,
         page_location: window.location.href,
-        event_category: 'engagement',  // Ajout d'une catégorie claire
-        send_page_view: false  // Désactivation du double comptage
+        send_page_view: false
       });
 
       gaDebug('Page view tracked:', {
@@ -334,7 +325,7 @@ export default function GoogleAnalytics() {
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-TBT7CJ4Q');
+          })(window,document,'script','dataLayer','${GTM_ID}');
         `}
       </Script>
     </>
