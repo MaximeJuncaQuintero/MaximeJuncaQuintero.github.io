@@ -156,11 +156,22 @@ class ActionProvider {
 
   handleProjectCRM = () => {
     this.reply(
-      "Consulting Reports Monitor is Maxime's latest personal project:\n\n• Fully automated pipeline monitoring McKinsey (8 sectors) & BCG (13 themes) publications\n• Generates structured ~1,200-word French AI summaries per new report (Gemini / Groq)\n• Delivers one HTML email per report via GitHub Actions cron — 0 €/month cost\n• Stack: TypeScript · Prisma/SQLite · Nodemailer · GitHub Actions\n\nView it on the Projects page of this portfolio.",
+      "Consulting Reports Monitor is one of Maxime's ongoing personal builds:\n\n• Fully automated discovery across McKinsey (8 sectors) & BCG (13 themes)\n• Enriches each item (article + PDF when available), then ~1,200-word structured French summaries via Gemini / Groq / OpenAI\n• One HTML email per new report; bi-weekly GitHub Actions cron — 0 €/month infrastructure\n• Stack: TypeScript · Prisma/SQLite · Nodemailer · GitHub Actions\n\nDetails on the Projects page of this portfolio.",
       undefined,
       [
         { text: 'See all projects',          handler: this.handleProjectsRequest,   icon: <FaCode /> },
         { text: 'What else can he build?',   handler: this.handleSkillsRequest,     icon: <FaChartLine /> },
+      ]
+    )
+  }
+
+  handleProjectKnowLedger = () => {
+    this.reply(
+      "KnowLedger is Maxime's personal knowledge workspace for strategy work:\n\n• Focus areas highlighted on the portfolio: daily journaling, knowledge graph, archiving, idea linking\n• Structured capture → normalization → enrichment → retrieval for decision-ready outputs\n• Built as a modular system (structured storage, workflow automation, AI-assisted enrichment)\n\nSee the dedicated project page for narrative and screenshots.",
+      undefined,
+      [
+        { text: 'See all projects',        handler: this.handleProjectsRequest, icon: <FaCode /> },
+        { text: 'Consulting Reports tool?', handler: this.handleProjectCRM,      icon: <FaCode /> },
       ]
     )
   }
@@ -286,7 +297,7 @@ class ActionProvider {
 
   handleAchievementsRequest = () => {
     this.reply(
-      "Key achievements:\n\n• Built a KPI reporting solution at Amazon ATS adopted across the EU transport team\n• Led Tenoris Analytics from idea to MVP as co-founder & PM (alt-data platform)\n• Automated consulting intelligence pipeline (McKinsey + BCG) at 0 €/month cost\n• Accepted into ESCP MSc Strategy & Consulting (top European business school)",
+      "Key achievements:\n\n• Built a KPI reporting solution at Amazon ATS adopted across the EU transport team\n• Led Tenoris Analytics from idea to MVP as co-founder & PM (alt-data platform)\n• Shipped an automated McKinsey + BCG intelligence pipeline (Consulting Reports Monitor) at 0 €/month cost\n• Designs and iterates KnowLedger — a personal strategy knowledge system (journaling, graph, archiving, linking)\n• Accepted into ESCP MSc Strategy & Consulting (top European business school)",
       undefined,
       [
         { text: 'What makes him unique?',    handler: this.handleUniqueQualitiesQuestion, icon: <FaLightbulb /> },
@@ -339,7 +350,7 @@ class ActionProvider {
 
   handleUniqueQualitiesQuestion = () => {
     this.reply(
-      "What makes Maxime unique:\n\n• Cross-functional profile — PM, operations, data, and strategy\n• Early-career Amazon experience — strong execution and ownership\n• Co-founder — entrepreneurial drive and full-cycle product thinking\n• International path across 3 countries — culturally adaptable\n• Side projects — builds tools independently (Consulting Reports Monitor, Flowmap)",
+      "What makes Maxime unique:\n\n• Cross-functional profile — PM, operations, data, and strategy\n• Early-career Amazon experience — strong execution and ownership\n• Co-founder — entrepreneurial drive and full-cycle product thinking\n• International path across 3 countries — culturally adaptable\n• Side projects — builds tools independently (Consulting Reports Monitor, KnowLedger, Flowmap)",
       undefined,
       [
         { text: 'What is his work experience?', handler: this.handleExperienceRequest, icon: <FaBriefcase /> },
@@ -352,7 +363,7 @@ class ActionProvider {
     const data: Record<string, { rating: string; text: string }> = {
       'program management':  { rating: '★★★★☆ Strong fit',    text: 'Direct PM experience at Amazon ATS (reporting solution, stakeholder management, tool adoption) plus ESCP strategy grounding.' },
       'operations':          { rating: '★★★★★ Excellent fit', text: 'Operations Manager at Amazon Hub — fleet maintenance, supplier coordination, KPI ownership.' },
-      'consultant':          { rating: '★★★★☆ Strong fit',    text: 'ESCP MSc Strategy & Consulting, data-driven problem-solving, multi-stakeholder communication, Consulting Reports Monitor project.' },
+      'consultant':          { rating: '★★★★☆ Strong fit',    text: 'ESCP MSc Strategy & Consulting, data-driven problem-solving, multi-stakeholder communication; hands-on projects include Consulting Reports Monitor and KnowLedger (knowledge / intelligence tooling).' },
       'data analyst':        { rating: '★★★☆☆ Good fit',      text: 'SQL & Python applied at Amazon and in academic projects. Business Analytics BBA from DCU.' },
       'product management':  { rating: '★★★☆☆ Good fit',      text: 'PM internship + co-founder experience. Strong product thinking, lighter on pure roadmap / discovery track record.' },
       'software development':{ rating: '★★☆☆☆ Partial fit',   text: 'TypeScript & Python skills for personal projects, but primary focus is PM / strategy rather than engineering.' },

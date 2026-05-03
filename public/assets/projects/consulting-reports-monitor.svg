@@ -1,86 +1,73 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F8FAFC"/>
-      <stop offset="100%" stop-color="#F1F5F9"/>
+      <stop offset="0%" stop-color="#070809"/>
+      <stop offset="52%" stop-color="#0c0e12"/>
+      <stop offset="100%" stop-color="#12151a"/>
     </linearGradient>
     <linearGradient id="bar" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#1D4ED8"/>
-      <stop offset="100%" stop-color="#6366F1"/>
+      <stop offset="0%" stop-color="#a7b9d8"/>
+      <stop offset="100%" stop-color="#8ea0be"/>
     </linearGradient>
     <pattern id="dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-      <circle cx="1" cy="1" r="1" fill="#CBD5E1" opacity="0.5"/>
+      <circle cx="1" cy="1" r="1" fill="#52525b" opacity="0.35"/>
     </pattern>
     <filter id="shadow" x="-5%" y="-5%" width="115%" height="120%">
-      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#0F172A" flood-opacity="0.08"/>
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#000000" flood-opacity="0.35"/>
     </filter>
   </defs>
 
-  <!-- Background -->
   <rect width="1200" height="630" fill="url(#bg)"/>
   <rect width="1200" height="630" fill="url(#dots)"/>
 
-  <!-- Left accent bar -->
   <rect x="96" y="200" width="4" height="230" fill="url(#bar)" rx="2"/>
 
-  <!-- Source label -->
-  <text x="120" y="240" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#1D4ED8" text-anchor="start">McKINSEY &amp; BCG INTELLIGENCE</text>
+  <text x="120" y="240" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#a7b9d8" text-anchor="start">McKINSEY &amp; BCG INTELLIGENCE</text>
 
-  <!-- Main title -->
-  <text x="120" y="310" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="64" font-weight="800" fill="#0F172A" text-anchor="start">Reports</text>
-  <text x="120" y="385" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="64" font-weight="800" fill="#1D4ED8" text-anchor="start">Monitoring</text>
+  <text x="120" y="310" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="64" font-weight="800" fill="#d7dde9" text-anchor="start">Reports</text>
+  <text x="120" y="385" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="64" font-weight="800" fill="#a7b9d8" text-anchor="start">Monitoring</text>
 
-  <!-- Subtitle -->
-  <text x="120" y="430" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="18" font-weight="400" fill="#64748B" text-anchor="start">Automated · AI-powered · Zero-cost</text>
+  <text x="120" y="430" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="18" font-weight="400" fill="#99a3b6" text-anchor="start">Automated · AI-powered · Zero-cost</text>
 
-  <!-- Tag pills -->
-  <rect x="120" y="455" width="130" height="32" rx="16" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5"/>
-  <text x="185" y="476" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#1D4ED8" text-anchor="middle">TypeScript</text>
+  <rect x="120" y="455" width="130" height="32" rx="16" fill="#191c23" stroke="#3f4149" stroke-width="1.5"/>
+  <text x="185" y="476" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#e4e7eb" text-anchor="middle">TypeScript</text>
 
-  <rect x="264" y="455" width="160" height="32" rx="16" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5"/>
-  <text x="344" y="476" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#1D4ED8" text-anchor="middle">GitHub Actions</text>
+  <rect x="264" y="455" width="160" height="32" rx="16" fill="#191c23" stroke="#3f4149" stroke-width="1.5"/>
+  <text x="344" y="476" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#e4e7eb" text-anchor="middle">GitHub Actions</text>
 
-  <rect x="438" y="455" width="110" height="32" rx="16" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
-  <text x="493" y="476" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#6366F1" text-anchor="middle">Gemini AI</text>
+  <rect x="438" y="455" width="110" height="32" rx="16" fill="#1c2030" stroke="#4a5568" stroke-width="1.5"/>
+  <text x="493" y="476" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#c2cde0" text-anchor="middle">Gemini AI</text>
 
-  <rect x="562" y="455" width="90" height="32" rx="16" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
-  <text x="607" y="476" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#6366F1" text-anchor="middle">Groq</text>
+  <rect x="562" y="455" width="90" height="32" rx="16" fill="#1c2030" stroke="#4a5568" stroke-width="1.5"/>
+  <text x="607" y="476" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#c2cde0" text-anchor="middle">Groq</text>
 
-  <!-- Right: email preview card -->
-  <rect x="700" y="140" width="400" height="350" rx="16" fill="white" stroke="#E2E8F0" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="700" y="140" width="400" height="350" rx="16" fill="#121418" stroke="#2a2d35" stroke-width="1.5" filter="url(#shadow)"/>
   <rect x="700" y="140" width="400" height="4" rx="2" fill="url(#bar)"/>
 
-  <!-- Card header -->
-  <text x="726" y="183" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" font-weight="700" fill="#1D4ED8" letter-spacing="2">McKINSEY INTELLIGENCE REPORT</text>
-  <text x="1074" y="183" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" font-weight="500" fill="#94A3B8" text-anchor="end">ANALYSE IA</text>
+  <text x="726" y="183" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" font-weight="700" fill="#a7b9d8" letter-spacing="2">McKINSEY INTELLIGENCE REPORT</text>
+  <text x="1074" y="183" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" font-weight="500" fill="#71717a" text-anchor="end">ANALYSE IA</text>
 
-  <!-- Card title -->
-  <text x="726" y="218" font-family="ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="800" fill="#0F172A">Merchants Unleashed:</text>
-  <text x="726" y="242" font-family="ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="800" fill="#0F172A">AI Transforms Retail</text>
+  <text x="726" y="218" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="18" font-weight="800" fill="#d7dde9">Merchants Unleashed:</text>
+  <text x="726" y="242" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="18" font-weight="800" fill="#d7dde9">AI Transforms Retail</text>
 
-  <!-- Tags -->
-  <rect x="726" y="258" width="52" height="22" rx="11" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="752" y="274" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" font-weight="700" fill="#475569" text-anchor="middle">RETAIL</text>
+  <rect x="726" y="258" width="52" height="22" rx="11" fill="#1f232c" stroke="#3f4149" stroke-width="1"/>
+  <text x="752" y="274" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" font-weight="700" fill="#a1a1aa" text-anchor="middle">RETAIL</text>
 
-  <rect x="788" y="258" width="82" height="22" rx="11" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="1"/>
-  <text x="829" y="274" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" fill="#64748B" text-anchor="middle">18 mars 2026</text>
+  <rect x="788" y="258" width="82" height="22" rx="11" fill="#1f232c" stroke="#3f4149" stroke-width="1"/>
+  <text x="829" y="274" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" fill="#99a3b6" text-anchor="middle">18 mars 2026</text>
 
-  <!-- Divider -->
-  <line x1="726" y1="294" x2="1074" y2="294" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="726" y1="294" x2="1074" y2="294" stroke="#2f3540" stroke-width="1"/>
 
-  <!-- Section block 01 -->
-  <rect x="726" y="312" width="3" height="52" rx="1.5" fill="#1D4ED8"/>
-  <text x="738" y="327" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" font-weight="600" fill="#1D4ED8">01</text>
-  <text x="738" y="343" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#0F172A">TL;DR</text>
-  <text x="738" y="358" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" fill="#64748B">McKinsey identifie une fenetre d'opportunite de trois ans...</text>
+  <rect x="726" y="312" width="3" height="52" rx="1.5" fill="#a7b9d8"/>
+  <text x="738" y="327" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" font-weight="600" fill="#a7b9d8">01</text>
+  <text x="738" y="343" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#d7dde9">TL;DR</text>
+  <text x="738" y="358" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" fill="#99a3b6">McKinsey identifie une fenêtre d'opportunité de trois ans...</text>
 
-  <!-- Section block 02 -->
-  <rect x="726" y="378" width="3" height="52" rx="1.5" fill="#6366F1"/>
-  <text x="738" y="393" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" font-weight="600" fill="#6366F1">02</text>
-  <text x="738" y="409" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#0F172A">Ce qu'il faut retenir</text>
-  <text x="738" y="424" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" fill="#64748B">L'IA generative reduit les couts de creation de contenu...</text>
+  <rect x="726" y="378" width="3" height="52" rx="1.5" fill="#8ea0be"/>
+  <text x="738" y="393" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" font-weight="600" fill="#8ea0be">02</text>
+  <text x="738" y="409" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#d7dde9">Ce qu'il faut retenir</text>
+  <text x="738" y="424" font-family="ui-sans-serif, system-ui, sans-serif" font-size="9" fill="#99a3b6">L'IA générative réduit les coûts de création de contenu...</text>
 
-  <!-- Card footer button -->
-  <rect x="726" y="455" width="180" height="26" rx="13" fill="#1D4ED8"/>
-  <text x="816" y="472" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="white" text-anchor="middle">Lire le rapport</text>
+  <rect x="726" y="455" width="180" height="26" rx="13" fill="#a7b9d8"/>
+  <text x="816" y="472" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#070809" text-anchor="middle">Lire le rapport</text>
 </svg>

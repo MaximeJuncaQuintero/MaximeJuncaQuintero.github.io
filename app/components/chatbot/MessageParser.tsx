@@ -64,6 +64,9 @@ class MessageParser {
     if (/consulting report|crm|reports monitor|mckinsey.*bcg|bcg.*mckinsey|pipeline/.test(m)) {
       ap.handleProjectCRM(); return
     }
+    if (/knowledger|know ledger|knowledge ledger/.test(m)) {
+      ap.handleProjectKnowLedger(); return
+    }
     if (/tenoris/.test(m)) { ap.handleProjectTenoris(); return }
     if (/talentgrid|talent grid/.test(m)) { ap.handleProjectTalentGrid(); return }
     if (/flowmap|flow map/.test(m)) { ap.handleProjectFlowmap(); return }

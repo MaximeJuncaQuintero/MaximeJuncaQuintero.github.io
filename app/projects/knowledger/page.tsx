@@ -12,7 +12,7 @@ export default function KnowLedgerPage() {
   return (
     <ProjectDetail
       title="KnowLedger"
-      image="/assets/projects/screenshots/knowledger-dashboard.png"
+      image="/assets/projects/screenshots/knowledger-dashboard.svg"
       customThumbnail={<KnowLedgerThumbnail />}
       projectLength={isFr ? 'Projet personnel · En cours' : 'Personal project · Ongoing'}
       context={isFr
@@ -45,21 +45,15 @@ export default function KnowLedgerPage() {
         ? "KnowLedger établit une source unique de vérité pour l'apprentissage continu et l'exécution de projets. Au lieu de relire des contenus bruts, l'utilisateur accède à des insights structurés, tracés par source, et réutilisables immédiatement. Le projet démontre comment une architecture légère de knowledge management peut accélérer la qualité, la clarté et la vitesse du travail stratégique."
         : 'KnowLedger creates a single source of truth for ongoing learning and project execution. Instead of re-reading raw material, the user accesses structured insights with clear context, source traceability, and reusable outputs. The project demonstrates how a lightweight knowledge architecture can improve speed, clarity, and quality of strategic work.'}
       tools={[
-        'TypeScript',
-        'Node.js',
-        'SQLite',
-        'Automation',
-        'AI-assisted workflows',
-        'Knowledge Management',
-        'Strategy Enablement',
-        'Workflow Design',
-        'AI APIs',
-        'Structured Metadata',
+        'Daily Journaling',
+        'Knowledge Graph',
+        'Archiving',
+        'Idea Linking',
       ]}
       screenshots={[
         {
           title:       isFr ? 'Dashboard de connaissance' : 'Knowledge Dashboard',
-          image:       '/assets/projects/screenshots/knowledger-dashboard.png',
+          image:       '/assets/projects/screenshots/knowledger-dashboard.svg',
           description: isFr
             ? "Vue d'ensemble opérationnelle du système avec accès rapide aux entrées récentes, imports et travaux en cours."
             : 'Operational overview of the system with quick access to recent entries, imports, and ongoing work.',

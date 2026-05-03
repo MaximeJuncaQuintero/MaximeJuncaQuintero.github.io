@@ -112,14 +112,14 @@ export default function KnowLedgerThumbnail({ className = '' }: { className?: st
         Strategy, projects, and decision-ready insights
       </text>
 
-      <rect x="136" y="370" width="112" height="32" rx="16" fill="#121214" stroke="#3f3f46" />
-      <text x="192" y="390.5" textAnchor="middle" fontFamily="ui-sans-serif, system-ui, sans-serif" fontSize="11.5" fontWeight="700" fill="#e4e4e7">TypeScript</text>
-      <rect x="258" y="370" width="94" height="32" rx="16" fill="#121214" stroke="#3f3f46" />
-      <text x="305" y="390.5" textAnchor="middle" fontFamily="ui-sans-serif, system-ui, sans-serif" fontSize="11.5" fontWeight="700" fill="#e4e4e7">Node.js</text>
-      <rect x="362" y="370" width="90" height="32" rx="16" fill="#121214" stroke="#3f3f46" />
-      <text x="407" y="390.5" textAnchor="middle" fontFamily="ui-sans-serif, system-ui, sans-serif" fontSize="11.5" fontWeight="700" fill="#e4e4e7">SQLite</text>
-      <rect x="462" y="370" width="120" height="32" rx="16" fill="#121214" stroke="#3f3f46" />
-      <text x="522" y="390.5" textAnchor="middle" fontFamily="ui-sans-serif, system-ui, sans-serif" fontSize="11.5" fontWeight="700" fill="#e4e4e7">Automation</text>
+      <rect x="136" y="370" width="128" height="32" rx="16" fill="#121214" stroke="#3f3f46" />
+      <text x="200" y="390.5" textAnchor="middle" fontFamily="ui-sans-serif, system-ui, sans-serif" fontSize="11.5" fontWeight="700" fill="#e4e4e7">Daily Journaling</text>
+      <rect x="274" y="370" width="130" height="32" rx="16" fill="#121214" stroke="#3f3f46" />
+      <text x="339" y="390.5" textAnchor="middle" fontFamily="ui-sans-serif, system-ui, sans-serif" fontSize="11.5" fontWeight="700" fill="#e4e4e7">Knowledge Graph</text>
+      <rect x="414" y="370" width="86" height="32" rx="16" fill="#121214" stroke="#3f3f46" />
+      <text x="457" y="390.5" textAnchor="middle" fontFamily="ui-sans-serif, system-ui, sans-serif" fontSize="11.5" fontWeight="700" fill="#e4e4e7">Archiving</text>
+      <rect x="510" y="370" width="100" height="32" rx="16" fill="#121214" stroke="#3f3f46" />
+      <text x="560" y="390.5" textAnchor="middle" fontFamily="ui-sans-serif, system-ui, sans-serif" fontSize="11.5" fontWeight="700" fill="#e4e4e7">Idea Linking</text>
 
       <rect x="136" y="420" width="406" height="86" rx="10" fill="#111113" stroke="#2a2a2c" />
       <text x="156" y="449" fontFamily="ui-sans-serif, system-ui, sans-serif" fontSize="12" fontWeight="700" fill="#e5e7eb" letterSpacing="1.2">

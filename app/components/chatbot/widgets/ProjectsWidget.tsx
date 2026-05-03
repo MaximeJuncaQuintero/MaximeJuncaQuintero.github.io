@@ -20,10 +20,17 @@ const projects = [
   },
   {
     title: 'Consulting Reports Monitor',
-    description: 'Automated AI-powered pipeline for McKinsey & BCG intelligence digests.',
+    description: 'Zero-cost GitHub Actions pipeline: McKinsey & BCG discovery, French AI summaries, HTML email per report.',
     link: '/projects/consulting-reports-monitor',
     tag: 'Consulting',
     color: 'var(--secondary)',
+  },
+  {
+    title: 'KnowLedger',
+    description: 'Personal strategy knowledge workspace: daily journaling, graph, archiving, and idea linking.',
+    link: '/projects/knowledger',
+    tag: 'Consulting',
+    color: 'var(--accent)',
   },
   {
     title: 'Tenoris Analytics',
